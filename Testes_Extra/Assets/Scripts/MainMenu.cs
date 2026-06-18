@@ -1,80 +1,70 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [Header("Fade")]
-    public FadeController fadeController;
-
-    [Header("Cena do Jogo")]
-    public string nomeDaCena;
-
-    [Header("Painéis")]
+    [Header("Panels")]
     public GameObject mainPanel;
     public GameObject manualPanel;
-    public GameObject creditsPanel;
+    public GameObject creditosPanel;
 
-    private bool clicou = false;
+    [Header("Nome da Cena")]
+    public string gameplayScene = "Level1";
 
     void Start()
     {
-        AbrirMenuPrincipal();
+        // Apenas o menu principal começa ativo
+        mainPanel.SetActive(true);
+
+        manualPanel.SetActive(false);
+        creditosPanel.SetActive(false);
     }
 
     // =========================
-    // INICIAR JOGO
+    // BOTÃO JOGAR
     // =========================
-
-    public void IniciarJogo()
+    public void Jogar()
     {
-        if (clicou) return;
-
-        clicou = true;
-
-        StartCoroutine(CarregarJogo());
-    }
-
-    IEnumerator CarregarJogo()
-    {
-        yield return StartCoroutine(fadeController.FadeOut());
-
-        SceneManager.LoadScene(nomeDaCena);
+        SceneManager.LoadScene(gameplayScene);
     }
 
     // =========================
     // MANUAL
     // =========================
-
     public void AbrirManual()
     {
         mainPanel.SetActive(false);
-        creditsPanel.SetActive(false);
-
         manualPanel.SetActive(true);
+    }
+
+    public void FecharManual()
+    {
+        manualPanel.SetActive(false);
+        mainPanel.SetActive(true);
     }
 
     // =========================
     // CRÉDITOS
     // =========================
-
     public void AbrirCreditos()
     {
         mainPanel.SetActive(false);
-        manualPanel.SetActive(false);
+        creditosPanel.SetActive(true);
+    }
 
-        creditsPanel.SetActive(true);
+    public void FecharCreditos()
+    {
+        creditosPanel.SetActive(false);
+        mainPanel.SetActive(true);
     }
 
     // =========================
-    // VOLTAR
+    // SAIR
     // =========================
-
-    public void AbrirMenuPrincipal()
+    public void Sair()
     {
-        mainPanel.SetActive(true);
+        Application.Quit();
 
-        manualPanel.SetActive(false);
-        creditsPanel.SetActive(false);
+        Debug.Log("Jogo fechado");
     }
 }
