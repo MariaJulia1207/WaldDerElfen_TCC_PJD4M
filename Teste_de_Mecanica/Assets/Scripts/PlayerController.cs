@@ -44,6 +44,25 @@ public class PlayerController : MonoBehaviour
 
         // Corrige velocidade diagonal
         movimento = movimento.normalized;
+        
+        // Diálogo
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            if (DialogueManager.Instance.IsDialogueActive())
+            {
+                DialogueManager.Instance.NextLine();
+            }
+            else
+            {
+                NPCInteraction npc =
+                    ObserverManager.Instance.GetCurrentNPC();
+
+                if (npc != null)
+                {
+                    npc.Interact();
+                }
+            }
+        }
     }
 
     void FixedUpdate()
