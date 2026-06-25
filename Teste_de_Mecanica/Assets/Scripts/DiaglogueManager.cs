@@ -1,62 +1,44 @@
+using TMPro;
 using UnityEngine;
-using System;
 
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
 
-    public static event Action<string, string, Sprite> OnDialogueLineChanged;
-    public static event Action OnDialogueStarted;
-    public static event Action OnDialogueEnded;
+    [Header("UI")]
+    [SerializeField] private GameObject dialoguePanel;
+    [SerializeField] private TMP_Text npcNameText;
+    [SerializeField] private TMP_Text dialogueText;
 
-    private NPCDialogueData currentDialogue;
-    private NPCInteractable currentNPC;
-
+    private DialogueData currentDialogue;
     private int currentLine;
-    private bool dialogueActive;
-
-    public bool IsDialogueActive => dialogueActive;
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
+        Instance = this;
     }
 
-    public void StartDialogue(
-        NPCInteractable npc,
-        NPCDialogueData dialogue)
+    private void Start()
     {
-        currentNPC = npc;
+        dialoguePanel.SetActive(false);
+    }
+
+    public void StartDialogue(DialogueData dialogue)
+    {
         currentDialogue = dialogue;
         currentLine = 0;
-        dialogueActive = true;
 
-        OnDialogueStarted?.Invoke();
+        dialoguePanel.SetActive(true);
 
-        ShowCurrentLine();
+        npcNameText.text = dialogue.npcName;
+
+        ShowLine();
     }
 
-    private void Update()
+    private void ShowLine()
     {
-        if (!dialogueActive)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            NextLine();
-        }
-    }
-
-    private void ShowCurrentLine()
-    {
-        OnDialogueLineChanged?.Invoke(
-            currentDialogue.npcName,
-            currentDialogue.dialogueLines[currentLine],
-            currentDialogue.portrait
-        );
+        dialogueText.text =
+            currentDialogue.dialogueLines[currentLine];
     }
 
     public void NextLine()
@@ -69,16 +51,13 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        ShowCurrentLine();
+        ShowLine();
     }
 
     private void EndDialogue()
     {
-        dialogueActive = false;
+        dialoguePanel.SetActive(false);
 
-        if (currentNPC != null)
-            currentNPC.MarkDialogueCompleted();
-
-        OnDialogueEnded?.Invoke();
+        ObserverManager.Notify("DialogueFinished");
     }
 }

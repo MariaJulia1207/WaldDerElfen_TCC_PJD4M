@@ -2,50 +2,48 @@
 
 public class InteractButtonController : MonoBehaviour
 {
-    public static InteractButtonController Instance;
+    [SerializeField]
+    private GameObject buttonVisual;
 
-    public GameObject buttonSprite;
-
-    private Transform target;
-
-    private Camera cam;
-
-    private void Awake()
+    private void OnEnable()
     {
-        Instance = this;
+        ObserverManager.Subscribe(
+            "ShowInteractButton",
+            ShowButton);
+
+        ObserverManager.Subscribe(
+            "HideInteractButton",
+            HideButton);
+    }
+
+    private void OnDisable()
+    {
+        ObserverManager.Unsubscribe(
+            "ShowInteractButton",
+            ShowButton);
+
+        ObserverManager.Unsubscribe(
+            "HideInteractButton",
+            HideButton);
     }
 
     private void Start()
     {
-        cam = Camera.main;
-
-        buttonSprite.SetActive(false);
+        buttonVisual.SetActive(false);
     }
 
-    private void Update()
+    private void ShowButton()
     {
-        if (target == null)
-            return;
-
-        Vector3 pos =
-            cam.WorldToScreenPoint(
-                target.position +
-                Vector3.up * 1.5f);
-
-        buttonSprite.transform.position = pos;
+        buttonVisual.SetActive(true);
     }
 
-    public void ShowButton(Transform npc)
+    private void HideButton()
     {
-        target = npc;
-
-        buttonSprite.SetActive(true);
+        buttonVisual.SetActive(false);
     }
 
-    public void HideButton()
+    public void OnInteractPressed()
     {
-        target = null;
-
-        buttonSprite.SetActive(false);
+        InteractOM.Instance.Interact();
     }
 }

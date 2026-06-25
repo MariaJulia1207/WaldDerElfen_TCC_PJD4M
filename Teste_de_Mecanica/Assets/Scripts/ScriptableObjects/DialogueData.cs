@@ -1,11 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NovoDialogo", menuName = "Dialogos/NPC")]
-public class NPCDialogueData : ScriptableObject
+[CreateAssetMenu(
+    fileName = "New Dialogue",
+    menuName = "Dialogue/Dialogue Data")]
+public class DialogueData : ScriptableObject
 {
     public string npcName;
-    public Sprite portrait;
 
-    [TextArea(3, 5)]
+    [TextArea(2, 5)]
     public string[] dialogueLines;
 }

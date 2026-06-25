@@ -1,47 +1,28 @@
-/*
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class ObserverManager : MonoBehaviour
+public static class ObserverManager
 {
-    public static ObserverManager Instance;
+    private static Dictionary<string, Action> events =
+        new Dictionary<string, Action>();
 
-    private HashSet<string> dialoguesCompleted =
-        new HashSet<string>();
-
-    private NPCInteraction currentNPC;
-
-    private void Awake()
+    public static void Subscribe(string eventName, Action listener)
     {
-        if (Instance == null)
-            Instance = this;
+        if (!events.ContainsKey(eventName))
+            events.Add(eventName, listener);
         else
-            Destroy(gameObject);
+            events[eventName] += listener;
     }
 
-    public void SetCurrentNPC(NPCInteraction npc)
+    public static void Unsubscribe(string eventName, Action listener)
     {
-        currentNPC = npc;
+        if (events.ContainsKey(eventName))
+            events[eventName] -= listener;
     }
 
-    public NPCInteraction GetCurrentNPC()
+    public static void Notify(string eventName)
     {
-        return currentNPC;
-    }
-
-    public void EndInteraction()
-    {
-        currentNPC = null;
-    }
-
-    public void RegisterDialogue(string npcID)
-    {
-        dialoguesCompleted.Add(npcID);
-    }
-
-    public bool HasTalked(string npcID)
-    {
-        return dialoguesCompleted.Contains(npcID);
+        if (events.ContainsKey(eventName))
+            events[eventName]?.Invoke();
     }
 }
-*/
