@@ -147,7 +147,7 @@ TextureImporter:
         width: 64
         height: 118
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -160,11 +160,33 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Alberich - Sketch 1_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 54
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e73a87961c9df04498da524919631fb0
+      internalID: -1637055909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f587476d3cb3e43498431e43f79f8b64
     internalID: 0
     vertices: []
     indices: 
@@ -175,6 +197,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Alberich - Sketch 1_0: 4686926089799929584
+      Alberich - Sketch 1_1: -1637055909
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

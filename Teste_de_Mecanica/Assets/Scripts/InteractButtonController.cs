@@ -4,6 +4,7 @@ public class InteractButtonController : MonoBehaviour
 {
     [SerializeField]
     private GameObject buttonVisual;
+    public GameObject dialoguePanel;
 
     private void OnEnable()
     {
@@ -30,6 +31,7 @@ public class InteractButtonController : MonoBehaviour
     private void Start()
     {
         buttonVisual.SetActive(false);
+        dialoguePanel.SetActive(false);
     }
 
     private void ShowButton()
@@ -45,5 +47,6 @@ public class InteractButtonController : MonoBehaviour
     public void OnInteractPressed()
     {
         InteractOM.Instance.Interact();
+        dialoguePanel.SetActive(true);
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
   m_Name: NPC
   m_EditorClassIdentifier: Assembly-CSharp::NPCDialogueData
-  npcName: Valemon
   dialogueLines:
-  - '... Rose... '
-  - '... perigo... duendes... '
+  - portrait: {fileID: -346326355, guid: 22a9510f19410f84f8fcb34fe0cafcb0, type: 3}
+    speakerName: Rose
+    dialogueText: '"Estranho... de quem seria esta espada?"'
