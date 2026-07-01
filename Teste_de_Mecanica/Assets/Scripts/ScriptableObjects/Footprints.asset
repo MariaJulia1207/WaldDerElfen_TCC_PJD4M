@@ -10,15 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
-  m_Name: ElderVillager_Dialogue
+  m_Name: Footprints
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
   dialogueLines:
-  - portrait: {fileID: -1637055909, guid: 6756a50c150f1db4a8c2012c5a555e11, type: 3}
-    speakerName: NPC
-    dialogueText: '"... Rose..."'
   - portrait: {fileID: -346326355, guid: 22a9510f19410f84f8fcb34fe0cafcb0, type: 3}
     speakerName: Rose
-    dialogueText: '"Como... como sabe meu nome? O que estou fazendo aqui?"'
-  - portrait: {fileID: -1637055909, guid: 6756a50c150f1db4a8c2012c5a555e11, type: 3}
-    speakerName: NPC
-    dialogueText: "\"... capturados\u2026 a floresta\u2026 duendes...\""
+    dialogueText: "\"Pegadas de urso... Talvez me levem \xE0 sa\xEDda.\""
