@@ -12,7 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
   m_Name: NPC
   m_EditorClassIdentifier: Assembly-CSharp::NPCDialogueData
-  dialogueLines:
-  - portrait: {fileID: -346326355, guid: 22a9510f19410f84f8fcb34fe0cafcb0, type: 3}
-    speakerName: Rose
-    dialogueText: '"Estranho... de quem seria esta espada?"'
+  playOnlyOnce: 1
+  mainDialogue:
+  - speakerName: NPC
+    portrait: {fileID: -1637055909, guid: 6756a50c150f1db4a8c2012c5a555e11, type: 3}
+    dialogueText: ...Rose... Rose...
+  - speakerName: Rose
+    portrait: {fileID: -346326355, guid: 22a9510f19410f84f8fcb34fe0cafcb0, type: 3}
+    dialogueText: Como sabe meu nome?
+  - speakerName: NPC
+    portrait: {fileID: -1637055909, guid: 6756a50c150f1db4a8c2012c5a555e11, type: 3}
+    dialogueText: '...capturados... duendes... a floresta... '
+  summaryDialogue:
+  - speakerName: NPC
+    portrait: {fileID: -1637055909, guid: 6756a50c150f1db4a8c2012c5a555e11, type: 3}
+    dialogueText: '...capturados... duendes... a floresta... '

@@ -1,20 +1,22 @@
-﻿
-using UnityEngine;
-using UnityEngine.InputSystem;
-
+﻿using UnityEngine;
 
 public class NPCInteractable : MonoBehaviour
 {
     [SerializeField]
-    private DialogueData dialogue;
+    private DialogueData dialogueData;
 
-    public DialogueData GetDialogue()
-    {
-        return dialogue;
-    }
+    private bool dialogueCompleted;
 
     public void Interact()
     {
-        DialogueManager.Instance.StartDialogue(dialogue);
+        DialogueManager.Instance.StartDialogue(
+            dialogueData,
+            this,
+            dialogueCompleted);
+    }
+
+    public void CompleteDialogue()
+    {
+        dialogueCompleted = true;
     }
 }

@@ -5,5 +5,12 @@ using UnityEngine;
     menuName = "Dialogue/Dialogue Data")]
 public class DialogueData : ScriptableObject
 {
-    public DialogueLine[] dialogueLines;
+    [Header("Executar apenas uma vez")]
+    public bool playOnlyOnce;
+
+    [Header("Diálogo Principal")]
+    public DialogueLine[] mainDialogue;
+
+    [Header("Resumo após terminar")]
+    public DialogueLine[] summaryDialogue;
 }

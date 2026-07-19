@@ -1,6 +1,7 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -15,9 +16,22 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private TMP_Text dialogueText;
 
-    private DialogueData currentDialogue;
+    [Header("Typewriter")]
+    [SerializeField] private float letterDelay = 0.03f;
 
-    private int currentLine;
+    private DialogueLine[] currentLines;
+
+    private int currentLineIndex;
+
+    private Coroutine typingCoroutine;
+
+    private bool isTyping;
+
+    private string fullText;
+
+    private NPCInteractable currentNPC;
+
+    private DialogueData currentDialogueData;
 
     private void Awake()
     {
@@ -29,45 +43,105 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
     }
 
-    public void StartDialogue(DialogueData dialogue)
+    public void StartDialogue(
+        DialogueData dialogueData,
+        NPCInteractable npc,
+        bool alreadyCompleted)
     {
-        currentDialogue = dialogue;
-        currentLine = 0;
+        currentDialogueData = dialogueData;
+        currentNPC = npc;
+
+        if (dialogueData.playOnlyOnce &&
+            alreadyCompleted)
+        {
+            currentLines =
+                dialogueData.summaryDialogue;
+        }
+        else
+        {
+            currentLines =
+                dialogueData.mainDialogue;
+        }
+
+        currentLineIndex = 0;
 
         dialoguePanel.SetActive(true);
 
-        UpdateUI();
+        ShowLine();
+    }
+
+    private void ShowLine()
+    {
+        DialogueLine line =
+            currentLines[currentLineIndex];
+
+        portraitImage.sprite =
+            line.portrait;
+
+        speakerNameText.text =
+            line.speakerName;
+
+        fullText =
+            line.dialogueText;
+
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine =
+            StartCoroutine(TypeText());
+    }
+
+    private IEnumerator TypeText()
+    {
+        isTyping = true;
+
+        dialogueText.text = "";
+
+        foreach (char letter in fullText)
+        {
+            dialogueText.text += letter;
+
+            yield return new WaitForSeconds(
+                letterDelay);
+        }
+
+        isTyping = false;
     }
 
     public void NextLine()
     {
-        currentLine++;
+        if (isTyping)
+        {
+            StopCoroutine(typingCoroutine);
 
-        if (currentLine >= currentDialogue.dialogueLines.Length)
+            dialogueText.text = fullText;
+
+            isTyping = false;
+
+            return;
+        }
+
+        currentLineIndex++;
+
+        if (currentLineIndex >= currentLines.Length)
         {
             EndDialogue();
             return;
         }
 
-        UpdateUI();
-    }
-
-    private void UpdateUI()
-    {
-        DialogueLine line =
-            currentDialogue.dialogueLines[currentLine];
-
-        portraitImage.sprite = line.portrait;
-
-        speakerNameText.text =
-            line.speakerName;
-
-        dialogueText.text =
-            line.dialogueText;
+        ShowLine();
     }
 
     private void EndDialogue()
     {
+        if (
+            currentDialogueData.playOnlyOnce &&
+            currentNPC != null
+        )
+        {
+            currentNPC.CompleteDialogue();
+        }
+
         dialoguePanel.SetActive(false);
     }
 }
