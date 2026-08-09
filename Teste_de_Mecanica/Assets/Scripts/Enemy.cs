@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public int vida = 3;
+    [SerializeField] private int vida = 3;
 
     public void ReceberDano(int dano)
     {
         vida -= dano;
 
-        if(vida <= 0)
+        Debug.Log("Inimigo recebeu " + dano + " de dano.");
+
+        if (vida <= 0)
         {
-            Destroy(gameObject);
+            Morrer();
         }
+    }
+
+    private void Morrer()
+    {
+        Destroy(gameObject);
     }
 }

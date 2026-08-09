@@ -1,135 +1,220 @@
-using UnityEngine; 
-using UnityEngine.InputSystem; 
-public class PlayerController : MonoBehaviour 
-{ 
-    [Header("Movimento")] 
-    public float velocidade = 5f; 
-    private Rigidbody2D rb; 
-    private Vector2 movimento;
-    private Vector2 ultimaDirecao;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-    public GameObject attackUp;
-    public GameObject attackDown;
-    public GameObject attackLeft;
-    public GameObject attackRight;
+public class PlayerController : MonoBehaviour
+{
+    [Header("Movimento")]
+    [SerializeField] private float velocidade = 5f;
 
+    [Header("Hitboxes do Ataque")]
+    [SerializeField] private GameObject attackUp;
+    [SerializeField] private GameObject attackDown;
+    [SerializeField] private GameObject attackLeft;
+    [SerializeField] private GameObject attackRight;
+
+    private Rigidbody2D rb;
     private Animator anim;
+
+    private Vector2 movimento;
 
     private bool atacando;
 
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-    } 
-    void Update() 
-    { 
-        if(atacando)
-{
-    movimento = Vector2.zero;
-    return;
-}
 
-        movimento = Vector2.zero; 
-        // Esquerda
-        if (Keyboard.current.leftArrowKey.isPressed)
-        {
-            movimento.x = -1;
-        } 
-        // Direita
-        if (Keyboard.current.rightArrowKey.isPressed)
-        {
-            movimento.x = 1;
-        } 
-        // Cima
-        if (Keyboard.current.upArrowKey.isPressed)
-        {
-            movimento.y = 1;
-        } 
-        // Baixo
-        if (Keyboard.current.downArrowKey.isPressed)
-        {
-            movimento.y = -1;
-        } 
-        // Corrige velocidade diagonal
-        movimento = movimento.normalized;
-
-        if (movimento != Vector2.zero)
-        {
-            ultimaDirecao = movimento;
-        }
-
-        anim.SetFloat("MoveX", movimento.x);
-        anim.SetFloat("MoveY", movimento.y);
-
-        bool andando = movimento != Vector2.zero;
-
-        anim.SetBool("IsMoving", andando);
-
-        if(andando)
-        {
-            anim.SetFloat("LastMoveX", movimento.x);
-            anim.SetFloat("LastMoveY", movimento.y);
-        }
-
-        if (movimento.x != 0)
-{
-    movimento.y = 0;
-}
-
-        // Atacar
-        if (Keyboard.current.xKey.wasPressedThisFrame && !atacando)
-{
-    Atacar();
-}
+        DesativarTodasHitboxes();
     }
-    void FixedUpdate() 
+
+    private void Update()
+    {
+        // Se estiver atacando, não pode andar
+        if (atacando)
+        {
+            movimento = Vector2.zero;
+            anim.SetBool("IsMoving", false);
+
+            return;
+        }
+
+        LerMovimento();
+        AtualizarAnimacao();
+
+        // Ataque com X
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            Atacar();
+        }
+    }
+
+    private void FixedUpdate()
     {
         rb.linearVelocity = movimento * velocidade;
     }
 
-    void Atacar()
-{
-    atacando = true;
+    // =========================================================
+    // MOVIMENTO
+    // =========================================================
 
-    anim.SetTrigger("Attack");
-}
-    void FinalizarAtaque()
-{
-    atacando = false;
-}
+    private void LerMovimento()
+    {
+        movimento = Vector2.zero;
 
-    // Hitboxes
-    void AtivarHitbox()
-{
-    float x = anim.GetFloat("LastMoveX");
-    float y = anim.GetFloat("LastMoveY");
+        if (Keyboard.current.leftArrowKey.isPressed)
+        {
+            movimento.x = -1;
+        }
 
-    attackUp.SetActive(false);
-    attackDown.SetActive(false);
-    attackLeft.SetActive(false);
-    attackRight.SetActive(false);
+        if (Keyboard.current.rightArrowKey.isPressed)
+        {
+            movimento.x = 1;
+        }
 
-    if (y > 0)
-        attackUp.SetActive(true);
+        if (Keyboard.current.upArrowKey.isPressed)
+        {
+            movimento.y = 1;
+        }
 
-    else if (y < 0)
-        attackDown.SetActive(true);
+        if (Keyboard.current.downArrowKey.isPressed)
+        {
+            movimento.y = -1;
+        }
 
-    else if (x < 0)
-        attackLeft.SetActive(true);
+        movimento = movimento.normalized;
+    }
 
-    else
-        attackRight.SetActive(true);
-}
+    // =========================================================
+    // ANIMAÇÃO DE MOVIMENTO
+    // =========================================================
 
-    void DesativarHitbox()
-{
-    attackUp.SetActive(false);
-    attackDown.SetActive(false);
-    attackLeft.SetActive(false);
-    attackRight.SetActive(false);
-}
-    
+    private void AtualizarAnimacao()
+    {
+        bool andando = movimento != Vector2.zero;
 
+        anim.SetBool("IsMoving", andando);
+
+        anim.SetFloat("MoveX", movimento.x);
+        anim.SetFloat("MoveY", movimento.y);
+
+        if (andando)
+        {
+            anim.SetFloat("LastMoveX", movimento.x);
+            anim.SetFloat("LastMoveY", movimento.y);
+        }
+    }
+
+    // =========================================================
+    // ATAQUE
+    // =========================================================
+
+    private void Atacar()
+    {
+        atacando = true;
+
+        movimento = Vector2.zero;
+
+        // Descobre a direção que o jogador está olhando
+        float x = anim.GetFloat("LastMoveX");
+        float y = anim.GetFloat("LastMoveY");
+
+        int direcaoAtaque;
+
+        if (Mathf.Abs(x) > Mathf.Abs(y))
+        {
+            // Horizontal
+
+            if (x < 0)
+            {
+                direcaoAtaque = 2; // Esquerda
+            }
+            else
+            {
+                direcaoAtaque = 3; // Direita
+            }
+        }
+        else
+        {
+            // Vertical
+
+            if (y < 0)
+            {
+                direcaoAtaque = 0; // Baixo
+            }
+            else
+            {
+                direcaoAtaque = 1; // Cima
+            }
+        }
+
+        anim.SetInteger("AttackDirection", direcaoAtaque);
+
+        anim.SetTrigger("Attack");
+    }
+
+    // =========================================================
+    // HITBOX
+    // =========================================================
+
+    public void AtivarHitbox()
+    {
+        DesativarTodasHitboxes();
+
+        float x = anim.GetFloat("LastMoveX");
+        float y = anim.GetFloat("LastMoveY");
+
+        if (Mathf.Abs(x) > Mathf.Abs(y))
+        {
+            if (x < 0)
+            {
+                attackLeft.SetActive(true);
+            }
+            else
+            {
+                attackRight.SetActive(true);
+            }
+        }
+        else
+        {
+            if (y < 0)
+            {
+                attackDown.SetActive(true);
+            }
+            else
+            {
+                attackUp.SetActive(true);
+            }
+        }
+    }
+
+    public void DesativarHitbox()
+    {
+        DesativarTodasHitboxes();
+    }
+
+    private void DesativarTodasHitboxes()
+    {
+        if (attackUp != null)
+            attackUp.SetActive(false);
+
+        if (attackDown != null)
+            attackDown.SetActive(false);
+
+        if (attackLeft != null)
+            attackLeft.SetActive(false);
+
+        if (attackRight != null)
+            attackRight.SetActive(false);
+    }
+
+    // =========================================================
+    // FINAL DO ATAQUE
+    // =========================================================
+
+    public void FinalizarAtaque()
+    {
+        DesativarTodasHitboxes();
+
+        atacando = false;
+    }
 }
