@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
+  m_Name: NPC
+  m_EditorClassIdentifier: Assembly-CSharp::NPCDialogueData
+  playOnlyOnce: 1
+  mainDialogue:
+  - speakerName: NPC
+    portrait: {fileID: -1637055909, guid: 6756a50c150f1db4a8c2012c5a555e11, type: 3}
+    dialogueText: ...Rose... Rose...
+  - speakerName: Rose
+    portrait: {fileID: -346326355, guid: 22a9510f19410f84f8fcb34fe0cafcb0, type: 3}
+    dialogueText: Como sabe meu nome?
+  - speakerName: NPC
+    portrait: {fileID: -1637055909, guid: 6756a50c150f1db4a8c2012c5a555e11, type: 3}
+    dialogueText: '...capturados... duendes... a floresta... '
+  summaryDialogue:
+  - speakerName: NPC
+    portrait: {fileID: -1637055909, guid: 6756a50c150f1db4a8c2012c5a555e11, type: 3}
+    dialogueText: '...capturados... duendes... a floresta... '
