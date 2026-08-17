@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
   m_Name: Dialogue
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
-  playOnlyOnce: 0
-  mainDialogue: []
-  summaryDialogue: []
+  playOnlyOnce: 1
+  mainDialogue:
+  - speakerName: Angelina
+    portrait: {fileID: 0}
+    dialogueText: 
+  summaryDialogue:
+  - speakerName: Angelina
+    portrait: {fileID: 0}
+    dialogueText: 

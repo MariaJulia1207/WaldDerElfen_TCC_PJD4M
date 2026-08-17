@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Obstaculo : MonoBehaviour
 {
     [SerializeField] private int vida = 3;
 
@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     {
         vida -= dano;
 
-        Debug.Log("Inimigo recebeu " + dano + " de dano.");
+        Debug.Log("Obstáculo recebeu " + dano + " de dano.");
 
         if (vida <= 0)
         {

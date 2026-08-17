@@ -6,11 +6,11 @@ public class AttackHitbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Enemy enemy = other.GetComponent<Enemy>();
+        Obstaculo obstaculo = other.GetComponent<Obstaculo>();
 
-        if (enemy != null)
+        if (obstaculo != null)
         {
-            enemy.ReceberDano(dano);
+            obstaculo.ReceberDano(dano);
         }
     }
 }
