@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 27dbc5a16505e4a4490e762517df52c8
+guid: 55ff41b18f8755746a65ce1960051c7d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6731752929807783087
-    second: Tileset_CaveInicial_0
+      213: 8006447716723313913
+    second: TileSet_Terra_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,6 +72,32 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -96,17 +122,69 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tileset_CaveInicial_0
+      name: TileSet_Terra_0
       rect:
         serializedVersion: 2
-        x: 1120
-        y: 0
-        width: 140
-        height: 960
+        x: 0
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,20 +193,152 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 15bac1f60620492a0800000000000000
-      internalID: -6731752929807783087
+      spriteID: 9fcc70447cd9c1f60800000000000000
+      internalID: 8006447716723313913
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CaveInicial_1
+      name: TileSet_Terra_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 582fe5f3c89ff924798586288ec1d621
+      internalID: -246050418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSet_Terra_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b507d6eeee5641048a5d7233c0efd2f7
+      internalID: -523499875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSet_Terra_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bb68957c61785f4c80528e632d83313
+      internalID: -369257789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSet_Terra_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcb29dc898d17a148b80663774d66dc7
+      internalID: 1102014005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSet_Terra_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a80b876db7de9a4dbc0d536225c7fc4
+      internalID: 1997032588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSet_Terra_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1aa406e6be2da9243994a20762cba9ff
+      internalID: 1984702687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSet_Terra_7
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 140
-        height: 960
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +347,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb366681ce70955429ee45a714c03693
-      internalID: 2002920017
+      spriteID: 677c8e66ff1930c41b713185b12fec03
+      internalID: -1653159657
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CaveInicial_2
+      name: TileSet_Terra_8
       rect:
         serializedVersion: 2
-        x: 140
+        x: 32
         y: 0
-        width: 140
-        height: 960
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,42 +369,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 729c4c6df8ab18c45a688f9dccfded2a
-      internalID: -1816104575
+      spriteID: 2830f110a1646df4b91a75e5e08d0b6c
+      internalID: -1744678191
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CaveInicial_3
+      name: TileSet_Terra_9
       rect:
         serializedVersion: 2
-        x: 280
-        y: 135
-        width: 140
-        height: 825
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ca84d068cd4a4774d9524c02506cf33e
-      internalID: -1104008484
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tileset_CaveInicial_4
-      rect:
-        serializedVersion: 2
-        x: 560
+        x: 64
         y: 0
-        width: 140
-        height: 960
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,20 +391,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 63276c70659edbc45b74e74ce36d8c0c
-      internalID: -8385561
+      spriteID: ce2ced19fbef90e46acaaf96d251272a
+      internalID: 956813792
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CaveInicial_5
+      name: TileSet_Terra_10
       rect:
         serializedVersion: 2
-        x: 420
+        x: 96
         y: 0
-        width: 140
-        height: 960
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,20 +413,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7e31d69a4e6dbcd4d84b768f094879b3
-      internalID: -2034419370
+      spriteID: 9cac8ad7d48a1ea4791c62393f808f89
+      internalID: -2000106576
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CaveInicial_6
+      name: TileSet_Terra_11
       rect:
         serializedVersion: 2
-        x: 700
+        x: 128
         y: 0
-        width: 140
-        height: 960
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -247,20 +435,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2303f2d84f4a70d459105afeb919b9df
-      internalID: 810187852
+      spriteID: d626d49c8fb2f474ba13e51e06013e13
+      internalID: -372732290
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CaveInicial_7
+      name: TileSet_Terra_12
       rect:
         serializedVersion: 2
-        x: 839
+        x: 160
         y: 0
-        width: 140
-        height: 960
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -269,20 +457,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 47c4035a6f1ef8e41898847a7ca69bbc
-      internalID: -1759832280
+      spriteID: 74d08c907c96da94d9d1689b57f1af71
+      internalID: 94904072
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CaveInicial_8
+      name: TileSet_Terra_13
       rect:
         serializedVersion: 2
-        x: 980
+        x: 192
         y: 0
-        width: 140
-        height: 960
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -291,162 +479,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 523453e194738734f80b5d92fab4a141
-      internalID: 1460772340
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tileset_CaveInicial_9
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 820
-        width: 1260
-        height: 140
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8885f6f50e724514fbd3973e471da35d
-      internalID: -1641184225
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tileset_CaveInicial_10
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 680
-        width: 1260
-        height: 140
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f749d384caeb8174e98f3dbba6845581
-      internalID: -434513277
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tileset_CaveInicial_11
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 540
-        width: 1260
-        height: 140
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dd65f6236ddb9c541bee0d145a1b14d2
-      internalID: 803263695
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tileset_CaveInicial_12
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 400
-        width: 1260
-        height: 140
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d2f292ff364284f4e800d7147991842e
-      internalID: -552529237
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tileset_CaveInicial_13
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 260
-        width: 1260
-        height: 140
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3bcdaf2287096c847a856a53b2c94777
-      internalID: 1664281887
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tileset_CaveInicial_14
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 120
-        width: 1260
-        height: 140
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6d05ec6e2f6c8e741aa210fa046f2495
-      internalID: -1772033991
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tileset_CaveInicial_15
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1260
-        height: 135
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 579e46d02b1fe9a46b218d9af9d8d196
-      internalID: -135153022
+      spriteID: 912d508964fdd38498e9c287b0ce0609
+      internalID: 985641437
       vertices: []
       indices: 
       edges: []
@@ -455,7 +489,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e48d15e3c8c69d7469959c1ccc154d7b
+    spriteID: 9e6184f4d5b9eab4b93d7cf2a6fc03b6
     internalID: 0
     vertices: []
     indices: 
@@ -463,24 +497,24 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Tileset_CaveInicial_0: -6731752929807783087
-      Tileset_CaveInicial_1: 2002920017
-      Tileset_CaveInicial_10: -434513277
-      Tileset_CaveInicial_11: 803263695
-      Tileset_CaveInicial_12: -552529237
-      Tileset_CaveInicial_13: 1664281887
-      Tileset_CaveInicial_14: -1772033991
-      Tileset_CaveInicial_15: -135153022
-      Tileset_CaveInicial_2: -1816104575
-      Tileset_CaveInicial_3: -1104008484
-      Tileset_CaveInicial_4: -8385561
-      Tileset_CaveInicial_5: -2034419370
-      Tileset_CaveInicial_6: 810187852
-      Tileset_CaveInicial_7: -1759832280
-      Tileset_CaveInicial_8: 1460772340
-      Tileset_CaveInicial_9: -1641184225
+      TileSet_Terra_0: 8006447716723313913
+      TileSet_Terra_1: -246050418
+      TileSet_Terra_10: -2000106576
+      TileSet_Terra_11: -372732290
+      TileSet_Terra_12: 94904072
+      TileSet_Terra_13: 985641437
+      TileSet_Terra_2: -523499875
+      TileSet_Terra_3: -369257789
+      TileSet_Terra_4: 1102014005
+      TileSet_Terra_5: 1997032588
+      TileSet_Terra_6: 1984702687
+      TileSet_Terra_7: -1653159657
+      TileSet_Terra_8: -1744678191
+      TileSet_Terra_9: 956813792
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
