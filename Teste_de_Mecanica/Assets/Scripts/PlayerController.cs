@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject attackRight;
 
     private Rigidbody2D rb;
-    private Animator anim;
+
+    // Precisa ser acessível pelo HealthSystem
+    public Animator anim;
 
     private Vector2 movimento;
 
@@ -114,7 +116,6 @@ public class PlayerController : MonoBehaviour
 
         movimento = Vector2.zero;
 
-        // Descobre a direção que o jogador está olhando
         float x = anim.GetFloat("LastMoveX");
         float y = anim.GetFloat("LastMoveY");
 
@@ -122,8 +123,6 @@ public class PlayerController : MonoBehaviour
 
         if (Mathf.Abs(x) > Mathf.Abs(y))
         {
-            // Horizontal
-
             if (x < 0)
             {
                 direcaoAtaque = 2; // Esquerda
@@ -135,8 +134,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // Vertical
-
             if (y < 0)
             {
                 direcaoAtaque = 0; // Baixo
@@ -216,5 +213,21 @@ public class PlayerController : MonoBehaviour
         DesativarTodasHitboxes();
 
         atacando = false;
+    }
+
+    // =========================================================
+    // MORTE
+    // =========================================================
+
+    public void PararJogador()
+    {
+        movimento = Vector2.zero;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        DesativarTodasHitboxes();
     }
 }

@@ -1,3 +1,23 @@
+using UnityEngine;
+
+public class TriggerDamage : MonoBehaviour
+{
+    public HealthSystem heart;
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            HealthSystem health = collision.gameObject.GetComponent<HealthSystem>();
+
+            if (health != null)
+            {
+                health.ReceberDano(1);
+            }
+        }
+    }
+}
+/*
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,3 +34,4 @@ public class TriggerDamage : MonoBehaviour
         }
     }
 }
+*/
