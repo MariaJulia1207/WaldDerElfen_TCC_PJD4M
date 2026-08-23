@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
-    private PlayerController player;
-    private SpriteRenderer sprite;
-
     [Header("Vida")]
     public bool isDead;
     public int vida;
@@ -17,54 +14,38 @@ public class HealthSystem : MonoBehaviour
     public Sprite cheio;
     public Sprite vazio;
 
-    [Header("Flash de Dano")]
-    [SerializeField] private float tempoFlash = 0.15f;
+    [Header("Visual do Player")]
+    [SerializeField] private SpriteRenderer sprite;
 
-    [Header("Morte")]
-    [SerializeField] private float tempoAnimacaoMorte = 1.0f;
-
-    [Header("Efeito Branco")]
-    [SerializeField] private Image efeitoBranco;
-    [SerializeField] private float tempoEfeitoBranco = 0.5f;
-
+    private PlayerController player;
     private Color corOriginal;
 
     private void Start()
     {
         player = GetComponent<PlayerController>();
-        sprite = GetComponent<SpriteRenderer>();
+
+        if (sprite == null)
+        {
+            sprite = GetComponent<SpriteRenderer>();
+        }
 
         if (sprite != null)
         {
             corOriginal = sprite.color;
-        }
-
-        isDead = false;
-
-        // Garante que o efeito branco começa invisível
-        if (efeitoBranco != null)
-        {
-            Color cor = efeitoBranco.color;
-            cor.a = 0f;
-            efeitoBranco.color = cor;
         }
     }
 
     private void Update()
     {
         HealthLogic();
-
-        if (vida <= 0 && !isDead)
-        {
-            DeadState();
-        }
+        DeadState();
     }
 
     // =========================================================
     // VIDA / HUD
     // =========================================================
 
-    private void HealthLogic()
+    void HealthLogic()
     {
         if (vida > vidaMaxima)
         {
@@ -110,25 +91,20 @@ public class HealthSystem : MonoBehaviour
         }
 
         StartCoroutine(FlashVermelho());
-
-        if (vida <= 0)
-        {
-            DeadState();
-        }
     }
 
     // =========================================================
     // FLASH VERMELHO
     // =========================================================
 
-    private IEnumerator FlashVermelho()
+    IEnumerator FlashVermelho()
     {
         if (sprite == null)
             yield break;
 
         sprite.color = Color.red;
 
-        yield return new WaitForSeconds(tempoFlash);
+        yield return new WaitForSeconds(0.15f);
 
         sprite.color = corOriginal;
     }
@@ -139,82 +115,50 @@ public class HealthSystem : MonoBehaviour
 
     private void DeadState()
     {
-        if (isDead)
-            return;
-
-        isDead = true;
-
-        // Para o jogador
-        if (player != null)
+        if (vida <= 0 && !isDead)
         {
-            player.PararJogador();
-            player.enabled = false;
+            isDead = true;
+
+            // Garante que a animação de morte
+            // comece com a cor normal
+            if (sprite != null)
+            {
+                sprite.color = corOriginal;
+            }
+
+            // Para o PlayerController
+            if (player != null)
+            {
+                player.enabled = false;
+            }
+
+            // Para o Rigidbody
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+
+            // Inicia animação de morte
+            if (player != null && player.Anim != null)
+            {
+                player.Anim.SetBool("IsDead", true);
+            }
         }
-
-        // Ativa animação de morte
-        if (player != null && player.anim != null)
-        {
-            player.anim.SetBool("IsDead", true);
-        }
-
-        // Desliga colisão
-        Collider2D collider = GetComponent<Collider2D>();
-
-        if (collider != null)
-        {
-            collider.enabled = false;
-        }
-
-        StartCoroutine(SequenciaMorte());
     }
 
     // =========================================================
-    // SEQUÊNCIA DA MORTE
+    // DESTRUIR PLAYER
     // =========================================================
 
-    private IEnumerator SequenciaMorte()
+    public void DestroyGameObject()
     {
-        // Espera a animação de morte
-        yield return new WaitForSeconds(tempoAnimacaoMorte);
-
-        // Faz o cenário/tela ficar branco
-        yield return StartCoroutine(EfeitoBranco());
-
-        // Desaparece
         Destroy(gameObject);
     }
-
-    // =========================================================
-    // EFEITO BRANCO
-    // =========================================================
-
-    private IEnumerator EfeitoBranco()
-    {
-        if (efeitoBranco == null)
-            yield break;
-
-        float tempo = 0f;
-
-        Color cor = efeitoBranco.color;
-        cor.a = 0f;
-        efeitoBranco.color = cor;
-
-        while (tempo < tempoEfeitoBranco)
-        {
-            tempo += Time.deltaTime;
-
-            float porcentagem = tempo / tempoEfeitoBranco;
-
-            cor.a = Mathf.Lerp(0f, 1f, porcentagem);
-            efeitoBranco.color = cor;
-
-            yield return null;
-        }
-
-        cor.a = 1f;
-        efeitoBranco.color = cor;
-    }
 }
+
+
 
 /*
 using System.Collections;

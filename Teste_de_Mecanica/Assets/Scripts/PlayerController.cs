@@ -13,9 +13,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject attackRight;
 
     private Rigidbody2D rb;
+    private Animator anim;
 
-    // Precisa ser acessível pelo HealthSystem
-    public Animator anim;
+    public Animator Anim => anim;
 
     private Vector2 movimento;
 
@@ -215,19 +215,4 @@ public class PlayerController : MonoBehaviour
         atacando = false;
     }
 
-    // =========================================================
-    // MORTE
-    // =========================================================
-
-    public void PararJogador()
-    {
-        movimento = Vector2.zero;
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
-        }
-
-        DesativarTodasHitboxes();
-    }
 }
