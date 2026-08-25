@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
 
     [Header("Nome da Cena")]
     public string gameplayScene = "Level1";
+    public LevelLoader levelLoader;
 
     void Start()
     {
@@ -25,7 +26,7 @@ public class MainMenu : MonoBehaviour
     // =========================
     public void Jogar()
     {
-        SceneManager.LoadScene(gameplayScene);
+        levelLoader.Transition(gameplayScene);
     }
 
     // =========================
