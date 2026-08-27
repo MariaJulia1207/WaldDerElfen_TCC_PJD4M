@@ -14,7 +14,6 @@ public class Pause : MonoBehaviour
 
     private void Start()
     {
-        // Garante que o jogo comece despausado
         isPaused = false;
 
         pausePanel.SetActive(false);
@@ -24,7 +23,6 @@ public class Pause : MonoBehaviour
 
     private void Update()
     {
-        // ESC abre/fecha o Pause
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             PauseScreen();
@@ -79,19 +77,21 @@ public class Pause : MonoBehaviour
 
     public void VoltarAoMenu()
     {
-        // IMPORTANTE:
-        // O LevelLoader usa WaitForSeconds,
-        // então precisamos descongelar o tempo primeiro.
-
         Time.timeScale = 1f;
 
         isPaused = false;
 
-        if (pausePanel != null)
-        {
-            pausePanel.SetActive(false);
-        }
+        pausePanel.SetActive(false);
 
         levelLoader.Transition(cena);
+    }
+
+    // =========================================================
+    // GARANTIA
+    // =========================================================
+
+    private void OnDestroy()
+    {
+        Time.timeScale = 1f;
     }
 }
