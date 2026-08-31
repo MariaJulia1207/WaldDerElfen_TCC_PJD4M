@@ -160,26 +160,41 @@ public class PlayerController : MonoBehaviour
         float x = anim.GetFloat("LastMoveX");
         float y = anim.GetFloat("LastMoveY");
 
+        GameObject hitboxSelecionada = null;
+
         if (Mathf.Abs(x) > Mathf.Abs(y))
         {
             if (x < 0)
             {
-                attackLeft.SetActive(true);
+                hitboxSelecionada = attackLeft;
             }
             else
             {
-                attackRight.SetActive(true);
+                hitboxSelecionada = attackRight;
             }
         }
         else
         {
             if (y < 0)
             {
-                attackDown.SetActive(true);
+                hitboxSelecionada = attackDown;
             }
             else
             {
-                attackUp.SetActive(true);
+                hitboxSelecionada = attackUp;
+            }
+        }
+
+        if (hitboxSelecionada != null)
+        {
+            hitboxSelecionada.SetActive(true);
+
+            AttackHitbox hitbox =
+                hitboxSelecionada.GetComponent<AttackHitbox>();
+
+            if (hitbox != null)
+            {
+                hitbox.VerificarAcerto();
             }
         }
     }
