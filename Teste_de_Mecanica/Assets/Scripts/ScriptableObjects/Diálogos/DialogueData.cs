@@ -2,7 +2,7 @@ using UnityEngine;
 
 [CreateAssetMenu(
     fileName = "New Dialogue",
-    menuName = "Dialogue/Dialogue Data")]
+    menuName = "Scriptable Objects/New Dialogue Data")]
 public class DialogueData : ScriptableObject
 {
     [Header("Executar apenas uma vez")]
