@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -8,11 +7,6 @@ public class HealthSystem : MonoBehaviour
     public bool isDead;
     public int vida;
     public int vidaMaxima;
-
-    [Header("HUD")]
-    public Image[] coracao;
-    public Sprite cheio;
-    public Sprite vazio;
 
     [Header("Visual do Player")]
     [SerializeField] private SpriteRenderer sprite;
@@ -37,41 +31,7 @@ public class HealthSystem : MonoBehaviour
 
     private void Update()
     {
-        HealthLogic();
         DeadState();
-    }
-
-    // =========================================================
-    // VIDA / HUD
-    // =========================================================
-
-    void HealthLogic()
-    {
-        if (vida > vidaMaxima)
-        {
-            vida = vidaMaxima;
-        }
-
-        for (int i = 0; i < coracao.Length; i++)
-        {
-            if (i < vida)
-            {
-                coracao[i].sprite = cheio;
-            }
-            else
-            {
-                coracao[i].sprite = vazio;
-            }
-
-            if (i < vidaMaxima)
-            {
-                coracao[i].enabled = true;
-            }
-            else
-            {
-                coracao[i].enabled = false;
-            }
-        }
     }
 
     // =========================================================
@@ -94,10 +54,10 @@ public class HealthSystem : MonoBehaviour
     }
 
     // =========================================================
-    // FLASH VERMELHO
+    // FLASH
     // =========================================================
 
-    IEnumerator FlashVermelho()
+    private IEnumerator FlashVermelho()
     {
         if (sprite == null)
             yield break;
@@ -106,7 +66,10 @@ public class HealthSystem : MonoBehaviour
 
         yield return new WaitForSeconds(0.15f);
 
-        sprite.color = corOriginal;
+        if (!isDead)
+        {
+            sprite.color = corOriginal;
+        }
     }
 
     // =========================================================
@@ -119,20 +82,11 @@ public class HealthSystem : MonoBehaviour
         {
             isDead = true;
 
-            // Garante que a animação de morte
-            // comece com a cor normal
-            if (sprite != null)
-            {
-                sprite.color = corOriginal;
-            }
-
-            // Para o PlayerController
             if (player != null)
             {
                 player.enabled = false;
             }
 
-            // Para o Rigidbody
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
             if (rb != null)
@@ -140,108 +94,35 @@ public class HealthSystem : MonoBehaviour
                 rb.linearVelocity = Vector2.zero;
             }
 
-            // Inicia animação de morte
             if (player != null && player.Anim != null)
             {
                 player.Anim.SetBool("IsDead", true);
             }
+
+            StartCoroutine(EsperarMorte());
         }
     }
 
-    // =========================================================
-    // DESTRUIR PLAYER
-    // =========================================================
-
-    public void DestroyGameObject()
+    private IEnumerator EsperarMorte()
     {
+        yield return null;
+
+        Animator animator = player.Anim;
+
+        while (true)
+        {
+            AnimatorStateInfo estado =
+                animator.GetCurrentAnimatorStateInfo(0);
+
+            if (estado.IsName("Death") &&
+                estado.normalizedTime >= 1f)
+            {
+                break;
+            }
+
+            yield return null;
+        }
+
         Destroy(gameObject);
     }
 }
-
-
-
-/*
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-public class HealthSystem : MonoBehaviour
-{
-    PlayerController player;
-    public bool isDead;
-    public int vida;
-    public int vidaMaxima;
-
-    public Image[] coracao;
-    public Sprite cheio;
-    public Sprite vazio;
-
-    private SpriteRenderer sprite;
-    private Color corOriginal;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        player = GetComponent<PlayerController>();
-        private SpriteRenderer sprite;
-        private Color corOriginal;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        HeslthLogic();
-        DeadState();
-    }
-
-    void HeslthLogic()
-    {
-        if(vida > vidaMaxima)
-        {
-            vida = vidaMaxima;
-        }
-
-        for (int i = 0; i < coracao.Length; i++)
-        {
-            if(i < vida)
-            {
-                coracao[i].sprite = cheio;
-            }
-            else
-            {
-                coracao[i].sprite = vazio;
-            }
-
-            if (i < vidaMaxima)
-            {
-                coracao[i].enabled = true;
-            }
-            else
-            {
-                coracao[i].enabled = false;
-            }
-        }
-    }
-
-    IEnumerator FlashVermelho()
-    {
-        sprite.color = Color.red;
-
-        yield return new WaitForSeconds(0.15f);
-
-        sprite.color = corOriginal;
-    }
-
-    void DeadState()
-    {
-        isDead = true;
-        player.anim.SetBool("IsDead", isDead);
-        if(vida <= 0)
-        {
-            player.enabled = false;
-            Destroy(gameObject, 1.0f);
-        }
-    }
-}
-*/
