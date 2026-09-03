@@ -14,6 +14,8 @@ public class HealthSystem : MonoBehaviour
     private PlayerController player;
     private Color corOriginal;
 
+    private Coroutine flashCoroutine;
+
     private void Start()
     {
         player = GetComponent<PlayerController>();
@@ -40,21 +42,27 @@ public class HealthSystem : MonoBehaviour
 
     public void ReceberDano(int dano)
     {
+        // Se já estiver morto, não recebe mais dano
         if (isDead)
             return;
 
         vida -= dano;
 
+        // Evita vida negativa
         if (vida < 0)
         {
             vida = 0;
         }
 
-        StartCoroutine(FlashVermelho());
+        // Flash vermelho
+        if (vida > 0)
+        {
+            flashCoroutine = StartCoroutine(FlashVermelho());
+        }
     }
 
     // =========================================================
-    // FLASH
+    // FLASH VERMELHO
     // =========================================================
 
     private IEnumerator FlashVermelho()
@@ -66,6 +74,7 @@ public class HealthSystem : MonoBehaviour
 
         yield return new WaitForSeconds(0.15f);
 
+        // Só restaura se o jogador ainda estiver vivo
         if (!isDead)
         {
             sprite.color = corOriginal;
@@ -82,11 +91,27 @@ public class HealthSystem : MonoBehaviour
         {
             isDead = true;
 
+            // Cancela qualquer flash que ainda esteja acontecendo
+            if (flashCoroutine != null)
+            {
+                StopCoroutine(flashCoroutine);
+                flashCoroutine = null;
+            }
+
+            // IMPORTANTE:
+            // Remove imediatamente o vermelho antes da animação Death
+            if (sprite != null)
+            {
+                sprite.color = corOriginal;
+            }
+
+            // Para o PlayerController
             if (player != null)
             {
                 player.enabled = false;
             }
 
+            // Para o Rigidbody
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
             if (rb != null)
@@ -94,35 +119,20 @@ public class HealthSystem : MonoBehaviour
                 rb.linearVelocity = Vector2.zero;
             }
 
+            // Inicia animação de morte
             if (player != null && player.Anim != null)
             {
                 player.Anim.SetBool("IsDead", true);
             }
-
-            StartCoroutine(EsperarMorte());
         }
     }
 
-    private IEnumerator EsperarMorte()
+    // =========================================================
+    // DESTROY - ANIMATION EVENT
+    // =========================================================
+
+    public void DestroyGameObject()
     {
-        yield return null;
-
-        Animator animator = player.Anim;
-
-        while (true)
-        {
-            AnimatorStateInfo estado =
-                animator.GetCurrentAnimatorStateInfo(0);
-
-            if (estado.IsName("Death") &&
-                estado.normalizedTime >= 1f)
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
         Destroy(gameObject);
     }
 }

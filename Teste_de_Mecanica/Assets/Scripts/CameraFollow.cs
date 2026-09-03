@@ -1,32 +1,31 @@
 using UnityEngine;
+using Unity.Cinemachine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollowPlayer : MonoBehaviour
 {
-    [Header("Alvo")]
-    public Transform player;
+    private CinemachineCamera cameraCinemachine;
 
-    [Header("Configurações")]
-    public float velocidade = 5f;
-
-    [Header("Offset")]
-    public Vector3 offset;
-
-    void LateUpdate()
+    private void Awake()
     {
+        cameraCinemachine = GetComponent<CinemachineCamera>();
+    }
+
+    private void Update()
+    {
+        if (cameraCinemachine.Follow == null)
+        {
+            EncontrarPlayer();
+        }
+    }
+
+    private void EncontrarPlayer()
+    {
+        GameObject player =
+            GameObject.FindGameObjectWithTag("Player");
+
         if (player == null)
             return;
 
-        // Posição desejada
-        Vector3 posicaoDesejada = player.position + offset;
-
-        // Mantém câmera no eixo Z
-        posicaoDesejada.z = -10f;
-
-        // Movimento suave
-        transform.position = Vector3.Lerp(
-            transform.position,
-            posicaoDesejada,
-            velocidade * Time.deltaTime
-        );
+        cameraCinemachine.Follow = player.transform;
     }
 }

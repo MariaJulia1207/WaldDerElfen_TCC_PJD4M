@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 0
   m_Name: AttackRIGHT
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -106,7 +106,7 @@ GameObject:
   m_Layer: 0
   m_Name: AttackUP
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -198,7 +198,7 @@ GameObject:
   m_Layer: 0
   m_Name: AttackLEFT
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -495,14 +495,6 @@ MonoBehaviour:
   isDead: 0
   vida: 5
   vidaMaxima: 5
-  coracao:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  cheio: {fileID: 7353259036936998148, guid: 276f07df90d567b4cac7e77ed820aeb9, type: 3}
-  vazio: {fileID: 1547192499, guid: 276f07df90d567b4cac7e77ed820aeb9, type: 3}
   sprite: {fileID: 4917694964323268548}
 --- !u!1 &8054941059628774820
 GameObject:
@@ -518,7 +510,7 @@ GameObject:
   m_Layer: 0
   m_Name: AttackDOWN
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
