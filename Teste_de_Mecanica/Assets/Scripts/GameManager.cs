@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +9,19 @@ public class GameManager : MonoBehaviour
     [Header("GUI")]
     [SerializeField] private string nomeCenaGUI = "GUI";
 
-    private bool guiCarregada = false;
+    [Header("Cenas de Gameplay")]
+    [SerializeField] private List<string> cenasGameplay = new List<string>
+    {
+        "Level1",
+        "Level2"
+    };
+
+    [Header("Cenas sem GUI")]
+    [SerializeField] private List<string> cenasSemGUI = new List<string>
+    {
+        "Splash",
+        "Menu"
+    };
 
     public enum GameState
     {
@@ -19,9 +32,12 @@ public class GameManager : MonoBehaviour
 
     public GameState EstadoAtual { get; private set; }
 
+    // =========================================================
+    // AWAKE
+    // =========================================================
+
     private void Awake()
     {
-        // Evita GameManagers duplicados
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -32,9 +48,12 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        // Detecta quando uma nova cena terminou de carregar
         SceneManager.sceneLoaded += AoCarregarCena;
     }
+
+    // =========================================================
+    // START
+    // =========================================================
 
     private void Start()
     {
@@ -42,36 +61,94 @@ public class GameManager : MonoBehaviour
 
         DefinirEstado(cenaAtual);
 
-        // Se começou diretamente no _Boot,
-        // vai para a Splash
+        // Se começou diretamente no Boot,
+        // vai para Splash
         if (cenaAtual == "_Boot")
         {
             ForceSceneChange("Splash");
         }
-    }
-
-    private void OnDestroy()
-    {
-        if (Instance == this)
+        else
         {
-            SceneManager.sceneLoaded -= AoCarregarCena;
+            AtualizarGUI(cenaAtual);
         }
     }
 
     // =========================================================
-    // CENA CARREGADA
+    // QUANDO UMA CENA TERMINA DE CARREGAR
     // =========================================================
 
     private void AoCarregarCena(Scene cena, LoadSceneMode modo)
     {
-        DefinirEstado(cena.name);
+        string nomeCena = cena.name;
 
-        // Quando entrar em um nível,
-        // garante que a GUI esteja carregada
-        if (cena.name == "Level1" || cena.name == "Level2")
+        Debug.Log("GameManager: cena carregada = " + nomeCena);
+
+        DefinirEstado(nomeCena);
+
+        AtualizarGUI(nomeCena);
+    }
+
+    // =========================================================
+    // CONTROLE DA GUI
+    // =========================================================
+
+    private void AtualizarGUI(string nomeCena)
+    {
+        // -----------------------------------------
+        // CENA DE GAMEPLAY
+        // -----------------------------------------
+
+        if (cenasGameplay.Contains(nomeCena))
         {
             CarregarGUI();
+            return;
         }
+
+        // -----------------------------------------
+        // OUTRAS CENAS
+        // -----------------------------------------
+
+        if (cenasSemGUI.Contains(nomeCena))
+        {
+            DescarregarGUI();
+        }
+    }
+
+    // =========================================================
+    // CARREGAR GUI
+    // =========================================================
+
+    private void CarregarGUI()
+    {
+        Scene guiScene = SceneManager.GetSceneByName(nomeCenaGUI);
+
+        // Se já estiver carregada, não faz nada
+        if (guiScene.isLoaded)
+        {
+            return;
+        }
+
+        Debug.Log("GameManager: carregando GUI.");
+
+        SceneManager.LoadScene(nomeCenaGUI, LoadSceneMode.Additive);
+    }
+
+    // =========================================================
+    // DESCARREGAR GUI
+    // =========================================================
+
+    private void DescarregarGUI()
+    {
+        Scene guiScene = SceneManager.GetSceneByName(nomeCenaGUI);
+
+        if (!guiScene.isLoaded)
+        {
+            return;
+        }
+
+        Debug.Log("GameManager: descarregando GUI.");
+
+        SceneManager.UnloadSceneAsync(nomeCenaGUI);
     }
 
     // =========================================================
@@ -89,12 +166,13 @@ public class GameManager : MonoBehaviour
     }
 
     // =========================================================
-    // ESTADO
+    // ESTADO DO JOGO
     // =========================================================
 
     private void DefinirEstado(string nomeCena)
     {
-        if (nomeCena == "_Boot" || nomeCena == "Splash")
+        if (nomeCena == "_Boot" ||
+            nomeCena == "Splash")
         {
             EstadoAtual = GameState.Iniciando;
         }
@@ -102,23 +180,21 @@ public class GameManager : MonoBehaviour
         {
             EstadoAtual = GameState.MenuPrincipal;
         }
-        else
+        else if (cenasGameplay.Contains(nomeCena))
         {
             EstadoAtual = GameState.Gameplay;
         }
     }
 
     // =========================================================
-    // GUI
+    // DESTROY
     // =========================================================
 
-    private void CarregarGUI()
+    private void OnDestroy()
     {
-        if (guiCarregada)
-            return;
-
-        SceneManager.LoadScene(nomeCenaGUI, LoadSceneMode.Additive);
-
-        guiCarregada = true;
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= AoCarregarCena;
+        }
     }
 }
