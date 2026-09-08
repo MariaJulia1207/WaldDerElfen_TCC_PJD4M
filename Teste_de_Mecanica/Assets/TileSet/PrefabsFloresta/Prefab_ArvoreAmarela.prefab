@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4556447042176049746}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.62, y: 5.43, z: 0}
+  m_LocalPosition: {x: 10.301609, y: 7.289977, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -154,7 +154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1582332050703989223}
-  - component: {fileID: 4670442774908145028}
+  - component: {fileID: 7481965369479846770}
   m_Layer: 0
   m_Name: colider
   m_TagString: Untagged
@@ -177,8 +177,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1122169736306552446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &4670442774908145028
-CapsuleCollider2D:
+--- !u!61 &7481965369479846770
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -211,6 +211,15 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.009931183, y: -0.030326653}
-  m_Size: {x: 0.4602768, y: 1.0606533}
-  m_Direction: 0
+  m_Offset: {x: -0.017947912, y: -0.21793987}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.0153842, y: 1.4153671}
+  m_EdgeRadius: 0
