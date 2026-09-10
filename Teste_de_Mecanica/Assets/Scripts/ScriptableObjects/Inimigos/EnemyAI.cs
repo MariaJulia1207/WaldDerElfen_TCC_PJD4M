@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    [Header("Dados")]
-    [SerializeField] private EnemyData enemyData;
+    [Header("Movimento")]
+    [SerializeField] private float velocidade = 2f;
 
-    [Header("Detecção")]
-    [SerializeField] private EnemyDetector detectionArea;
-
+    private Transform player;
     private Rigidbody2D rb;
+
+    private bool perseguindo;
 
     private void Start()
     {
@@ -17,23 +17,28 @@ public class EnemyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (detectionArea == null)
-            return;
-
-        if (detectionArea.detectedObjs.Count == 0)
+        if (!perseguindo || player == null)
         {
             rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        Collider2D target = detectionArea.detectedObjs[0];
+        Vector2 direcao = ((Vector2)player.position - rb.position).normalized;
 
-        if (target == null)
-            return;
+        rb.linearVelocity = direcao * velocidade;
+    }
 
-        Vector2 direcao =
-            (target.transform.position - transform.position).normalized;
+    public void ComecarPerseguicao(Transform jogador)
+    {
+        player = jogador;
+        perseguindo = true;
+    }
 
-        rb.linearVelocity = direcao * enemyData.velocidade;
+    public void PararPerseguicao()
+    {
+        perseguindo = false;
+        player = null;
+
+        rb.linearVelocity = Vector2.zero;
     }
 }

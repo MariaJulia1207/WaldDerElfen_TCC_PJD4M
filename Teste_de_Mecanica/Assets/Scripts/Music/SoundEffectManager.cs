@@ -1,19 +1,19 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class SoundEffectManager : MonoBehaviour
 {
-    private static SoundEffectManager Instance;
-    private static SoundEffectLibrary soundEffectLibrary;
+    public static SoundEffectManager Instance { get; private set; }
+
+    [SerializeField] private SoundEffectLibrary soundEffectLibrary;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private Slider sfxSlider;
+
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
-            audioSource = GetComponent<SoundEffectLibrary>();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -21,24 +21,31 @@ public class SoundEffectManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public static void Play(string soundName)
+
+    private void Start()
     {
-        AudioClip audioClip = soundEffectLibrary.GetRandomClip(soundName);
-        if(audioClip != null)
+        if (sfxSlider != null)
         {
-            audioSource.PlayOneShot(audioClip);
+            sfxSlider.onValueChanged.AddListener(SetVolume);
+            SetVolume(sfxSlider.value);
         }
     }
-    void Start()
+
+    public static void Play(string soundName)
     {
-        sfxSlider.onValueChanged.AddListener(delegate { OnValueChanged(); } );
+        if (Instance == null)
+            return;
+
+        AudioClip clip = Instance.soundEffectLibrary.GetRandomClip(soundName);
+
+        if (clip != null)
+        {
+            Instance.audioSource.PlayOneShot(clip);
+        }
     }
-    public static void SetVolume(float volume)
+
+    public void SetVolume(float volume)
     {
         audioSource.volume = volume;
-    }
-    public static void OnValueChanged()
-    {
-        SetVolume(sfxSlider.value);
     }
 }

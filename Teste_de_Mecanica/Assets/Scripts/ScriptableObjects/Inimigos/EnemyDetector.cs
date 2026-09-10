@@ -1,28 +1,27 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDetector : MonoBehaviour
+public class EnemyVision : MonoBehaviour
 {
-    [SerializeField] private string _tagTargetDetection = "Player";
+    private EnemyAI enemyAI;
 
-    public List<Collider2D> detectedObjs = new List<Collider2D>();
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Start()
     {
-        if (collision.CompareTag(_tagTargetDetection))
+        enemyAI = GetComponentInParent<EnemyAI>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
         {
-            if (!detectedObjs.Contains(collision))
-            {
-                detectedObjs.Add(collision);
-            }
+            enemyAI.ComecarPerseguicao(other.transform);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (detectedObjs.Contains(collision))
+        if (other.CompareTag("Player"))
         {
-            detectedObjs.Remove(collision);
+            enemyAI.PararPerseguicao();
         }
     }
 }

@@ -1,17 +1,45 @@
+/*
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewEnemyData", menuName = "Enemies/Enemy Data")]
-public class EnemyData : ScriptableObject
+public class Enemy : MonoBehaviour
 {
-    [Header("Identificação")]
-    public string enemyName;
+    // Variáveis do inimigo
+    [Header("Componentes")]
+    public EnemyObject enemyData;
+    public GameObject player;
+    public float distanciaAtaque = 1.5f;
+    // Variáveis de ataque em top-down
+    [Header("TriggerDamage")] 
+    [SerializeField] private TriggerDamage triggerDamage;
+    [SerializeField] private GameObject hitboxAtaqueUP;
+    [SerializeField] private GameObject hitboxAtaqueDOWN;
+    [SerializeField] private GameObject hitboxAtaqueLEFT;
+    [SerializeField] private GameObject hitboxAtaqueRIGHT;
+    // Feedback de dano
+    [Header("Feedback")]
+    [SerializeField] private ControladorFeedBackDano feedbackDano;
+    
+    public void ReceberDano(int dano)
+    {
+        enemyData.vida -= dano;
 
-    [Header("Vida")]
-    public int vidaMaxima = 3;
+        Debug.Log(enemyData.enemyName + " recebeu " + dano + " de dano.");
 
-    [Header("Movimento")]
-    public float velocidade = 3.5f;
+        // Feedback visual
+        if (feedbackDano != null)
+        {
+            feedbackDano.ExecutarFeedback();
+        }
 
-    [Header("Ataque")]
-    public int danoContato = 1;
+        if (enemyData.vida <= 0)
+        {
+            Morrer();
+        }
+    }
+    
+    public void Morrer()
+    {
+        Destroy(gameObject);
+    }
 }
+*/

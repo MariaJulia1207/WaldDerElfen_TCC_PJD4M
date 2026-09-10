@@ -21,6 +21,12 @@ public class PlayerController : MonoBehaviour
 
     private bool atacando;
 
+    // =========================================================
+    // CONTROLE DO PLAYER
+    // =========================================================
+
+    private bool controlesAtivos = true;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -31,7 +37,23 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Se estiver atacando, não pode andar
+        // =====================================================
+        // CONTROLES DESATIVADOS
+        // =====================================================
+
+        if (!controlesAtivos)
+        {
+            movimento = Vector2.zero;
+
+            anim.SetBool("IsMoving", false);
+
+            return;
+        }
+
+        // =====================================================
+        // ATAQUE
+        // =====================================================
+
         if (atacando)
         {
             movimento = Vector2.zero;
@@ -39,6 +61,10 @@ public class PlayerController : MonoBehaviour
 
             return;
         }
+
+        // =====================================================
+        // MOVIMENTO
+        // =====================================================
 
         LerMovimento();
         AtualizarAnimacao();
@@ -52,7 +78,45 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!controlesAtivos)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         rb.linearVelocity = movimento * velocidade;
+    }
+
+    // =========================================================
+    // TIMELINE - CONTROLE DO PLAYER
+    // =========================================================
+
+    public void DisableControls()
+    {
+        controlesAtivos = false;
+
+        movimento = Vector2.zero;
+
+        // Para imediatamente o Player
+        rb.linearVelocity = Vector2.zero;
+
+        // Impede que a animação de caminhada continue
+        anim.SetBool("IsMoving", false);
+
+        // Garante que nenhuma hitbox fique ativa
+        DesativarTodasHitboxes();
+
+        // Cancela estado de ataque
+        atacando = false;
+    }
+
+    public void EnableControls()
+    {
+        controlesAtivos = true;
+
+        movimento = Vector2.zero;
+
+        rb.linearVelocity = Vector2.zero;
     }
 
     // =========================================================
@@ -229,5 +293,4 @@ public class PlayerController : MonoBehaviour
 
         atacando = false;
     }
-
 }
