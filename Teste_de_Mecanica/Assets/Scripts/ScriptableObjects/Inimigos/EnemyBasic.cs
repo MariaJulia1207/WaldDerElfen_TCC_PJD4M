@@ -1,18 +1,14 @@
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyBasic : MonoBehaviour
 {
-    [Header("Dados do Inimigo")]
-    [SerializeField] private EnemyData enemyData;
+    [Header("Movimento")]
+    [SerializeField] private float velocidade = 2f;
 
     private Transform player;
     private Rigidbody2D rb;
 
     private bool perseguindo;
-    private bool atacando;
-
-    public Transform Player => player;
-    public bool Perseguindo => perseguindo;
 
     private void Start()
     {
@@ -21,12 +17,6 @@ public class EnemyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (atacando)
-        {
-            rb.linearVelocity = Vector2.zero;
-            return;
-        }
-
         if (!perseguindo || player == null)
         {
             rb.linearVelocity = Vector2.zero;
@@ -35,7 +25,7 @@ public class EnemyAI : MonoBehaviour
 
         Vector2 direcao = ((Vector2)player.position - rb.position).normalized;
 
-        rb.linearVelocity = direcao * enemyData.velocidade;
+        rb.linearVelocity = direcao * velocidade;
     }
 
     public void ComecarPerseguicao(Transform jogador)
@@ -50,10 +40,5 @@ public class EnemyAI : MonoBehaviour
         player = null;
 
         rb.linearVelocity = Vector2.zero;
-    }
-
-    public void DefinirAtacando(bool estado)
-    {
-        atacando = estado;
     }
 }

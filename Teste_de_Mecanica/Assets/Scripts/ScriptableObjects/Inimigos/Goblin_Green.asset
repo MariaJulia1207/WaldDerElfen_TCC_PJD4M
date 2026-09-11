@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21c5d26a50da56c42a1871c1bb500e9c, type: 3}
-  m_Name: Enemy 1
+  m_Script: {fileID: 11500000, guid: a6e7ee1930cf28143835487261b462bf, type: 3}
+  m_Name: Goblin_Green
   m_EditorClassIdentifier: Assembly-CSharp::EnemyObject
-  enemyName: 
-  vida: 0
-  velocidade: 0
-  ataque: 0
-  feedbackDano: {fileID: 0}
+  nome: Goblin
+  vidaMaxima: 3
+  velocidade: 3
+  dano: 1
+  distanciaAtaque: 1
+  tempoEntreAtaques: 1

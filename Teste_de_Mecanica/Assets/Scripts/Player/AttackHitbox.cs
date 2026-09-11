@@ -11,6 +11,9 @@ public class AttackHitbox : MonoBehaviour
     private readonly HashSet<Obstaculo> obstaculosAtingidos =
         new HashSet<Obstaculo>();
 
+    private readonly HashSet<EnemyTakeDamage> inimigosAtingidos =
+        new HashSet<EnemyTakeDamage>();
+
     private void Awake()
     {
         meuCollider = GetComponent<Collider2D>();
@@ -19,6 +22,7 @@ public class AttackHitbox : MonoBehaviour
     private void OnEnable()
     {
         obstaculosAtingidos.Clear();
+        inimigosAtingidos.Clear();
     }
 
     // =========================================================
@@ -64,18 +68,44 @@ public class AttackHitbox : MonoBehaviour
 
     private void CausarDano(Collider2D other)
     {
+        // -----------------------------------------------------
+        // OBSTÁCULO
+        // -----------------------------------------------------
+
         Obstaculo obstaculo =
             other.GetComponentInParent<Obstaculo>();
 
-        if (obstaculo == null)
+        if (obstaculo != null)
+        {
+            // Já recebeu dano neste ataque?
+            if (obstaculosAtingidos.Contains(obstaculo))
+                return;
+
+            obstaculosAtingidos.Add(obstaculo);
+
+            obstaculo.ReceberDano(dano);
+
             return;
+        }
 
-        // Já recebeu dano neste ataque?
-        if (obstaculosAtingidos.Contains(obstaculo))
+        // -----------------------------------------------------
+        // INIMIGO
+        // -----------------------------------------------------
+
+        EnemyTakeDamage enemy =
+            other.GetComponentInParent<EnemyTakeDamage>();
+
+        if (enemy != null)
+        {
+            // Já recebeu dano neste ataque?
+            if (inimigosAtingidos.Contains(enemy))
+                return;
+
+            inimigosAtingidos.Add(enemy);
+
+            enemy.ReceberDano(dano);
+
             return;
-
-        obstaculosAtingidos.Add(obstaculo);
-
-        obstaculo.ReceberDano(dano);
+        }
     }
 }
