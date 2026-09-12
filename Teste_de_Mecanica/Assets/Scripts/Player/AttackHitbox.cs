@@ -92,18 +92,24 @@ public class AttackHitbox : MonoBehaviour
         // INIMIGO
         // -----------------------------------------------------
 
-        EnemyTakeDamage enemy =
+        EnemyTakeDamage enemy = 
             other.GetComponentInParent<EnemyTakeDamage>();
 
         if (enemy != null)
         {
-            // Já recebeu dano neste ataque?
             if (inimigosAtingidos.Contains(enemy))
                 return;
-
             inimigosAtingidos.Add(enemy);
-
             enemy.ReceberDano(dano);
+
+            EnemyMoblin moblin = enemy.GetComponent<EnemyMoblin>();
+
+            if (moblin != null)
+            {
+                Vector2 direcaoKnockback = 
+                    (enemy.transform.position - transform.position).normalized;
+                moblin.ReceberKnockback(direcaoKnockback);
+            }
 
             return;
         }

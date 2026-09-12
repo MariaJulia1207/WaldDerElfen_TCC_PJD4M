@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 
 public class EnemyAnimator : MonoBehaviour
@@ -36,3 +37,4 @@ public class EnemyAnimator : MonoBehaviour
         anim.SetBool("IsAttacking", estado);
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NovoEnemyData", menuName = "Jogo/Enemy Data")]
@@ -17,3 +18,4 @@ public class EnemyData : ScriptableObject
     public float distanciaAtaque = 1f;
     public float tempoEntreAtaques = 1f;
 }
+*/

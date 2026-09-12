@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemyTakeDamage : MonoBehaviour
 {
-    [Header("Dados")]
-    [SerializeField] private EnemyData enemyData;
+    [Header("Vida")]
+    [SerializeField] private int vidaMaxima = 3;
 
     [Header("Feedback")]
     [SerializeField] private ControladorFeedBackDano feedbackDano;
@@ -12,14 +12,14 @@ public class EnemyTakeDamage : MonoBehaviour
 
     private void Start()
     {
-        vida = enemyData.vidaMaxima;
+        vida = vidaMaxima;
     }
 
     public void ReceberDano(int dano)
     {
         vida -= dano;
 
-        Debug.Log("Inimigo recebeu " + dano + " de dano.");
+        Debug.Log("Inimigo recebeu " + dano + " de dano. Vida restante: " + vida);
 
         if (feedbackDano != null)
         {

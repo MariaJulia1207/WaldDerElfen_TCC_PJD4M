@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
@@ -89,3 +90,4 @@ public class EnemyAttack : MonoBehaviour
         attackRight.SetActive(false);
     }
 }
+*/

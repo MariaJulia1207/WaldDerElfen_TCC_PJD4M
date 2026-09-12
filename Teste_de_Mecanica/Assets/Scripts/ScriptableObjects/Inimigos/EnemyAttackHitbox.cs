@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemyAttackHitbox : MonoBehaviour
 {
-    [Header("Dados do Inimigo")]
-    [SerializeField] private EnemyData enemyData;
+    [Header("Dano")]
+    [SerializeField] private int dano = 1;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -12,11 +12,12 @@ public class EnemyAttackHitbox : MonoBehaviour
             return;
 
         // Procura o HealthSystem no Player
-        HealthSystem healthSystem = other.GetComponent<HealthSystem>();
+        HealthSystem healthSystem =
+            other.GetComponent<HealthSystem>();
 
         if (healthSystem != null)
         {
-            healthSystem.ReceberDano(enemyData.dano);
+            healthSystem.ReceberDano(dano);
         }
     }
 }

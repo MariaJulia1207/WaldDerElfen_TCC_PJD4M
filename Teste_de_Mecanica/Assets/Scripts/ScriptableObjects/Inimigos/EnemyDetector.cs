@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 
 public class EnemyVision : MonoBehaviour
@@ -25,3 +26,4 @@ public class EnemyVision : MonoBehaviour
         }
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
@@ -57,3 +58,4 @@ public class EnemyAI : MonoBehaviour
         atacando = estado;
     }
 }
+*/
