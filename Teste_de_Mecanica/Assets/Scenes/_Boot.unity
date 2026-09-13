@@ -285,6 +285,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1046ea6d6230994b8ac0feb767d0873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  nomeCenaGUI: GUI
+  cenasGameplay:
+  - Level1
+  - Level2
+  - Level3
+  cenasSemGUI:
+  - Splash
+  - Menu
+  - Cutscene_EraUmaVez
 --- !u!4 &685745070
 Transform:
   m_ObjectHideFlags: 0

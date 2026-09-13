@@ -222,6 +222,82 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &285070341
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 285070343}
+  - component: {fileID: 285070342}
+  m_Layer: 0
+  m_Name: IntroDirector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &285070342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285070341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e7566c2ec4eeb478f248957c7ca7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IntroDirector
+  introTextWriter: {fileID: 0}
+--- !u!4 &285070343
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285070341}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4733, y: 0.85977, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &384821743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 384821744}
+  m_Layer: 0
+  m_Name: PlayableDirector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &384821744
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384821743}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4733, y: 0.85977, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &863609532
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +446,7 @@ GameObject:
   - component: {fileID: 931075035}
   - component: {fileID: 931075037}
   - component: {fileID: 931075036}
+  - component: {fileID: 931075038}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -416,10 +493,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\"Al\xE9m das sete colinas, al\xE9m das sete montanhas...\""
+  m_text: "Al\xE9m das sete colinas, al\xE9m das sete montanhas...\nEm tempos de
+    magia e mist\xE9rio, havia um lugar onde nenhuma viv'alma ousava se aproximar,
+    um lugar habitado pelas mais fant\xE1sticas e estranhas criaturas: a Floresta
+    Negra. \n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 40525aba20b0be446ad9658a901558f4, type: 2}
-  m_sharedMaterial: {fileID: -4255642445153187306, guid: 40525aba20b0be446ad9658a901558f4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7ae100e1802b5384a8f64993a3fd7ea1, type: 2}
+  m_sharedMaterial: {fileID: -2843902321936295566, guid: 7ae100e1802b5384a8f64993a3fd7ea1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -443,8 +523,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -496,6 +576,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931075034}
   m_CullTransparentMesh: 1
+--- !u!114 &931075038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931075034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0195ef8a78a4e840bd5f2f6c46b5882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IntroTextWriter
+  texto: {fileID: 931075036}
+  paragrafos: []
+  velocidadeDigitacao: 0.03
+  tempoDepoisDaDigitacao: 3
+  tempoDesaparecimento: 1.5
+  introDirector: {fileID: 285070342}
 --- !u!1 &1362582925
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,3 +680,5 @@ SceneRoots:
   - {fileID: 863609535}
   - {fileID: 203090950}
   - {fileID: 1362582928}
+  - {fileID: 384821744}
+  - {fileID: 285070343}
