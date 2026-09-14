@@ -5,8 +5,30 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
     [SerializeField] private Animator transitionAnim;
+    [SerializeField] private float fadeDuration = 1f;
 
     private bool carregando;
+    public bool IsFullyTransparent { get; private set; }
+
+    private void Start()
+    {
+        IsFullyTransparent = false;
+
+        if (transitionAnim != null)
+        {
+            transitionAnim.SetTrigger("End");
+        }
+
+        StartCoroutine(WaitForFadeIn());
+    }
+
+    public IEnumerator WaitUntilTransparent()
+    {
+        while (!IsFullyTransparent)
+        {
+            yield return null;
+        }
+    }
 
     public void Transition(string sceneName)
     {
@@ -16,15 +38,22 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(LoadScene(sceneName));
     }
 
+    private IEnumerator WaitForFadeIn()
+    {
+        yield return new WaitForSeconds(fadeDuration);
+        IsFullyTransparent = true;
+    }
+
     private IEnumerator LoadScene(string sceneName)
     {
         carregando = true;
 
-        // Fade Out
-        transitionAnim.SetTrigger("Start");
+        if (transitionAnim != null)
+        {
+            transitionAnim.SetTrigger("Start");
+        }
 
-        // Tempo da animação de Fade Out
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(fadeDuration);
 
         SceneManager.LoadScene(sceneName);
     }

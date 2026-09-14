@@ -5,7 +5,7 @@ using UnityEngine;
 public class IntroTextWriter : MonoBehaviour
 {
     [Header("Texto")]
-    [SerializeField] private TMP_Text texto;
+    private TMP_Text _texto;
 
     [TextArea(5, 20)]
     [SerializeField] private string[] paragrafos;
@@ -20,15 +20,24 @@ public class IntroTextWriter : MonoBehaviour
     [Header("Controle")]
     [SerializeField] private IntroDirector introDirector;
 
-    private CanvasGroup canvasGroup;
+    private CanvasGroup _canvasGroup;
 
     private void Awake()
     {
-        canvasGroup = texto.GetComponent<CanvasGroup>();
+        _texto = GetComponent<TMP_Text>();
 
-        if (canvasGroup == null)
+        if (_texto == null)
         {
-            canvasGroup = texto.gameObject.AddComponent<CanvasGroup>();
+            Debug.LogError("IntroTextWriter: este objeto não possui um TMP_Text/TextMeshProUGUI.");
+            enabled = false;
+            return;
+        }
+
+        _canvasGroup = _texto.GetComponent<CanvasGroup>();
+
+        if (_canvasGroup == null)
+        {
+            _canvasGroup = _texto.gameObject.AddComponent<CanvasGroup>();
         }
     }
 
@@ -41,7 +50,7 @@ public class IntroTextWriter : MonoBehaviour
 
     private IEnumerator ExecutarIntroducao()
     {
-        canvasGroup.alpha = 1f;
+        _canvasGroup.alpha = 1f;
 
         foreach (string paragrafo in paragrafos)
         {
@@ -49,8 +58,8 @@ public class IntroTextWriter : MonoBehaviour
             // COMEÇA COM O TEXTO INVISÍVEL
             // -----------------------------
 
-            canvasGroup.alpha = 1f;
-            texto.text = "";
+            _canvasGroup.alpha = 1f;
+            _texto.text = "";
 
             // -----------------------------
             // DIGITAÇÃO
@@ -58,7 +67,7 @@ public class IntroTextWriter : MonoBehaviour
 
             foreach (char letra in paragrafo)
             {
-                texto.text += letra;
+                _texto.text += letra;
 
                 yield return new WaitForSeconds(velocidadeDigitacao);
             }
@@ -81,16 +90,16 @@ public class IntroTextWriter : MonoBehaviour
 
                 float progresso = tempo / tempoDesaparecimento;
 
-                canvasGroup.alpha = Mathf.Lerp(1f, 0f, progresso);
+                _canvasGroup.alpha = Mathf.Lerp(1f, 0f, progresso);
 
                 yield return null;
             }
 
-            canvasGroup.alpha = 0f;
+            _canvasGroup.alpha = 0f;
 
             // Pequena garantia de que o texto anterior
             // desapareceu antes do próximo começar.
-            texto.text = "";
+            _texto.text = "";
         }
 
         // -----------------------------

@@ -8,7 +8,8 @@ public class MainMenu : MonoBehaviour
     public GameObject manualPanel;
     public GameObject creditosPanel;
 
-    [Header("Nome da Cena")]
+    [Header("Nome das Cenas")]
+    public string cutsceneScene = "Cutscene_EraUmaVez";
     public string gameplayScene = "Level1";
     public LevelLoader levelLoader;
 
@@ -26,7 +27,13 @@ public class MainMenu : MonoBehaviour
     // =========================
     public void Jogar()
     {
-        levelLoader.Transition(gameplayScene);
+        if (levelLoader != null)
+        {
+            levelLoader.Transition(cutsceneScene);
+            return;
+        }
+
+        SceneManager.LoadScene(cutsceneScene);
     }
 
     // =========================

@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
+  m_Name: Hans
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  playOnlyOnce: 0
+  mainDialogue:
+  - speakerName: Hans
+    portrait: {fileID: 0}
+    dialogueText: "Rose! Gra\xE7as aos c\xE9us, voc\xEA est\xE1 bem!"
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Quem\u2026 quem \xE9 voc\xEA?"
+  - speakerName: Hans
+    portrait: {fileID: 0}
+    dialogueText: "Sou eu, Hans, o andarilho. N\xE3o se lembra de mim?"
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Eu\u2026 eu n\xE3o sei. N\xE3o consigo lembrar. S\xF3 me lembro
+      de um estrondo, uma luz cegante e\u2026 s\xF3 consigo me lembrar de uma garota
+      de cabelos claros e um urso ferido."
+  - speakerName: Hans
+    portrait: {fileID: 0}
+    dialogueText: "Ent\xE3o foi isso. Eles te enfeiti\xE7aram\u2026 removeram suas
+      lembran\xE7as."
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "\u201CEles\u201D? \u201CEles\u201D quem?"
+  - speakerName: Hans
+    portrait: {fileID: 0}
+    dialogueText: "Os duendes. Eles atacaram a aldeia h\xE1 alguns dias. Quando cheguei,
+      tudo estava destru\xEDdo. Tentei proteger as crian\xE7as, mas os wisp nos separaram
+      e elas se esconderam nas ru\xEDnas da aldeia."
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Talvez elas saibam o que aconteceu. Qual a dire\xE7\xE3o da aldeia?"
+  - speakerName: Hans
+    portrait: {fileID: 0}
+    dialogueText: "Siga a estrada, em dire\xE7\xE3o ao sudoeste. Mas, seja cautelosa.
+      Os wisp est\xE3o rondando por todo canto. "
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Certo. E, por favor, Hans. H\xE1 um urso naquela caverna. Ele
+      est\xE1 ferido e, por algum motivo, sinto que h\xE1 alguma conex\xE3o entre
+      ele e as poucas lembran\xE7as que ainda tenho do meu passado."
+  - speakerName: Hans
+    portrait: {fileID: 0}
+    dialogueText: "Est\xE1 bem, eu irei v\xEA-lo. Tome cuidado."
+  summaryDialogue: []

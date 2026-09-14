@@ -251,7 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e7566c2ec4eeb478f248957c7ca7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntroDirector
-  introTextWriter: {fileID: 0}
+  introTextWriter: {fileID: 931075038}
+  levelLoader: {fileID: 1222031376}
 --- !u!4 &285070343
 Transform:
   m_ObjectHideFlags: 0
@@ -493,10 +494,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Al\xE9m das sete colinas, al\xE9m das sete montanhas...\nEm tempos de
-    magia e mist\xE9rio, havia um lugar onde nenhuma viv'alma ousava se aproximar,
-    um lugar habitado pelas mais fant\xE1sticas e estranhas criaturas: a Floresta
-    Negra. \n"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ae100e1802b5384a8f64993a3fd7ea1, type: 2}
   m_sharedMaterial: {fileID: -2843902321936295566, guid: 7ae100e1802b5384a8f64993a3fd7ea1, type: 2}
@@ -588,12 +586,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0195ef8a78a4e840bd5f2f6c46b5882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntroTextWriter
-  texto: {fileID: 931075036}
-  paragrafos: []
+  paragrafos:
+  - "Al\xE9m das sete colinas, al\xE9m das sete montanhas...\nEm tempos de magia
+    e mist\xE9rio, havia um lugar onde nenhuma viv'alma ousava se aproximar, um lugar
+    habitado pelas mais fant\xE1sticas e estranhas criaturas: a Floresta Negra. \n"
+  - "Al\xE9m das sete colinas, al\xE9m das sete montanhas...\nEm tempos de magia
+    e mist\xE9rio, havia um lugar onde nenhuma viv'alma ousava se aproximar, um lugar
+    habitado pelas mais fant\xE1sticas e estranhas criaturas: a Floresta Negra. \n"
   velocidadeDigitacao: 0.03
   tempoDepoisDaDigitacao: 3
   tempoDesaparecimento: 1.5
   introDirector: {fileID: 285070342}
+--- !u!1001 &940478014
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6096061027932511983, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_Name
+      value: LevelLoader
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921025161543533276, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 863609534}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.47072
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9272
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+--- !u!114 &1222031376 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7707875350806418972, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+  m_PrefabInstance: {fileID: 940478014}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3827418f15298504b9a2b626f9cac195, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
 --- !u!1 &1362582925
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,3 +757,4 @@ SceneRoots:
   - {fileID: 1362582928}
   - {fileID: 384821744}
   - {fileID: 285070343}
+  - {fileID: 940478014}
