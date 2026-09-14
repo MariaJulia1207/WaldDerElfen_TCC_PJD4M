@@ -61,6 +61,19 @@ public class HealthSystem : MonoBehaviour
         }
     }
 
+    public void ReceberCura(int cura)
+    {
+        if (isDead || cura <= 0)
+            return;
+
+        vida += cura;
+
+        if (vida > vidaMaxima)
+        {
+            vida = vidaMaxima;
+        }
+    }
+
     // =========================================================
     // FLASH VERMELHO
     // =========================================================
