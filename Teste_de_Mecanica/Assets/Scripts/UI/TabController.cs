@@ -22,5 +22,15 @@ public class TabController : MonoBehaviour
         }
         pages[tabNo].SetActive(true);
         tabImages[tabNo].color = Color.white;
+
+        // Register any SFX slider present in the activated page so it syncs with the manager
+        if (pages != null && pages.Length > tabNo && pages[tabNo] != null)
+        {
+            Slider s = pages[tabNo].GetComponentInChildren<Slider>(true);
+            if (s != null && SoundEffectManager.Instance != null)
+            {
+                SoundEffectManager.Instance.RegisterSlider(s);
+            }
+        }
     }
 }

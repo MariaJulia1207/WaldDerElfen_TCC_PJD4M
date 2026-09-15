@@ -1,17 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 
-public class SoundEffectManager : MonoBehaviour
+public class BackgroundMusic : MonoBehaviour
 {
-    public static SoundEffectManager Instance { get; private set; }
+    public static BackgroundMusic Instance { get; private set; }
 
-    [SerializeField] private SoundEffectLibrary soundEffectLibrary;
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private Slider sfxSlider;
+    [SerializeField] private Slider bgmSlider;
 
-    private const string PlayerPrefKey = "sfxVolume";
+    private const string PlayerPrefKey = "bgmVolume";
     private List<Slider> registeredSliders = new List<Slider>();
     private float currentVolume = 1f;
 
@@ -35,12 +34,11 @@ public class SoundEffectManager : MonoBehaviour
 
     private void Start()
     {
-        if (sfxSlider != null)
+        if (bgmSlider != null)
         {
-            RegisterSlider(sfxSlider);
+            RegisterSlider(bgmSlider);
         }
 
-        // Register any sliders already in the scene (named or tagged appropriately)
         RegisterSceneSliders();
     }
 
@@ -56,18 +54,15 @@ public class SoundEffectManager : MonoBehaviour
 
     private void RegisterSceneSliders()
     {
-        // Use Resources.FindObjectsOfTypeAll to include inactive sliders; filter to objects that are in loaded scenes
+        // include inactive sliders; filter to those in loaded scenes
         Slider[] sliders = Resources.FindObjectsOfTypeAll<Slider>();
         foreach (var slider in sliders)
         {
             if (slider == null) continue;
-            // Skip prefab/assets (they won't be in a loaded scene)
             if (!slider.gameObject.scene.isLoaded) continue;
 
-            // Match by name "sfxSlider" or by tag "SfxSlider" (create tag if needed)
-            if (slider.gameObject.name.Equals("sfxSlider") || slider.CompareTag("SfxSlider"))
+            if (slider.gameObject.name.Equals("bgmSlider") || slider.CompareTag("BgmSlider") || slider.CompareTag("bgmSlider"))
             {
-                // ensure slider is interactable in case a CanvasGroup or default state disabled it
                 slider.interactable = true;
                 RegisterSlider(slider);
             }
@@ -80,28 +75,13 @@ public class SoundEffectManager : MonoBehaviour
         if (registeredSliders.Contains(slider)) return;
 
         registeredSliders.Add(slider);
-        // if inspector field is empty, keep a reference to the first registered slider so it shows in Inspector
-        if (sfxSlider == null)
+        if (bgmSlider == null)
         {
-            sfxSlider = slider;
+            bgmSlider = slider;
         }
 
-        // set slider value without invoking its listeners to avoid loops
         slider.SetValueWithoutNotify(currentVolume);
         slider.onValueChanged.AddListener(SetVolume);
-    }
-
-    public static void Play(string soundName)
-    {
-        if (Instance == null)
-            return;
-
-        AudioClip clip = Instance.soundEffectLibrary.GetRandomClip(soundName);
-
-        if (clip != null)
-        {
-            Instance.audioSource.PlayOneShot(clip);
-        }
     }
 
     public void SetVolume(float volume)
@@ -112,7 +92,6 @@ public class SoundEffectManager : MonoBehaviour
         PlayerPrefs.SetFloat(PlayerPrefKey, currentVolume);
         PlayerPrefs.Save();
 
-        // update all registered sliders without notifying their listeners
         for (int i = 0; i < registeredSliders.Count; i++)
         {
             var s = registeredSliders[i];
@@ -120,5 +99,21 @@ public class SoundEffectManager : MonoBehaviour
             if (Mathf.Approximately(s.value, currentVolume)) continue;
             s.SetValueWithoutNotify(currentVolume);
         }
+    }
+
+    public void PlayLoop(AudioClip clip)
+    {
+        if (audioSource == null) return;
+        if (clip == null) return;
+
+        audioSource.clip = clip;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
+    public void Stop()
+    {
+        if (audioSource == null) return;
+        audioSource.Stop();
     }
 }

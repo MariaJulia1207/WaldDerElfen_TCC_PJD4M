@@ -11,6 +11,7 @@ public class Gem : MonoBehaviour, IItem
     public void Collect()
     {
         OnGemCollect.Invoke(worth);
+        SoundEffectManager.Play("HeartCollect");
         DestroyObject(gameObject);
     }
 }

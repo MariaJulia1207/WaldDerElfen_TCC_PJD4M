@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class MainMenu : MonoBehaviour
     public GameObject mainPanel;
     public GameObject manualPanel;
     public GameObject creditosPanel;
+    public GameObject settingsPanel;
 
     [Header("Nome das Cenas")]
     public string cutsceneScene = "Cutscene_EraUmaVez";
@@ -20,6 +22,7 @@ public class MainMenu : MonoBehaviour
 
         manualPanel.SetActive(false);
         creditosPanel.SetActive(false);
+        settingsPanel.SetActive(false);
     }
 
     // =========================
@@ -63,6 +66,31 @@ public class MainMenu : MonoBehaviour
     public void FecharCreditos()
     {
         creditosPanel.SetActive(false);
+        mainPanel.SetActive(true);
+    }
+    
+    // =========================
+    // CONFIGURAÇÕES
+    // =========================
+    public void AbrirSettings()
+    {
+        mainPanel.SetActive(false);
+        settingsPanel.SetActive(true);
+
+        // Register any SFX slider inside the settings panel so it syncs with the manager
+        if (settingsPanel != null)
+        {
+            Slider s = settingsPanel.GetComponentInChildren<Slider>(true);
+            if (s != null && SoundEffectManager.Instance != null)
+            {
+                SoundEffectManager.Instance.RegisterSlider(s);
+            }
+        }
+    }
+
+    public void FecharSettings()
+    {
+        settingsPanel.SetActive(false);
         mainPanel.SetActive(true);
     }
 

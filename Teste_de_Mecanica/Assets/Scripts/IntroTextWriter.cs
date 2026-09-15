@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -68,6 +69,12 @@ public class IntroTextWriter : MonoBehaviour
             foreach (char letra in paragrafo)
             {
                 _texto.text += letra;
+
+                // Tocar efeito sonoro a cada letra (pula espaços em branco)
+                if (!char.IsWhiteSpace(letra))
+                {
+                    SoundEffectManager.Play("Typing");
+                }
 
                 yield return new WaitForSeconds(velocidadeDigitacao);
             }

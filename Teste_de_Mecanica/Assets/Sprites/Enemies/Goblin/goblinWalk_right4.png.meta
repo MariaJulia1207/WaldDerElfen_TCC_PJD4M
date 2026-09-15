@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 41cc6721ba83a2f448c194fb4b6c2026
+guid: 296117d46c1877f4fad23b4c30bc4500
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3174339136127752206
-    second: enemies20_0
+      213: 9128187727268528897
+    second: goblinWalk_right4_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -178,23 +178,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: enemies20_0
+      name: goblinWalk_right4_0
       rect:
         serializedVersion: 2
-        x: 175
-        y: 103
-        width: 170
-        height: 314
+        x: 0
+        y: 0
+        width: 512
+        height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e08d38d30a48d0c20800000000000000
-      internalID: 3174339136127752206
+      spriteID: 103cbeeef56ddae70800000000000000
+      internalID: 9128187727268528897
       vertices: []
       indices: 
       edges: []
@@ -203,7 +203,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 1dea9d60a4818e842ab073035a16065e
     internalID: 0
     vertices: []
     indices: 
@@ -213,7 +213,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      enemies20_0: 3174339136127752206
+      goblinWalk_right4_0: 9128187727268528897
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

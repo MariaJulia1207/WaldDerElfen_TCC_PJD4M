@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Pause : MonoBehaviour
 {
@@ -54,6 +55,16 @@ public class Pause : MonoBehaviour
         isPaused = true;
 
         pausePanel.SetActive(true);
+
+        // Register any SFX slider inside pause panel so manager can sync it
+        if (pausePanel != null)
+        {
+            Slider s = pausePanel.GetComponentInChildren<Slider>(true);
+            if (s != null && SoundEffectManager.Instance != null)
+            {
+                SoundEffectManager.Instance.RegisterSlider(s);
+            }
+        }
 
         Time.timeScale = 0f;
     }

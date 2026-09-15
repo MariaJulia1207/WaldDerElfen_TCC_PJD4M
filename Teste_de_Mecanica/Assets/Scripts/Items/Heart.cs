@@ -16,7 +16,7 @@ public class Heart : MonoBehaviour, IItem
             playerHealth.ReceberCura(vidaParaAdicionar);
             OnHeartCollect?.Invoke(vidaParaAdicionar);
         }
-
+        SoundEffectManager.Play("HeartCollect");
         Destroy(gameObject);
     }
 }
