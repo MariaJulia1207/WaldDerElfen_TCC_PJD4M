@@ -18,8 +18,8 @@ public class EnemyMoblin : MonoBehaviour
     [SerializeField] private GameObject attackRight;
 
     [Header("Knockback")]
-    [SerializeField] private float forcaKnockback = 2.5f;
-    [SerializeField] private float duracaoKnockback = 0.12f;
+    [SerializeField] private float forcaKnockback = 3f;
+    [SerializeField] private float duracaoKnockback = 0.15f;
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -63,34 +63,26 @@ public class EnemyMoblin : MonoBehaviour
         if (jogador == null)
             return;
 
-        // Durante ataque ou knockback o Moblin não recebe
-        // comandos de movimento.
+        // Durante ataque ou knockback,
+        // o inimigo não recebe movimento normal.
         if (atacando || sofrendoKnockback)
         {
             movimento = Vector2.zero;
-
             anim.SetBool("IsMoving", false);
-
             return;
         }
 
         float distancia =
             Vector2.Distance(transform.position, jogador.position);
 
-        // -----------------------------------------------------
-        // FORA DO ALCANCE DE DETECÇÃO
-        // -----------------------------------------------------
-
+        // Fora do alcance
         if (distancia > distanciaDeteccao)
         {
             Parar();
             return;
         }
 
-        // -----------------------------------------------------
-        // DENTRO DO ALCANCE DE ATAQUE
-        // -----------------------------------------------------
-
+        // Alcance de ataque
         if (distancia <= distanciaAtaque)
         {
             Parar();
@@ -103,10 +95,7 @@ public class EnemyMoblin : MonoBehaviour
             return;
         }
 
-        // -----------------------------------------------------
-        // PERSEGUIR
-        // -----------------------------------------------------
-
+        // Perseguir
         PerseguirJogador();
     }
 
@@ -116,7 +105,12 @@ public class EnemyMoblin : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (atacando || sofrendoKnockback)
+        // MUITO IMPORTANTE:
+        // não sobrescrever o velocity durante o knockback.
+        if (sofrendoKnockback)
+            return;
+
+        if (atacando)
         {
             rb.linearVelocity = Vector2.zero;
             return;
@@ -126,7 +120,7 @@ public class EnemyMoblin : MonoBehaviour
     }
 
     // =========================================================
-    // PERSEGUIR JOGADOR
+    // PERSEGUIR
     // =========================================================
 
     private void PerseguirJogador()
@@ -134,15 +128,7 @@ public class EnemyMoblin : MonoBehaviour
         Vector2 diferenca =
             jogador.position - transform.position;
 
-        // -----------------------------------------------------
-        // MOVIMENTO CARDINAL
-        // -----------------------------------------------------
-        // O Moblin só pode andar para:
-        // cima, baixo, esquerda ou direita.
-        //
-        // A maior diferença determina a direção.
-        // -----------------------------------------------------
-
+        // Movimento somente em 4 direções.
         if (Mathf.Abs(diferenca.x) > Mathf.Abs(diferenca.y))
         {
             if (diferenca.x > 0)
@@ -172,7 +158,6 @@ public class EnemyMoblin : MonoBehaviour
     private void Parar()
     {
         movimento = Vector2.zero;
-
         rb.linearVelocity = Vector2.zero;
 
         anim.SetBool("IsMoving", false);
@@ -187,13 +172,11 @@ public class EnemyMoblin : MonoBehaviour
         atacando = true;
 
         movimento = Vector2.zero;
-
         rb.linearVelocity = Vector2.zero;
 
         proximoAtaque =
             Time.time + tempoEntreAtaques;
 
-        // O Moblin olha para o jogador antes de atacar.
         AtualizarDirecaoParaJogador();
 
         anim.SetBool("IsMoving", false);
@@ -202,7 +185,7 @@ public class EnemyMoblin : MonoBehaviour
     }
 
     // =========================================================
-    // DIREÇÃO PARA O JOGADOR
+    // OLHAR PARA O JOGADOR
     // =========================================================
 
     private void AtualizarDirecaoParaJogador()
@@ -210,7 +193,6 @@ public class EnemyMoblin : MonoBehaviour
         Vector2 diferenca =
             jogador.position - transform.position;
 
-        // Movimento cardinal.
         if (Mathf.Abs(diferenca.x) > Mathf.Abs(diferenca.y))
         {
             if (diferenca.x > 0)
@@ -244,9 +226,6 @@ public class EnemyMoblin : MonoBehaviour
 
     // =========================================================
     // HITBOX
-    // =========================================================
-    // Esses métodos serão chamados pelos Animation Events
-    // da animação de ataque.
     // =========================================================
 
     public void AtivarHitbox()
@@ -298,8 +277,6 @@ public class EnemyMoblin : MonoBehaviour
     // =========================================================
     // FINALIZAR ATAQUE
     // =========================================================
-    // Animation Event no último frame do ataque.
-    // =========================================================
 
     public void FinalizarAtaque()
     {
@@ -314,8 +291,7 @@ public class EnemyMoblin : MonoBehaviour
 
     public void ReceberKnockback(Vector2 direcao)
     {
-        if (sofrendoKnockback)
-            return;
+        Debug.Log("KNOCKBACK RECEBIDO PELO MOBLIN");
 
         StopCoroutine(nameof(AplicarKnockback));
         StartCoroutine(AplicarKnockback(direcao));
@@ -324,7 +300,6 @@ public class EnemyMoblin : MonoBehaviour
     private IEnumerator AplicarKnockback(Vector2 direcao)
     {
         sofrendoKnockback = true;
-
         atacando = false;
 
         DesativarTodasHitboxes();
@@ -333,6 +308,11 @@ public class EnemyMoblin : MonoBehaviour
 
         anim.SetBool("IsMoving", false);
 
+        // Garante que o Rigidbody não tenha
+        // velocidade anterior interferindo.
+        rb.linearVelocity = Vector2.zero;
+
+        // Aplica o impulso.
         rb.linearVelocity =
             direcao.normalized * forcaKnockback;
 
@@ -344,7 +324,7 @@ public class EnemyMoblin : MonoBehaviour
     }
 
     // =========================================================
-    // SEGURANÇA
+    // DISABLE
     // =========================================================
 
     private void OnDisable()
