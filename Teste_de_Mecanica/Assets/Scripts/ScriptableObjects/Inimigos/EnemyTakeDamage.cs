@@ -8,6 +8,9 @@ public class EnemyTakeDamage : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] private ControladorFeedBackDano feedbackDano;
 
+    [Header("Loot")]
+    public LootItem[] lootTable;
+
     private int vida;
 
     private void Start()
@@ -34,6 +37,25 @@ public class EnemyTakeDamage : MonoBehaviour
 
     private void Morrer()
     {
+        foreach (LootItem lootItem in lootTable)
+        {
+            if (Random.Range(0f, 100f) <= lootItem.dropChance)
+            {
+                InstantiateLoot(lootItem.itemPrefab);
+
+                break;
+            }
+        }
+
         Destroy(gameObject);
+    }
+
+    void InstantiateLoot(GameObject loot)
+    {
+        if (loot)
+        {
+            GameObject droppedLoot = Instantiate(loot, transform.position,
+            Quaternion.identity);
+        }
     }
 }

@@ -390,8 +390,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8a7126f4857ffd4aa4b64fa03b973cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
-  vidaMaxima: 10
-  feedbackDano: {fileID: 4642053284596718837}
+  vidaMaxima: 5
+  feedbackDano: {fileID: 0}
+  lootTable:
+  - itemPrefab: {fileID: 0}
+    dropChance: 25
+  - itemPrefab: {fileID: 0}
+    dropChance: 25
+  - itemPrefab: {fileID: 0}
+    dropChance: 25
+  - itemPrefab: {fileID: 0}
+    dropChance: 25
 --- !u!114 &6915332201261162303
 MonoBehaviour:
   m_ObjectHideFlags: 0
