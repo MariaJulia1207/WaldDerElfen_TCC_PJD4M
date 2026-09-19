@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InteractOM : MonoBehaviour
 {
@@ -9,6 +10,23 @@ public class InteractOM : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current != null &&
+            Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            // Se o diálogo já estiver aberto,
+            // o DialogueManager será responsável pelo E.
+            if (DialogueManager.Instance != null &&
+                DialogueManager.Instance.IsDialogueOpen)
+            {
+                return;
+            }
+
+            Interact();
+        }
     }
 
     public void SetCurrentNPC(NPCInteractable npc)

@@ -13,11 +13,21 @@ MonoBehaviour:
   m_Name: Linette
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
   playOnlyOnce: 1
+  voiceSoundName: DialogueVoice
   mainDialogue:
   - speakerName: Linette
     portrait: {fileID: 0}
     dialogueText: 
+    voicePitchMin: 0.9
+    voicePitchMax: 1.1
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: 
+    voicePitchMin: 1.1
+    voicePitchMax: 1.4
   summaryDialogue:
   - speakerName: Linette
     portrait: {fileID: 0}
     dialogueText: 
+    voicePitchMin: 0.9
+    voicePitchMax: 1.1

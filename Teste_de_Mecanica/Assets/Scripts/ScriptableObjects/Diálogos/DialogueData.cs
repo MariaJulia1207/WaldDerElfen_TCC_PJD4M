@@ -8,6 +8,9 @@ public class DialogueData : ScriptableObject
     [Header("Executar apenas uma vez")]
     public bool playOnlyOnce;
 
+    [Header("Configuração da Voz")]
+    public string voiceSoundName = "DialogueVoice";
+
     [Header("Diálogo Principal")]
     public DialogueLine[] mainDialogue;
 

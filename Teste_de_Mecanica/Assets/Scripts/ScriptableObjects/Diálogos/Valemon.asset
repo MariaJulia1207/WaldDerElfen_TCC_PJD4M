@@ -13,23 +13,36 @@ MonoBehaviour:
   m_Name: Valemon
   m_EditorClassIdentifier: Assembly-CSharp::NPCDialogueData
   playOnlyOnce: 1
+  voiceSoundName: DialogueVoice
   mainDialogue:
   - speakerName: Valemon
     portrait: {fileID: 0}
     dialogueText: ...Rose... Rose...
+    voicePitchMin: 0.5
+    voicePitchMax: 0.8
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: "Voc\xEA... voc\xEA pode falar! Como sabe meu nome?"
+    voicePitchMin: 1.1
+    voicePitchMax: 1.4
   - speakerName: Valemon
     portrait: {fileID: 0}
     dialogueText: Rose... eu... Valemon...
+    voicePitchMin: 0.5
+    voicePitchMax: 0.8
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: "Espere. Voc\xEA est\xE1 ferido. Vou procurar ajuda."
+    voicePitchMin: 1.1
+    voicePitchMax: 1.4
   - speakerName: Valemon
     portrait: {fileID: 0}
     dialogueText: '...capturados... duendes... a floresta...  '
+    voicePitchMin: 0.5
+    voicePitchMax: 0.8
   summaryDialogue:
   - speakerName: Valemon
     portrait: {fileID: 0}
     dialogueText: '...capturados... duendes... a floresta... '
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1

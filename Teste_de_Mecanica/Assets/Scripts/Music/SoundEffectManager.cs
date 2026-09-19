@@ -12,7 +12,9 @@ public class SoundEffectManager : MonoBehaviour
     [SerializeField] private Slider sfxSlider;
 
     private const string PlayerPrefKey = "sfxVolume";
+
     private List<Slider> registeredSliders = new List<Slider>();
+
     private float currentVolume = 1f;
 
     private void Awake()
@@ -22,8 +24,12 @@ public class SoundEffectManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            currentVolume = PlayerPrefs.HasKey(PlayerPrefKey) ? PlayerPrefs.GetFloat(PlayerPrefKey) : 1f;
-            if (audioSource != null) audioSource.volume = currentVolume;
+            currentVolume = PlayerPrefs.HasKey(PlayerPrefKey)
+                ? PlayerPrefs.GetFloat(PlayerPrefKey)
+                : 1f;
+
+            if (audioSource != null)
+                audioSource.volume = currentVolume;
 
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -40,7 +46,6 @@ public class SoundEffectManager : MonoBehaviour
             RegisterSlider(sfxSlider);
         }
 
-        // Register any sliders already in the scene (named or tagged appropriately)
         RegisterSceneSliders();
     }
 
@@ -56,19 +61,26 @@ public class SoundEffectManager : MonoBehaviour
 
     private void RegisterSceneSliders()
     {
-        // Use Resources.FindObjectsOfTypeAll to include inactive sliders; filter to objects that are in loaded scenes
-        Slider[] sliders = Resources.FindObjectsOfTypeAll<Slider>();
+        Slider[] sliders =
+            Resources.FindObjectsOfTypeAll<Slider>();
+
         foreach (var slider in sliders)
         {
-            if (slider == null) continue;
-            // Skip prefab/assets (they won't be in a loaded scene)
-            if (!slider.gameObject.scene.isLoaded) continue;
+            if (slider == null)
+                continue;
 
-            // Match by name "sfxSlider" or by tag "SfxSlider" (create tag if needed)
-            if (slider.gameObject.name.Equals("sfxSlider") || slider.CompareTag("SfxSlider"))
+            // Ignora prefabs e assets
+            if (!slider.gameObject.scene.isLoaded)
+                continue;
+
+            // Procura pelo nome ou pela tag
+            if (
+                slider.gameObject.name.Equals("sfxSlider") ||
+                slider.CompareTag("SfxSlider")
+            )
             {
-                // ensure slider is interactable in case a CanvasGroup or default state disabled it
                 slider.interactable = true;
+
                 RegisterSlider(slider);
             }
         }
@@ -76,27 +88,35 @@ public class SoundEffectManager : MonoBehaviour
 
     public void RegisterSlider(Slider slider)
     {
-        if (slider == null) return;
-        if (registeredSliders.Contains(slider)) return;
+        if (slider == null)
+            return;
+
+        if (registeredSliders.Contains(slider))
+            return;
 
         registeredSliders.Add(slider);
-        // if inspector field is empty, keep a reference to the first registered slider so it shows in Inspector
+
         if (sfxSlider == null)
         {
             sfxSlider = slider;
         }
 
-        // set slider value without invoking its listeners to avoid loops
         slider.SetValueWithoutNotify(currentVolume);
+
         slider.onValueChanged.AddListener(SetVolume);
     }
+
+    // =========================================================
+    // SONS NORMAIS
+    // =========================================================
 
     public static void Play(string soundName)
     {
         if (Instance == null)
             return;
 
-        AudioClip clip = Instance.soundEffectLibrary.GetRandomClip(soundName);
+        AudioClip clip =
+            Instance.soundEffectLibrary.GetRandomClip(soundName);
 
         if (clip != null)
         {
@@ -104,21 +124,64 @@ public class SoundEffectManager : MonoBehaviour
         }
     }
 
+    // =========================================================
+    // SONS COM PITCH
+    // =========================================================
+
+    public static void PlayWithPitch(
+        string soundName,
+        float pitch)
+    {
+        if (Instance == null)
+            return;
+
+        AudioClip clip =
+            Instance.soundEffectLibrary.GetRandomClip(soundName);
+
+        if (clip != null)
+        {
+            Instance.audioSource.pitch = pitch;
+
+            Instance.audioSource.PlayOneShot(clip);
+
+            // Volta ao pitch normal depois de configurar o som
+            Instance.audioSource.pitch = 1f;
+        }
+    }
+
+    // =========================================================
+    // VOLUME
+    // =========================================================
+
     public void SetVolume(float volume)
     {
         currentVolume = Mathf.Clamp01(volume);
-        if (audioSource != null) audioSource.volume = currentVolume;
 
-        PlayerPrefs.SetFloat(PlayerPrefKey, currentVolume);
+        if (audioSource != null)
+            audioSource.volume = currentVolume;
+
+        PlayerPrefs.SetFloat(
+            PlayerPrefKey,
+            currentVolume);
+
         PlayerPrefs.Save();
 
-        // update all registered sliders without notifying their listeners
+        // Atualiza todos os sliders registrados
+        // sem disparar novamente o evento.
         for (int i = 0; i < registeredSliders.Count; i++)
         {
             var s = registeredSliders[i];
-            if (s == null) continue;
-            if (Mathf.Approximately(s.value, currentVolume)) continue;
-            s.SetValueWithoutNotify(currentVolume);
+
+            if (s == null)
+                continue;
+
+            if (Mathf.Approximately(
+                s.value,
+                currentVolume))
+                continue;
+
+            s.SetValueWithoutNotify(
+                currentVolume);
         }
     }
 }
