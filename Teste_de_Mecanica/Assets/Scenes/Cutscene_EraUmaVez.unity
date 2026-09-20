@@ -589,10 +589,16 @@ MonoBehaviour:
   paragrafos:
   - "Al\xE9m das sete colinas, al\xE9m das sete montanhas...\nEm tempos de magia
     e mist\xE9rio, havia um lugar onde nenhuma viv'alma ousava se aproximar, um lugar
-    habitado pelas mais fant\xE1sticas e estranhas criaturas: a Floresta Negra. \n"
-  - "Al\xE9m das sete colinas, al\xE9m das sete montanhas...\nEm tempos de magia
-    e mist\xE9rio, havia um lugar onde nenhuma viv'alma ousava se aproximar, um lugar
-    habitado pelas mais fant\xE1sticas e estranhas criaturas: a Floresta Negra. \n"
+    habitado pelas mais fant\xE1sticas e estranhas criaturas: a Floresta Negra. "
+  - "No meio da Floresta Negra, escondido da v\xEDvida luz do sol, governava o mal\xE9volo
+    Alberich, Rei dos Duendes, um ser de imensa cobi\xE7a e sede por poder.\nDurante
+    s\xE9culos, Alberich exerceu controle total sob a Floresta e os seres que l\xE1
+    viviam, mas sem nunca poder transpor os limites de seu reino. "
+  - "Por\xE9m, ao redor da Floresta Negra, haviam muitas pequeninas aldeias. Aldeias
+    pr\xF3speras, de gente mui simples, pacata e feliz, governadas e protegidas por
+    belos pr\xEDncipes. \nNuma dessas aldeias, havia uma jovem, t\xE3o bela e delicada,
+    mas tamb\xE9m audaz e impesuosa quanto uma rosa."
+  - "Esta \xE9 a hist\xF3ria dessa jovem. Uma jovem cujo nome era... Rose. "
   velocidadeDigitacao: 0.03
   tempoDepoisDaDigitacao: 3
   tempoDesaparecimento: 1.5
@@ -608,6 +614,10 @@ PrefabInstance:
     - target: {fileID: 6096061027932511983, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
       propertyPath: m_Name
       value: LevelLoader
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096061027932511983, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7921025161543533276, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
       propertyPath: m_Camera

@@ -172,7 +172,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 731888949
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 1698878450071502583, guid: 031b6a5df75fccd4189c7939bff282c2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -254,5 +254,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ed4785f4be7a24eb72754a953f52d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectFader
-  transparencyValue: 0.5
+  transparencyValue: 1
   transparencyFadeTime: 0.4
