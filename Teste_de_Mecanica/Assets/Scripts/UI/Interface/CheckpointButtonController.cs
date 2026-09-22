@@ -1,8 +1,12 @@
+using System.Collections;
 using UnityEngine;
 
 public class CheckpointButtonController : MonoBehaviour
 {
     [SerializeField] private GameObject checkpointButton;
+    [SerializeField] private float delayBetweenHeals = 0.3f; // segundos entre cada vida adicionada
+
+    private Coroutine healRoutine;
 
     private void OnEnable()
     {
@@ -68,6 +72,13 @@ public class CheckpointButtonController : MonoBehaviour
     {
         Debug.Log("CheckpointButtonController: HideButton foi chamado.");
 
+        if (healRoutine != null)
+        {
+            StopCoroutine(healRoutine);
+            healRoutine = null;
+            Debug.Log("CheckpointButtonController: healRoutine interrompida.");
+        }
+
         if (checkpointButton != null)
         {
             checkpointButton.SetActive(false);
@@ -79,34 +90,45 @@ public class CheckpointButtonController : MonoBehaviour
     {
         Debug.Log("CheckpointButtonController: botão pressionado.");
 
+        // evita iniciar múltiplas coroutines
+        if (healRoutine != null)
+        {
+            Debug.Log("CheckpointButtonController: cura já em andamento.");
+            return;
+        }
+
+        healRoutine = StartCoroutine(HealAllOneByOne());
+    }
+
+    private IEnumerator HealAllOneByOne()
+    {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
-            Debug.LogWarning("CheckpointButtonController: Player não encontrado ao pressionar botão.");
-            return;
+            Debug.LogWarning("CheckpointButtonController: Player não encontrado ao iniciar cura.");
+            healRoutine = null;
+            yield break;
         }
 
         HealthSystem health = player.GetComponent<HealthSystem>();
         if (health == null)
         {
-            Debug.LogWarning("CheckpointButtonController: HealthSystem ausente no Player ao pressionar botão.");
-            return;
+            Debug.LogWarning("CheckpointButtonController: HealthSystem ausente no Player ao iniciar cura.");
+            healRoutine = null;
+            yield break;
         }
 
-        Debug.Log("CheckpointButtonController: vida antes = " + health.vida + ", cura +1");
+        Debug.Log("CheckpointButtonController: iniciando cura até o máximo.");
 
-        if (health.vida >= health.vidaMaxima)
+        while (health.vida < health.vidaMaxima)
         {
-            HideButton();
-            return;
+            health.ReceberCura(1);
+            Debug.Log("CheckpointButtonController: adicionada 1 vida -> " + health.vida + "/" + health.vidaMaxima);
+            yield return new WaitForSeconds(delayBetweenHeals);
         }
 
-        health.ReceberCura(1);
-        Debug.Log("CheckpointButtonController: vida depois = " + health.vida);
-
-        if (health.vida >= health.vidaMaxima)
-        {
-            HideButton();
-        }
+        Debug.Log("CheckpointButtonController: cura completa.");
+        HideButton();
+        healRoutine = null;
     }
 }
