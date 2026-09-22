@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class ObserverManager
 {
@@ -22,6 +23,8 @@ public static class ObserverManager
 
     public static void Notify(string eventName)
     {
+        Debug.Log("ObserverManager: Notify -> " + eventName + " | listeners: " + (events.ContainsKey(eventName) ? events[eventName] != null : false));
+
         if (events.ContainsKey(eventName))
             events[eventName]?.Invoke();
     }

@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+[Serializable]
+public class SaveData
+{
+    // Posição do jogador no mundo
+    public Vector3 playerPosition;
+    public string LevelName;
+}
 /*
 using System;
 using System.Collections.Generic;
