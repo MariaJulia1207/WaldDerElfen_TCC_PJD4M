@@ -14,6 +14,9 @@ public class AttackHitbox : MonoBehaviour
     private readonly HashSet<EnemyTakeDamage> inimigosAtingidos =
         new HashSet<EnemyTakeDamage>();
 
+    private readonly HashSet<BossPapoula> papoulasAtingidas =
+        new HashSet<BossPapoula>();
+
     private void Awake()
     {
         meuCollider = GetComponent<Collider2D>();
@@ -23,6 +26,7 @@ public class AttackHitbox : MonoBehaviour
     {
         obstaculosAtingidos.Clear();
         inimigosAtingidos.Clear();
+        papoulasAtingidas.Clear();
     }
 
     // =========================================================
@@ -77,7 +81,6 @@ public class AttackHitbox : MonoBehaviour
 
         if (obstaculo != null)
         {
-            // Já recebeu dano neste ataque?
             if (obstaculosAtingidos.Contains(obstaculo))
                 return;
 
@@ -114,6 +117,25 @@ public class AttackHitbox : MonoBehaviour
 
                 moblin.ReceberKnockback(direcaoKnockback);
             }
+
+            return;
+        }
+
+        // -----------------------------------------------------
+        // PAPOULA DO BOSS
+        // -----------------------------------------------------
+
+        BossPapoula papoula =
+            other.GetComponentInParent<BossPapoula>();
+
+        if (papoula != null)
+        {
+            if (papoulasAtingidas.Contains(papoula))
+                return;
+
+            papoulasAtingidas.Add(papoula);
+
+            papoula.ReceberDano(dano);
 
             return;
         }
