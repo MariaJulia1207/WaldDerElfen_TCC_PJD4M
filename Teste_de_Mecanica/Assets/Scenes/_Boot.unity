@@ -295,7 +295,7 @@ MonoBehaviour:
   soundEffectGroups:
   - name: Typing
     audioClips:
-    - {fileID: 8300000, guid: 458f0eeb882070248b08895120d6a844, type: 3}
+    - {fileID: 8300000, guid: ef544cf6bc03610468bb2a8203a5333b, type: 3}
     - {fileID: 8300000, guid: c1634ccde956d3046ab4ee77f84928a8, type: 3}
   - name: HeartCollect
     audioClips:
@@ -308,7 +308,9 @@ MonoBehaviour:
     - {fileID: 0}
   - name: Walk
     audioClips:
-    - {fileID: 0}
+    - {fileID: 8300000, guid: 8aa4837d938b6b44fb8bfecc8adc0021, type: 3}
+    - {fileID: 8300000, guid: b11fcbb7d2631aa49a8365f00a5f5101, type: 3}
+    - {fileID: 8300000, guid: 9ee1354d5d992a7459ba03e95060b6bf, type: 3}
   - name: Checkpoint
     audioClips:
     - {fileID: 0}
