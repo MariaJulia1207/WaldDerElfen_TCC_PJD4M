@@ -22907,6 +22907,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6636843332959768945, guid: ddfacaee751f0f94c9aa86ca038c9762, type: 3}
   m_PrefabInstance: {fileID: 168122697}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &168122699 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1219697946407023968, guid: ddfacaee751f0f94c9aa86ca038c9762, type: 3}
+  m_PrefabInstance: {fileID: 168122697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &177148819
 GameObject:
   m_ObjectHideFlags: 0
@@ -74445,7 +74450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossArena
   aberturaEntrada: {fileID: 1352083540}
   aberturaSaida: {fileID: 1312208212}
-  objetoTeste: {fileID: 1160478711}
+  objetoTeste: {fileID: 2025942770}
 --- !u!4 &999877443
 Transform:
   m_ObjectHideFlags: 0
@@ -81943,6 +81948,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6882396415545512072, guid: 3968d19adb1e4cc408c891d65b9edd5d, type: 3}
   m_PrefabInstance: {fileID: 1144940263}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1157048181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1157048182}
+  - component: {fileID: 1157048183}
+  m_Layer: 6
+  m_Name: ControladorFeedBackDano
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1157048182
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157048181}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2025942771}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1157048183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157048181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28cb4425b95ae7840b588efed3ce0b0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ControladorFeedBackDano
+  particulaDano: {fileID: 168122699}
 --- !u!1 &1160478711
 GameObject:
   m_ObjectHideFlags: 0
@@ -81963,7 +82013,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1160478712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83887,7 +83937,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -329392,6 +329442,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1272009014}
+  - {fileID: 1157048182}
   m_Father: {fileID: 999877443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2025942772

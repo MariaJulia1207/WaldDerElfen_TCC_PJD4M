@@ -1,34 +1,87 @@
 using UnityEngine;
+using Unity.Cinemachine;
 
-public class RoomTransition : MonoBehaviour
+public class MapTransition : MonoBehaviour
 {
-    [Header("Câmera")]
-    [SerializeField] private PolygonCollider2D novoBoundary;
+    [Header("Configuração da Área")]
+    [SerializeField] private PolygonCollider2D mapBoundary;
 
-    [Header("Entrada da Sala")]
-    [SerializeField] private Transform pontoEntrada;
+    [Header("Direção da Transição")]
+    [SerializeField] private Direction direction;
+
+    [SerializeField] private float additivePos = 2f;
+
+    private CinemachineConfiner2D confiner;
+
+    private enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
+    private void Awake()
+    {
+        confiner = FindFirstObjectByType<CinemachineConfiner2D>();
+
+        if (confiner == null)
+        {
+            Debug.LogError(
+                "MapTransition: nenhum CinemachineConfiner2D foi encontrado na cena."
+            );
+        }
+
+        if (mapBoundary == null)
+        {
+            Debug.LogError(
+                $"MapTransition em {gameObject.name}: nenhum Map Boundary foi definido."
+            );
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player"))
             return;
 
-        PlayerController player = collision.GetComponent<PlayerController>();
-
-        if (player == null)
+        if (confiner == null || mapBoundary == null)
             return;
 
-        CameraManager cameraManager =
-            FindFirstObjectByType<CameraManager>();
+        // Troca o limite da câmera
+        confiner.BoundingShape2D = mapBoundary;
 
-        if (cameraManager != null)
+        // Atualiza a posição do jogador
+        UpdatePlayerPosition(collision.gameObject);
+
+        // Em algumas versões do Cinemachine, isso força
+        // a atualização do Confiner imediatamente.
+        confiner.InvalidateCache();
+    }
+
+    private void UpdatePlayerPosition(GameObject player)
+    {
+        Vector3 newPos = player.transform.position;
+
+        switch (direction)
         {
-            cameraManager.MudarBoundary(novoBoundary);
+            case Direction.Up:
+                newPos.y += additivePos;
+                break;
+
+            case Direction.Down:
+                newPos.y -= additivePos;
+                break;
+
+            case Direction.Left:
+                newPos.x -= additivePos;
+                break;
+
+            case Direction.Right:
+                newPos.x += additivePos;
+                break;
         }
 
-        if (pontoEntrada != null)
-        {
-            player.transform.position = pontoEntrada.position;
-        }
+        player.transform.position = newPos;
     }
 }

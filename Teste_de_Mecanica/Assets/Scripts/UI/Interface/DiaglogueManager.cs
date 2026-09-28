@@ -36,6 +36,8 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueData currentDialogueData;
 
+    private PlayerController playerController;
+
     public bool IsDialogueOpen
     {
         get
@@ -53,6 +55,12 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         dialoguePanel.SetActive(false);
+
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerController = player.GetComponent<PlayerController>();
+        }
     }
 
     private void Update()
@@ -95,12 +103,17 @@ public class DialogueManager : MonoBehaviour
 
         currentLineIndex = 0;
 
-        // Esconde o botão enquanto o diálogo estiver aberto
+        // Esconde o botï¿½o enquanto o diï¿½logo estiver aberto
         ObserverManager.Notify("HideInteractButton");
+
+        if (playerController != null)
+        {
+            playerController.DisableControls();
+        }
 
         dialoguePanel.SetActive(true);
 
-        // Impede que o mesmo E usado para iniciar o diálogo também avance a primeira linha.
+        // Impede que o mesmo E usado para iniciar o diï¿½logo tambï¿½m avance a primeira linha.
         ignoreNextInput = true;
 
         ShowLine();
@@ -206,8 +219,13 @@ public class DialogueManager : MonoBehaviour
 
         dialoguePanel.SetActive(false);
 
+        if (playerController != null)
+        {
+            playerController.EnableControls();
+        }
+
         // Se o Player ainda estiver dentro do trigger,
-        // o botão volta a aparecer.
+        // o botï¿½o volta a aparecer.
         if (InteractOM.Instance != null)
         {
             ObserverManager.Notify("ShowInteractButton");

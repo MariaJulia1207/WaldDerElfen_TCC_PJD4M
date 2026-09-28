@@ -107,15 +107,15 @@ public class AttackHitbox : MonoBehaviour
 
             enemy.ReceberDano(dano);
 
-            EnemyMoblin moblin =
-                enemy.GetComponentInParent<EnemyMoblin>();
+            EnemyGoblin goblin =
+                enemy.GetComponentInParent<EnemyGoblin>();
 
-            if (moblin != null)
+            if (goblin != null)
             {
                 Vector2 direcaoKnockback =
                     (enemy.transform.position - transform.position).normalized;
 
-                moblin.ReceberKnockback(direcaoKnockback);
+                goblin.ReceberKnockback(direcaoKnockback);
             }
 
             return;

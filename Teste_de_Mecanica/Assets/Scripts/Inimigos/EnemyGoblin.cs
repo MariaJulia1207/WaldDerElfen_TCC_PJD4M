@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyMoblin : MonoBehaviour
+public class EnemyGoblin : MonoBehaviour
 {
     [Header("Movimento")]
     [SerializeField] private float velocidade = 2f;
@@ -24,23 +24,22 @@ public class EnemyMoblin : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private Transform jogador;
+    private WaypointMover waypointMover;
 
     private Vector2 movimento;
     private Vector2 ultimaDirecao = Vector2.down;
 
     private bool atacando;
     private bool sofrendoKnockback;
+    private bool perseguindoJogador;
 
     private float proximoAtaque;
-
-    // =========================================================
-    // START
-    // =========================================================
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        waypointMover = GetComponent<WaypointMover>();
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
@@ -50,21 +49,14 @@ public class EnemyMoblin : MonoBehaviour
         }
 
         DesativarTodasHitboxes();
-
         AtualizarDirecaoAnimacao(ultimaDirecao);
     }
-
-    // =========================================================
-    // UPDATE
-    // =========================================================
 
     private void Update()
     {
         if (jogador == null)
             return;
 
-        // Durante ataque ou knockback,
-        // o inimigo não recebe movimento normal.
         if (atacando || sofrendoKnockback)
         {
             movimento = Vector2.zero;
@@ -72,18 +64,42 @@ public class EnemyMoblin : MonoBehaviour
             return;
         }
 
-        float distancia =
-            Vector2.Distance(transform.position, jogador.position);
+        if (waypointMover != null)
+        {
+            AtualizarAnimacaoPatrulha();
 
-        // Fora do alcance
-        if (distancia > distanciaDeteccao)
+            float distancia = Vector2.Distance(transform.position, jogador.position);
+
+            if (distancia <= distanciaDeteccao)
+            {
+                if (!perseguindoJogador)
+                {
+                    waypointMover.PausePatrol();
+                }
+
+                perseguindoJogador = true;
+                PerseguirJogador();
+                return;
+            }
+
+            if (perseguindoJogador)
+            {
+                perseguindoJogador = false;
+                waypointMover.ResumePatrol();
+            }
+
+            return;
+        }
+
+        float distanciaAtual = Vector2.Distance(transform.position, jogador.position);
+
+        if (distanciaAtual > distanciaDeteccao)
         {
             Parar();
             return;
         }
 
-        // Alcance de ataque
-        if (distancia <= distanciaAtaque)
+        if (distanciaAtual <= distanciaAtaque)
         {
             Parar();
 
@@ -95,18 +111,11 @@ public class EnemyMoblin : MonoBehaviour
             return;
         }
 
-        // Perseguir
         PerseguirJogador();
     }
 
-    // =========================================================
-    // FIXED UPDATE
-    // =========================================================
-
     private void FixedUpdate()
     {
-        // MUITO IMPORTANTE:
-        // não sobrescrever o velocity durante o knockback.
         if (sofrendoKnockback)
             return;
 
@@ -116,19 +125,48 @@ public class EnemyMoblin : MonoBehaviour
             return;
         }
 
+        if (waypointMover != null)
+        {
+            if (perseguindoJogador)
+            {
+                rb.linearVelocity = movimento * velocidade;
+            }
+            else
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+
+            return;
+        }
+
         rb.linearVelocity = movimento * velocidade;
     }
 
-    // =========================================================
-    // PERSEGUIR
-    // =========================================================
+    private void AtualizarAnimacaoPatrulha()
+    {
+        if (waypointMover == null)
+            return;
+
+        if (waypointMover.IsWaiting)
+        {
+            anim.SetBool("IsMoving", false);
+            anim.SetFloat("MoveX", ultimaDirecao.x);
+            anim.SetFloat("MoveY", ultimaDirecao.y);
+            anim.SetFloat("LastMoveX", ultimaDirecao.x);
+            anim.SetFloat("LastMoveY", ultimaDirecao.y);
+            return;
+        }
+
+        Vector2 direcao = waypointMover.CurrentMoveDirection;
+        ultimaDirecao = direcao;
+        AtualizarDirecaoAnimacao(direcao);
+        anim.SetBool("IsMoving", true);
+    }
 
     private void PerseguirJogador()
     {
-        Vector2 diferenca =
-            jogador.position - transform.position;
+        Vector2 diferenca = jogador.position - transform.position;
 
-        // Movimento somente em 4 direções.
         if (Mathf.Abs(diferenca.x) > Mathf.Abs(diferenca.y))
         {
             if (diferenca.x > 0)
@@ -145,27 +183,16 @@ public class EnemyMoblin : MonoBehaviour
         }
 
         ultimaDirecao = movimento;
-
         AtualizarDirecaoAnimacao(ultimaDirecao);
-
         anim.SetBool("IsMoving", true);
     }
-
-    // =========================================================
-    // PARAR
-    // =========================================================
 
     private void Parar()
     {
         movimento = Vector2.zero;
         rb.linearVelocity = Vector2.zero;
-
         anim.SetBool("IsMoving", false);
     }
-
-    // =========================================================
-    // ATAQUE
-    // =========================================================
 
     private void Atacar()
     {
@@ -174,24 +201,15 @@ public class EnemyMoblin : MonoBehaviour
         movimento = Vector2.zero;
         rb.linearVelocity = Vector2.zero;
 
-        proximoAtaque =
-            Time.time + tempoEntreAtaques;
-
+        proximoAtaque = Time.time + tempoEntreAtaques;
         AtualizarDirecaoParaJogador();
-
         anim.SetBool("IsMoving", false);
-
         anim.SetTrigger("Attack");
     }
 
-    // =========================================================
-    // OLHAR PARA O JOGADOR
-    // =========================================================
-
     private void AtualizarDirecaoParaJogador()
     {
-        Vector2 diferenca =
-            jogador.position - transform.position;
+        Vector2 diferenca = jogador.position - transform.position;
 
         if (Mathf.Abs(diferenca.x) > Mathf.Abs(diferenca.y))
         {
@@ -211,22 +229,13 @@ public class EnemyMoblin : MonoBehaviour
         AtualizarDirecaoAnimacao(ultimaDirecao);
     }
 
-    // =========================================================
-    // ANIMAÇÃO
-    // =========================================================
-
     private void AtualizarDirecaoAnimacao(Vector2 direcao)
     {
         anim.SetFloat("MoveX", direcao.x);
         anim.SetFloat("MoveY", direcao.y);
-
         anim.SetFloat("LastMoveX", direcao.x);
         anim.SetFloat("LastMoveY", direcao.y);
     }
-
-    // =========================================================
-    // HITBOX
-    // =========================================================
 
     public void AtivarHitbox()
     {
@@ -274,24 +283,15 @@ public class EnemyMoblin : MonoBehaviour
             attackRight.SetActive(false);
     }
 
-    // =========================================================
-    // FINALIZAR ATAQUE
-    // =========================================================
-
     public void FinalizarAtaque()
     {
         DesativarTodasHitboxes();
-
         atacando = false;
     }
 
-    // =========================================================
-    // KNOCKBACK
-    // =========================================================
-
     public void ReceberKnockback(Vector2 direcao)
     {
-        Debug.Log("KNOCKBACK RECEBIDO PELO MOBLIN");
+        Debug.Log("KNOCKBACK RECEBIDO PELO GOBLIN");
 
         StopCoroutine(nameof(AplicarKnockback));
         StartCoroutine(AplicarKnockback(direcao));
@@ -307,14 +307,8 @@ public class EnemyMoblin : MonoBehaviour
         movimento = Vector2.zero;
 
         anim.SetBool("IsMoving", false);
-
-        // Garante que o Rigidbody não tenha
-        // velocidade anterior interferindo.
         rb.linearVelocity = Vector2.zero;
-
-        // Aplica o impulso.
-        rb.linearVelocity =
-            direcao.normalized * forcaKnockback;
+        rb.linearVelocity = direcao.normalized * forcaKnockback;
 
         yield return new WaitForSeconds(duracaoKnockback);
 
@@ -322,10 +316,6 @@ public class EnemyMoblin : MonoBehaviour
 
         sofrendoKnockback = false;
     }
-
-    // =========================================================
-    // DISABLE
-    // =========================================================
 
     private void OnDisable()
     {

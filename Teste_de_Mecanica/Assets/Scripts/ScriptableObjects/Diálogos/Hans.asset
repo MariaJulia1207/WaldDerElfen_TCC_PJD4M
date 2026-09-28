@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
   m_Name: Hans
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
-  playOnlyOnce: 0
+  playOnlyOnce: 1
   voiceSoundName: DialogueVoice
   mainDialogue:
   - speakerName: Hans
@@ -39,7 +39,7 @@ MonoBehaviour:
     voicePitchMax: 1.4
   - speakerName: Hans
     portrait: {fileID: 0}
-    dialogueText: "Ent\xE3o foi isso. Eles te enfeiti\xE7aram\u2026 removeram suas
+    dialogueText: "Ent\xE3o... eles devem ter te enfeiti\xE7ado\u2026 removido suas
       lembran\xE7as."
     voicePitchMin: 0.7
     voicePitchMax: 0.9
@@ -50,15 +50,14 @@ MonoBehaviour:
     voicePitchMax: 1.4
   - speakerName: Hans
     portrait: {fileID: 0}
-    dialogueText: "Os duendes. Eles atacaram a aldeia h\xE1 alguns dias. Eu estava
-      voltando da alfeia vizinha e, quando cheguei, tudo estava destru\xEDdo. Tentei
-      proteger as crian\xE7as, mas os wisp nos separaram e elas se esconderam nas
-      ru\xEDnas da aldeia."
+    dialogueText: "Os duendes. Eles atacaram o vilarejo h\xE1 alguns dias. Eu estava
+      voltando do vilarejo vizinho e, quando cheguei, tudo estava destru\xEDdo. Tentei
+      proteger as crian\xE7as, mas os wisp nos separaram e elas se esconderam."
     voicePitchMin: 0.7
     voicePitchMax: 0.9
   - speakerName: Rose
     portrait: {fileID: 0}
-    dialogueText: "Talvez elas saibam o que aconteceu. Qual a dire\xE7\xE3o da aldeia?"
+    dialogueText: "Talvez elas saibam o que aconteceu. Qual a dire\xE7\xE3o do vilarejo?"
     voicePitchMin: 1.1
     voicePitchMax: 1.4
   - speakerName: Hans
