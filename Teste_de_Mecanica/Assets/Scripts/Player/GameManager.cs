@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     [Header("GUI")]
     [SerializeField] private string nomeCenaGUI = "GUI";
 
+    [Header("Game Over")]
+    [SerializeField] private string nomeCenaGameOver = "GameOver";
+    public string NomeCenaGameOver => nomeCenaGameOver;
+
     [Header("Cenas de Gameplay")]
     [SerializeField] private List<string> cenasGameplay = new List<string>
     {
@@ -27,7 +31,8 @@ public class GameManager : MonoBehaviour
     {
         Iniciando,
         MenuPrincipal,
-        Gameplay
+        Gameplay,
+        GameOver
     }
 
     public GameState EstadoAtual { get; private set; }
@@ -95,10 +100,10 @@ public class GameManager : MonoBehaviour
     private void AtualizarGUI(string nomeCena)
     {
         // -----------------------------------------
-        // CENA DE GAMEPLAY
+        // CENAS QUE DEVEM EXIBIR A GUI
         // -----------------------------------------
 
-        if (cenasGameplay.Contains(nomeCena))
+        if (nomeCena == nomeCenaGameOver || cenasGameplay.Contains(nomeCena))
         {
             CarregarGUI();
             return;
@@ -165,6 +170,31 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    public void RestartFromCheckpoint()
+    {
+        Time.timeScale = 1f;
+
+        if (CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint)
+        {
+            ForceSceneChange(CheckpointManager.Instance.LastCheckpointScene);
+            return;
+        }
+
+        if (cenasGameplay.Count > 0)
+        {
+            ForceSceneChange(cenasGameplay[0]);
+            return;
+        }
+
+        ForceSceneChange("Menu");
+    }
+
+    public void VoltarAoMenu()
+    {
+        Time.timeScale = 1f;
+        ForceSceneChange("Menu");
+    }
+
     // =========================================================
     // ESTADO DO JOGO
     // =========================================================
@@ -179,6 +209,10 @@ public class GameManager : MonoBehaviour
         else if (nomeCena == "Menu")
         {
             EstadoAtual = GameState.MenuPrincipal;
+        }
+        else if (nomeCena == nomeCenaGameOver)
+        {
+            EstadoAtual = GameState.GameOver;
         }
         else if (cenasGameplay.Contains(nomeCena))
         {

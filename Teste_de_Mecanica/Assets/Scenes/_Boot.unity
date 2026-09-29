@@ -687,6 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   nomeCenaGUI: GUI
+  nomeCenaGameOver: GameOver
   cenasGameplay:
   - Level1
   - Level2
@@ -695,6 +696,7 @@ MonoBehaviour:
   - Splash
   - Menu
   - Cutscene_EraUmaVez
+  - GameOver
 --- !u!4 &685745070
 Transform:
   m_ObjectHideFlags: 0

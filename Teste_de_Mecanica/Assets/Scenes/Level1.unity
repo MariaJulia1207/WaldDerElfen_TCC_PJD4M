@@ -13034,8 +13034,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7679e31499352474f82ec38192501972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomTransition
-  novoBoundary: {fileID: 0}
-  pontoEntrada: {fileID: 0}
+  mapBoundary: {fileID: 0}
+  direction: 0
+  additivePos: 2
 --- !u!61 &280354535
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14018,8 +14019,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7679e31499352474f82ec38192501972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomTransition
-  novoBoundary: {fileID: 1859176472}
-  pontoEntrada: {fileID: 1395748871}
+  mapBoundary: {fileID: 0}
+  direction: 0
+  additivePos: 2
 --- !u!61 &371554423
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -23463,8 +23465,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7679e31499352474f82ec38192501972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomTransition
-  novoBoundary: {fileID: 0}
-  pontoEntrada: {fileID: 0}
+  mapBoundary: {fileID: 0}
+  direction: 0
+  additivePos: 2
 --- !u!61 &702345008
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -25997,8 +26000,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7679e31499352474f82ec38192501972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomTransition
-  novoBoundary: {fileID: 1859176472}
-  pontoEntrada: {fileID: 1022072480}
+  mapBoundary: {fileID: 0}
+  direction: 0
+  additivePos: 2
 --- !u!61 &801630008
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -47375,8 +47379,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7679e31499352474f82ec38192501972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomTransition
-  novoBoundary: {fileID: 1259817227}
-  pontoEntrada: {fileID: 371554421}
+  mapBoundary: {fileID: 0}
+  direction: 0
+  additivePos: 2
 --- !u!61 &1022072482
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -76616,8 +76621,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7679e31499352474f82ec38192501972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomTransition
-  novoBoundary: {fileID: 1259817227}
-  pontoEntrada: {fileID: 801630006}
+  mapBoundary: {fileID: 0}
+  direction: 0
+  additivePos: 2
 --- !u!61 &1395748873
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -86132,6 +86138,7 @@ GameObject:
   - component: {fileID: 1704543285}
   - component: {fileID: 1704543284}
   - component: {fileID: 1704543286}
+  - component: {fileID: 1704543287}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -86179,6 +86186,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   progressSlider: {fileID: 1898537859}
+--- !u!114 &1704543287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704543283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5940a5a7a88da7f4185ff1bffc07f317, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CheckpointManager
 --- !u!1 &1718181750
 GameObject:
   m_ObjectHideFlags: 0

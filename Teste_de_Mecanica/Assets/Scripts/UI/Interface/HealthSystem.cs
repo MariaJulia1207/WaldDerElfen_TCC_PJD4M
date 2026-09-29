@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -141,11 +142,20 @@ public class HealthSystem : MonoBehaviour
     }
 
     // =========================================================
-    // DESTROY - ANIMATION EVENT
+    // MORTE - ANIMATION EVENT
     // =========================================================
 
-    public void DestroyGameObject()
+    public void Morrer()
     {
-        Destroy(gameObject);
+        Time.timeScale = 0f;
+
+        string nomeCenaGameOver = GameManager.Instance != null ? GameManager.Instance.NomeCenaGameOver : "GameOver";
+
+        Scene cenaGameOver = SceneManager.GetSceneByName(nomeCenaGameOver);
+
+        if (!cenaGameOver.isLoaded)
+        {
+            SceneManager.LoadScene(nomeCenaGameOver, LoadSceneMode.Additive);
+        }
     }
 }
