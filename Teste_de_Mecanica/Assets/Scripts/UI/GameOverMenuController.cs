@@ -40,8 +40,6 @@ public class GameOverMenuController : MonoBehaviour
             GameManager.Instance.RestartFromCheckpoint();
         }
     }
-    
-    
 
     public void OnMenuClicked()
     {

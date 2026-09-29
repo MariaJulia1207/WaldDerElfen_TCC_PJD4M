@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour
     [Header("Movimento")]
     [SerializeField] private float velocidade = 5f;
 
+    [Header("Input")]
+    [SerializeField] private PlayerInput playerInput;
+
     [Header("Hitboxes do Ataque")]
     [SerializeField] private GameObject attackUp;
     [SerializeField] private GameObject attackDown;
@@ -14,6 +17,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
+    private InputAction moveAction;
+    private InputAction attackAction;
 
     public Animator Anim => anim;
 
@@ -26,6 +31,20 @@ public class PlayerController : MonoBehaviour
     // =========================================================
 
     private bool controlesAtivos = true;
+
+    private void Awake()
+    {
+        if (playerInput == null)
+        {
+            playerInput = GetComponent<PlayerInput>();
+        }
+
+        if (playerInput != null)
+        {
+            moveAction = playerInput.actions.FindAction("Move");
+            attackAction = playerInput.actions.FindAction("Attack");
+        }
+    }
 
     private void Start()
     {
@@ -69,8 +88,7 @@ public class PlayerController : MonoBehaviour
         LerMovimento();
         AtualizarAnimacao();
 
-        // Ataque com X
-        if (Keyboard.current.xKey.wasPressedThisFrame)
+        if (attackAction != null && attackAction.WasPressedThisFrame())
         {
             Atacar();
         }
@@ -119,6 +137,43 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
     }
 
+    public void IniciarRespawn()
+    {
+        controlesAtivos = false;
+        movimento = Vector2.zero;
+
+        if (anim != null)
+        {
+            anim.SetBool("IsMoving", false);
+            anim.SetBool("IsDead", false);
+            anim.ResetTrigger("Attack");
+            anim.SetTrigger("Respawn");
+        }
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    public void FinalizarRespawn()
+    {
+        controlesAtivos = true;
+        movimento = Vector2.zero;
+
+        if (anim != null)
+        {
+            anim.SetBool("IsMoving", false);
+            anim.SetBool("IsDead", false);
+            anim.Play("Idle");
+        }
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+
     // =========================================================
     // MOVIMENTO
     // =========================================================
@@ -127,27 +182,37 @@ public class PlayerController : MonoBehaviour
     {
         movimento = Vector2.zero;
 
-        if (Keyboard.current.leftArrowKey.isPressed)
+        if (moveAction != null)
         {
-            movimento.x = -1;
+            movimento = moveAction.ReadValue<Vector2>();
+        }
+        else if (Keyboard.current != null)
+        {
+            if (Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed)
+            {
+                movimento.x = -1f;
+            }
+
+            if (Keyboard.current.rightArrowKey.isPressed || Keyboard.current.dKey.isPressed)
+            {
+                movimento.x = 1f;
+            }
+
+            if (Keyboard.current.upArrowKey.isPressed || Keyboard.current.wKey.isPressed)
+            {
+                movimento.y = 1f;
+            }
+
+            if (Keyboard.current.downArrowKey.isPressed || Keyboard.current.sKey.isPressed)
+            {
+                movimento.y = -1f;
+            }
         }
 
-        if (Keyboard.current.rightArrowKey.isPressed)
+        if (movimento.sqrMagnitude > 1f)
         {
-            movimento.x = 1;
+            movimento = movimento.normalized;
         }
-
-        if (Keyboard.current.upArrowKey.isPressed)
-        {
-            movimento.y = 1;
-        }
-
-        if (Keyboard.current.downArrowKey.isPressed)
-        {
-            movimento.y = -1;
-        }
-
-        movimento = movimento.normalized;
     }
 
     // =========================================================

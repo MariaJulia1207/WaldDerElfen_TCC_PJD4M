@@ -158,4 +158,45 @@ public class HealthSystem : MonoBehaviour
             SceneManager.LoadScene(nomeCenaGameOver, LoadSceneMode.Additive);
         }
     }
+
+    public void RestaurarParaCheckpoint()
+    {
+        vida = vidaMaxima;
+        isDead = false;
+
+        if (player != null)
+        {
+            player.enabled = true;
+            player.IniciarRespawn();
+        }
+
+        if (flashCoroutine != null)
+        {
+            StopCoroutine(flashCoroutine);
+            flashCoroutine = null;
+        }
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        if (sprite != null)
+        {
+            sprite.color = corOriginal;
+        }
+
+        StartCoroutine(EsperarFinalRespawn());
+    }
+
+    private IEnumerator EsperarFinalRespawn()
+    {
+        yield return new WaitForSeconds(3.1f);
+
+        if (player != null)
+        {
+            player.FinalizarRespawn();
+        }
+    }
 }

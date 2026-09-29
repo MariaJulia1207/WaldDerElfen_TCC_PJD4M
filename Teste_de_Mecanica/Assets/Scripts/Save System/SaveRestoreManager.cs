@@ -1,4 +1,3 @@
-/*
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,15 +10,14 @@ public class SaveRestoreManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()
@@ -36,52 +34,70 @@ public class SaveRestoreManager : MonoBehaviour
     {
         if (SaveManager.Instance == null)
         {
-            Debug.LogWarning("SaveManager not found");
+            Debug.LogWarning("SaveRestoreManager: SaveManager not found.");
             return;
         }
 
-        var data = SaveManager.Instance.LoadFromSlot(slot);
+        SaveData data = SaveManager.Instance.LoadFromSlot(slot);
         if (data == null)
         {
-            Debug.LogWarning($"No save in slot {slot}");
+            Debug.LogWarning($"SaveRestoreManager: no save found in slot {slot}.");
             return;
         }
 
         pendingSave = data;
         pendingSlot = slot;
 
-        // If save points to a scene, load it
-        if (!string.IsNullOrEmpty(data.sceneName))
+        string targetScene = !string.IsNullOrEmpty(data.sceneName) ? data.sceneName : SaveManager.Instance.DefaultSceneName;
+        if (GameManager.Instance != null)
         {
-            GameManager.Instance.ForceSceneChange(data.sceneName);
+            GameManager.Instance.ForceSceneChange(targetScene);
+        }
+        else
+        {
+            SceneManager.LoadScene(targetScene);
         }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (pendingSave == null) return;
-
-        // If pending save scene specified and doesn't match current, wait
-        if (!string.IsNullOrEmpty(pendingSave.sceneName) && pendingSave.sceneName != scene.name) return;
-
-        // Apply to player and HUD
-        var player = FindObjectOfType<TwoBallController>();
-        if (player != null)
+        if (pendingSave == null)
         {
-            player.transform.position = pendingSave.playerPosition;
+            return;
         }
 
-        var hud = FindObjectOfType<HUDController>();
-        if (hud != null)
+        if (!string.IsNullOrEmpty(pendingSave.sceneName) && pendingSave.sceneName != scene.name)
         {
-            hud.SetCoins(pendingSave.coins);
+            return;
         }
 
-        Debug.Log($"Applied pending save from slot {pendingSlot} after scene load {scene.name}");
-
-        // clear
+        ApplyPendingSave();
         pendingSave = null;
         pendingSlot = -1;
     }
+
+    private void ApplyPendingSave()
+    {
+        if (pendingSave == null)
+        {
+            return;
+        }
+
+        Vector3 targetPosition = pendingSave.checkpointReached && pendingSave.checkpointPosition != Vector3.zero
+            ? pendingSave.checkpointPosition
+            : pendingSave.playerPosition;
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null && targetPosition != Vector3.zero)
+        {
+            player.transform.position = targetPosition;
+        }
+
+        if (CheckpointManager.Instance != null)
+        {
+            CheckpointManager.Instance.AtualizarCheckpoint(pendingSave.sceneName, targetPosition);
+        }
+
+        Debug.Log($"SaveRestoreManager: applied pending save from slot {pendingSlot}.");
+    }
 }
-*/

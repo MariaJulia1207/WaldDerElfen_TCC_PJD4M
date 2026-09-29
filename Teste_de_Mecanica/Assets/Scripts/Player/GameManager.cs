@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
 
         if (CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint)
         {
-            ForceSceneChange(CheckpointManager.Instance.LastCheckpointScene);
+            CheckpointManager.Instance.RestaurarPlayerNoCheckpoint();
             return;
         }
 

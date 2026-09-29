@@ -53838,11 +53838,11 @@ Transform:
   m_GameObject: {fileID: 1201361231}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 29.7, y: 8.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1371176951}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &1201361233
 ParticleSystemRenderer:
@@ -76123,6 +76123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5803fff66500274d9d45d8a962ade8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckpointArea
+  spawnPoint: {fileID: 1798403619}
 --- !u!58 &1371176949
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -76232,7 +76233,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1201361232}
+  - {fileID: 1798403619}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1377594157
@@ -86651,6 +86652,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0527e7dfca9b255419427208e1ade0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+--- !u!1 &1798403618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1798403619}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1798403619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798403618}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1371176951}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1806310717
 GameObject:
   m_ObjectHideFlags: 0
@@ -132376,4 +132408,5 @@ SceneRoots:
   - {fileID: 884995785}
   - {fileID: 102841743}
   - {fileID: 1853962303}
+  - {fileID: 1201361232}
   - {fileID: 1371176951}
