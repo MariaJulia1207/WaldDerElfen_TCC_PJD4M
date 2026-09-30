@@ -6,20 +6,42 @@ public class BossArena : MonoBehaviour
     [SerializeField] private GameObject aberturaEntrada;
     [SerializeField] private GameObject aberturaSaida;
 
-    [Header("Objeto de Teste")]
+[Header("Boss")]
+    [SerializeField] private GameObject boss;
+
+    [Header("Objeto de Teste - Opcional")]
     [SerializeField] private GameObject objetoTeste;
 
     private bool combateIniciado = false;
     private bool combateFinalizado = false;
 
+    private IBoss bossScript;
+
+    private void Awake()
+    {
+        if (boss != null)
+        {
+            bossScript = boss.GetComponent<IBoss>();
+
+            if (bossScript == null)
+            {
+                Debug.LogError(
+                    "BossArena: O Boss não possui um script que implemente IBoss."
+                );
+            }
+        }
+    }
+
     private void Update()
     {
-        // Se o combate começou e o objeto foi destruído
+        // O objeto de teste continua disponível para testes.
+        // Se estiver preenchido, sua destruição também pode
+        // abrir a arena.
         if (combateIniciado && !combateFinalizado)
         {
-            if (objetoTeste == null)
+            if (objetoTeste != null && objetoTeste == null)
             {
-                AbrirArena();
+                BossDerrotado();
             }
         }
     }
@@ -29,17 +51,17 @@ public class BossArena : MonoBehaviour
         if (combateIniciado)
             return;
 
-        if (other.CompareTag("Player"))
-        {
-            IniciarCombate();
-        }
+        if (!other.CompareTag("Player"))
+            return;
+
+        IniciarCombate();
     }
 
     private void IniciarCombate()
     {
         combateIniciado = true;
 
-        // Fecha as aberturas
+        // Fecha as aberturas.
         if (aberturaEntrada != null)
             aberturaEntrada.SetActive(true);
 
@@ -47,13 +69,32 @@ public class BossArena : MonoBehaviour
             aberturaSaida.SetActive(true);
 
         Debug.Log("Boss Arena: Combate iniciado!");
+
+        // Inicia o boss.
+        if (bossScript != null)
+        {
+            bossScript.IniciarBoss();
+        }
+        else
+        {
+            Debug.LogWarning(
+                "BossArena: Nenhum Boss válido foi configurado."
+            );
+        }
     }
 
-    private void AbrirArena()
+    // =========================================================
+    // BOSS DERROTADO
+    // =========================================================
+
+    public void BossDerrotado()
     {
+        if (combateFinalizado)
+            return;
+
         combateFinalizado = true;
 
-        // Abre as aberturas
+        // Abre as passagens.
         if (aberturaEntrada != null)
             aberturaEntrada.SetActive(false);
 
@@ -62,4 +103,5 @@ public class BossArena : MonoBehaviour
 
         Debug.Log("Boss Arena: Boss derrotado! Arena aberta.");
     }
+
 }
