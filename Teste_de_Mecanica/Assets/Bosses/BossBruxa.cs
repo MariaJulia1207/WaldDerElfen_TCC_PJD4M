@@ -8,17 +8,20 @@ public class BossBruxa : MonoBehaviour, IBoss
         Medio,
         Dificil
     }
-private enum EstadoAtual
+
+    private enum EstadoAtual
     {
         Esperando,
         Preparando,
         Perseguindo,
+        Knockback,
         Vulneravel,
         Derrotado
     }
 
     [Header("Vida")]
     [SerializeField] private int vidaMaxima = 60;
+
     private int vidaAtual;
 
     [Header("Referências")]
@@ -28,21 +31,31 @@ private enum EstadoAtual
 
     [Header("Física")]
     [SerializeField] private Rigidbody2D rb;
-
-    [Tooltip("Collider específico da parede que faz a Bruxa ficar vulnerável.")]
+    [Tooltip("Collider específico da parede que deixa a Bruxa vulnerável.")]
     [SerializeField] private Collider2D paredeArena;
+    [Tooltip("Força do recuo ao bater na parede.")]
+    [SerializeField] private float forcaKnockbackParede = 2f;
+    [Tooltip("Duração do recuo ao bater na parede.")]
+    [SerializeField] private float duracaoKnockbackParede = 0.12f;
+
 
     [Header("Ataque")]
     [SerializeField] private int danoAtaque = 1;
 
+
     [Header("Animação")]
     [SerializeField] private Animator anim;
 
+
     [Header("Feedback de Dano")]
     [SerializeField] private ControladorFeedBackDano feedbackDano;
+    private float tempoKnockback;
+    private Vector2 direcaoKnockback;
+
 
     [Header("Fase")]
     [SerializeField] private BossState faseAtual = BossState.Facil;
+
 
     [System.Serializable]
     public class ConfiguracaoFase
@@ -56,9 +69,10 @@ private enum EstadoAtual
         [Header("Preparação")]
         public float tempoPreparacao = 0.6f;
 
-        [Header("Distância")]
+        [Header("Distância para considerar que chegou")]
         public float distanciaParada = 0.1f;
     }
+
 
     [Header("Configuração - Fácil")]
     [SerializeField] private ConfiguracaoFase faseFacil;
@@ -69,16 +83,27 @@ private enum EstadoAtual
     [Header("Configuração - Difícil")]
     [SerializeField] private ConfiguracaoFase faseDificil;
 
+
+    // =========================================================
+    // ESTADO
+    // =========================================================
+
     private EstadoAtual estadoAtual = EstadoAtual.Esperando;
 
-    // Posição capturada no começo da investida.
+
+    // Ponto onde o jogador estava quando a investida começou.
     private Vector2 ultimoPontoJogador;
 
-    // Direção da investida atual.
+    // Direção da investida.
     private Vector2 direcaoPerseguicao;
 
     private float tempoPreparacao;
     private float tempoVulneravel;
+
+
+    // =========================================================
+    // CONFIGURAÇÃO DA FASE ATUAL
+    // =========================================================
 
     private ConfiguracaoFase ConfiguracaoAtual
     {
@@ -98,6 +123,11 @@ private enum EstadoAtual
         }
     }
 
+
+    // =========================================================
+    // AWAKE
+    // =========================================================
+
     private void Awake()
     {
         vidaAtual = vidaMaxima;
@@ -111,6 +141,11 @@ private enum EstadoAtual
         if (feedbackDano == null)
             feedbackDano = GetComponent<ControladorFeedBackDano>();
     }
+
+
+    // =========================================================
+    // UPDATE
+    // =========================================================
 
     private void Update()
     {
@@ -127,15 +162,29 @@ private enum EstadoAtual
                 AtualizarPreparacao();
                 break;
 
-            case EstadoAtual.Perseguindo:
-                AtualizarPerseguicao();
-                break;
-
             case EstadoAtual.Vulneravel:
                 AtualizarVulnerabilidade();
                 break;
         }
     }
+
+
+    // =========================================================
+    // FIXED UPDATE
+    // =========================================================
+
+    private void FixedUpdate()
+    {
+        if (estadoAtual == EstadoAtual.Perseguindo)
+        {
+            AtualizarPerseguicao();
+        }
+        else if (estadoAtual == EstadoAtual.Knockback)
+        {
+            AtualizarKnockback();
+        }
+    }
+
 
     // =========================================================
     // IDLE
@@ -145,15 +194,14 @@ private enum EstadoAtual
     {
         rb.linearVelocity = Vector2.zero;
 
-        anim.SetFloat("MoveX", 0f);
-        anim.SetFloat("MoveY", 0f);
         anim.SetBool("IsMoving", false);
         anim.SetBool("IsVulnerable", false);
         anim.SetBool("IsDead", false);
     }
 
+
     // =========================================================
-    // INÍCIO DO BOSS
+    // INICIAR BOSS
     // =========================================================
 
     public void IniciarBoss()
@@ -161,13 +209,7 @@ private enum EstadoAtual
         if (estadoAtual != EstadoAtual.Esperando)
             return;
 
-        if (jogador == null)
-        {
-            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-
-            if (playerObject != null)
-                jogador = playerObject.transform;
-        }
+        EncontrarJogador();
 
         if (jogador == null)
         {
@@ -175,8 +217,28 @@ private enum EstadoAtual
             return;
         }
 
+        Debug.Log("BossBruxa: combate iniciado!");
+
         IniciarPreparacao();
     }
+
+
+    // =========================================================
+    // ENCONTRAR PLAYER
+    // =========================================================
+
+    private void EncontrarJogador()
+    {
+        if (jogador != null)
+            return;
+
+        GameObject playerObject =
+            GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObject != null)
+            jogador = playerObject.transform;
+    }
+
 
     // =========================================================
     // PREPARAÇÃO
@@ -190,15 +252,16 @@ private enum EstadoAtual
 
         rb.linearVelocity = Vector2.zero;
 
-        // A direção é definida olhando para o jogador.
-        AtualizarDirecaoParaJogador();
-
         anim.SetBool("IsMoving", false);
         anim.SetBool("IsVulnerable", false);
+        anim.SetBool("IsDead", false);
 
-        // Por enquanto usamos Idle.anim durante a preparação.
-        // Uma animação específica de preparação pode ser adicionada depois.
+        // Durante a preparação ela apenas olha para o jogador.
+        AtualizarDirecaoParaJogador();
+
+        Debug.Log("BossBruxa: preparando investida.");
     }
+
 
     private void AtualizarPreparacao()
     {
@@ -214,56 +277,85 @@ private enum EstadoAtual
         }
     }
 
+
     // =========================================================
-    // PERSEGUIÇÃO
+    // INICIAR PERSEGUIÇÃO
     // =========================================================
 
     private void IniciarPerseguicao()
     {
+        EncontrarJogador();
+
         if (jogador == null)
             return;
 
         estadoAtual = EstadoAtual.Perseguindo;
 
-        // Captura a posição UMA ÚNICA VEZ.
+        // =====================================================
+        // IMPORTANTE:
+        // captura a posição SOMENTE UMA VEZ.
+        // =====================================================
+
         ultimoPontoJogador = jogador.position;
 
         direcaoPerseguicao =
-            (ultimoPontoJogador - (Vector2)transform.position).normalized;
+            (ultimoPontoJogador - rb.position).normalized;
+
+        // Se o jogador estiver praticamente sobre a Bruxa.
+        if (direcaoPerseguicao.sqrMagnitude < 0.001f)
+        {
+            direcaoPerseguicao = Vector2.down;
+        }
 
         AtualizarBlendTree(direcaoPerseguicao);
 
         anim.SetBool("IsMoving", true);
         anim.SetBool("IsVulnerable", false);
         anim.SetBool("IsDead", false);
+
+        Debug.Log(
+            "BossBruxa: investida iniciada. " +
+            "Alvo capturado: " + ultimoPontoJogador
+        );
     }
+
+
+    // =========================================================
+    // PERSEGUIÇÃO
+    // =========================================================
 
     private void AtualizarPerseguicao()
     {
+        Vector2 posicaoAtual = rb.position;
+
         Vector2 novaPosicao = Vector2.MoveTowards(
-            rb.position,
+            posicaoAtual,
             ultimoPontoJogador,
-            ConfiguracaoAtual.velocidadePerseguicao * Time.deltaTime
+            ConfiguracaoAtual.velocidadePerseguicao * Time.fixedDeltaTime
         );
 
         rb.MovePosition(novaPosicao);
 
-        // Mantém a direção da investida.
+        // Mantém a animação apontada para a direção da investida.
         AtualizarBlendTree(direcaoPerseguicao);
 
-        if (Vector2.Distance(rb.position, ultimoPontoJogador)
+        // Chegou ao ponto onde o jogador estava.
+        if (Vector2.Distance(novaPosicao, ultimoPontoJogador)
             <= ConfiguracaoAtual.distanciaParada)
         {
+            rb.MovePosition(ultimoPontoJogador);
+
             rb.linearVelocity = Vector2.zero;
 
-            // Não inicia outra investida imediatamente.
-            // Faz uma nova preparação primeiro.
+            Debug.Log("BossBruxa: chegou ao ponto do jogador.");
+
             IniciarPreparacao();
         }
     }
 
+
     // =========================================================
-    // DIREÇÃO / BLEND TREE
+    // BLEND TREE
     // =========================================================
 
     private void AtualizarDirecaoParaJogador()
@@ -277,6 +369,7 @@ private enum EstadoAtual
         AtualizarBlendTree(direcao);
     }
 
+
     private void AtualizarBlendTree(Vector2 direcao)
     {
         if (direcao.sqrMagnitude <= 0.001f)
@@ -285,6 +378,7 @@ private enum EstadoAtual
         anim.SetFloat("MoveX", direcao.x);
         anim.SetFloat("MoveY", direcao.y);
     }
+
 
     // =========================================================
     // COLISÃO
@@ -295,19 +389,24 @@ private enum EstadoAtual
         if (estadoAtual != EstadoAtual.Perseguindo)
             return;
 
-        // -----------------------------------------
-        // BATEU NO PLAYER
-        // -----------------------------------------
+
+        // -----------------------------------------------------
+        // PLAYER
+        // -----------------------------------------------------
 
         if (collision.gameObject.CompareTag("Player"))
         {
             CausarDanoNoJogador(collision.gameObject);
+
+            Debug.Log("BossBruxa: atingiu o jogador.");
+
             return;
         }
 
-        // -----------------------------------------
-        // BATEU NA PAREDE DA ARENA
-        // -----------------------------------------
+
+        // -----------------------------------------------------
+        // PAREDE DA ARENA
+        // -----------------------------------------------------
 
         if (paredeArena == null)
             return;
@@ -316,17 +415,15 @@ private enum EstadoAtual
         {
             if (contato.collider == paredeArena)
             {
-                rb.linearVelocity = Vector2.zero;
-
-                ComecarVulnerabilidade();
-
+                IniciarKnockbackParede();
                 return;
             }
         }
     }
 
+
     // =========================================================
-    // DANO AO PLAYER
+    // DANO NO PLAYER
     // =========================================================
 
     private void CausarDanoNoJogador(GameObject player)
@@ -338,13 +435,54 @@ private enum EstadoAtual
         );
     }
 
+
     // =========================================================
     // VULNERABILIDADE
     // =========================================================
 
-    private void ComecarVulnerabilidade()
+    private void IniciarKnockbackParede()
     {
         if (estadoAtual != EstadoAtual.Perseguindo)
+            return;
+
+        estadoAtual = EstadoAtual.Knockback;
+
+        // Recuar na direção oposta à investida.
+        direcaoKnockback = -direcaoPerseguicao.normalized;
+
+        tempoKnockback = duracaoKnockbackParede;
+
+        rb.linearVelocity = Vector2.zero;
+
+        anim.SetBool("IsMoving", false);
+
+        Debug.Log("BossBruxa: impacto com a parede! Knockback.");
+    }
+
+    private void AtualizarKnockback()
+    {
+        rb.linearVelocity = Vector2.zero;
+
+        Vector2 novaPosicao = rb.position +
+            direcaoKnockback *
+            forcaKnockbackParede *
+            Time.fixedDeltaTime;
+
+        rb.MovePosition(novaPosicao);
+
+        tempoKnockback -= Time.fixedDeltaTime;
+
+        if (tempoKnockback <= 0f)
+        {
+            rb.linearVelocity = Vector2.zero;
+
+            ComecarVulnerabilidade();
+        }
+    }
+
+    private void ComecarVulnerabilidade()
+    {
+        if (estadoAtual != EstadoAtual.Knockback)
             return;
 
         estadoAtual = EstadoAtual.Vulneravel;
@@ -356,8 +494,12 @@ private enum EstadoAtual
         anim.SetBool("IsMoving", false);
         anim.SetBool("IsVulnerable", true);
         anim.SetBool("IsDead", false);
-    }
 
+        // Força imediatamente a animação de vulnerabilidade.
+        anim.Play("Vulnerable", 0, 0f);
+
+        Debug.Log("BossBruxa: ficou vulnerável.");
+    }
     private void AtualizarVulnerabilidade()
     {
         rb.linearVelocity = Vector2.zero;
@@ -366,12 +508,14 @@ private enum EstadoAtual
 
         if (tempoVulneravel <= 0f)
         {
+            anim.SetBool("IsVulnerable", false);
+
             VoltarAoCentro();
         }
     }
 
     // =========================================================
-    // TELEPORTE
+    // VOLTAR AO CENTRO
     // =========================================================
 
     private void VoltarAoCentro()
@@ -382,14 +526,13 @@ private enum EstadoAtual
         }
 
         anim.SetBool("IsVulnerable", false);
+        anim.SetBool("IsMoving", false);
 
-        // Depois do teleporte, começa novamente
-        // com o pequeno período de preparação.
         IniciarPreparacao();
     }
 
     // =========================================================
-    // DANO DO PLAYER
+    // RECEBER DANO
     // =========================================================
 
     public void ReceberDano(int dano)
@@ -400,7 +543,11 @@ private enum EstadoAtual
 
         vidaAtual -= dano;
 
-        // Feedback visual/partículas.
+        Debug.Log(
+            "BossBruxa recebeu dano. Vida: " +
+            vidaAtual + "/" + vidaMaxima
+        );
+
         if (feedbackDano != null)
         {
             feedbackDano.ExecutarFeedback();
@@ -409,12 +556,15 @@ private enum EstadoAtual
         if (vidaAtual <= 0)
         {
             vidaAtual = 0;
+
             Morrer();
+
             return;
         }
 
         AtualizarFase();
     }
+
 
     // =========================================================
     // FASES
@@ -422,7 +572,8 @@ private enum EstadoAtual
 
     private void AtualizarFase()
     {
-        float porcentagemVida = (float)vidaAtual / vidaMaxima;
+        float porcentagemVida =
+            (float)vidaAtual / vidaMaxima;
 
         if (porcentagemVida <= 0.33f)
         {
@@ -438,6 +589,7 @@ private enum EstadoAtual
         }
     }
 
+
     // =========================================================
     // MORTE
     // =========================================================
@@ -452,7 +604,6 @@ private enum EstadoAtual
         anim.SetBool("IsVulnerable", false);
         anim.SetBool("IsDead", true);
 
-        // A arena só abre quando o boss realmente morreu.
         if (bossArena != null)
         {
             bossArena.BossDerrotado();
@@ -460,6 +611,7 @@ private enum EstadoAtual
 
         Debug.Log("BossBruxa: derrotada!");
     }
+
 
     // =========================================================
     // TESTES
@@ -479,5 +631,4 @@ private enum EstadoAtual
     {
         return faseAtual;
     }
-
 }

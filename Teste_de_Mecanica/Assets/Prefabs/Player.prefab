@@ -509,8 +509,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0527e7dfca9b255419427208e1ade0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  velocidade: 5
-  playerInput: {fileID: 0}
+  velocidade: 6
+  playerInput: {fileID: 2187619447116012235}
   attackUp: {fileID: 6437092041079557808}
   attackDown: {fileID: 8054941059628774820}
   attackLeft: {fileID: 7127703338412119985}
@@ -578,7 +578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
   isDead: 0
   vida: 5
-  vidaMaxima: 5
+  vidaMaxima: 10
   sprite: {fileID: 4917694964323268548}
 --- !u!114 &2187619447116012235
 MonoBehaviour:
@@ -607,7 +607,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: df70fa95-8a34-4494-b137-73ab6b9c7d37
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &8054941059628774820

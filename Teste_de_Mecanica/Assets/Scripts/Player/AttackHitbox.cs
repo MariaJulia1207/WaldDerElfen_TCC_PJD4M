@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class AttackHitbox : MonoBehaviour
@@ -17,6 +19,9 @@ public class AttackHitbox : MonoBehaviour
     private readonly HashSet<BossPapoula> papoulasAtingidas =
         new HashSet<BossPapoula>();
 
+    private readonly HashSet<BossBruxa> bruxasAtingidas =
+        new HashSet<BossBruxa>();
+
     private void Awake()
     {
         meuCollider = GetComponent<Collider2D>();
@@ -27,6 +32,7 @@ public class AttackHitbox : MonoBehaviour
         obstaculosAtingidos.Clear();
         inimigosAtingidos.Clear();
         papoulasAtingidas.Clear();
+        bruxasAtingidas.Clear();
     }
 
     // =========================================================
@@ -136,6 +142,25 @@ public class AttackHitbox : MonoBehaviour
             papoulasAtingidas.Add(papoula);
 
             papoula.ReceberDano(dano);
+
+            return;
+        }
+
+        // -----------------------------------------------------
+        // BRUXA DO BOSS
+        // -----------------------------------------------------
+
+        BossBruxa bruxa =
+            other.GetComponentInParent<BossBruxa>();
+
+        if (bruxa != null)
+        {
+            if (bruxasAtingidas.Contains(bruxa))
+                return;
+
+            bruxasAtingidas.Add(bruxa);
+
+            bruxa.ReceberDano(dano);
 
             return;
         }
