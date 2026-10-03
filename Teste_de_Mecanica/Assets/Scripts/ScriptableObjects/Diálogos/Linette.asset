@@ -15,16 +15,76 @@ MonoBehaviour:
   playOnlyOnce: 1
   voiceSoundName: DialogueVoice
   mainDialogue:
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Li... Linette? \xC9 voc\xEA?"
+    voicePitchMin: 1.1
+    voicePitchMax: 1.4
   - speakerName: Linette
     portrait: {fileID: 0}
-    dialogueText: 
+    dialogueText: "Voc\xEA\u2026 voc\xEA \xE9? N\xE3o pode ser! Eu vi o duende grande
+      lan\xE7ando aquele feiti\xE7o. Eu vi Valemon ser transformado num urso, vi
+      voc\xEAs dois sumindo e\u2026"
     voicePitchMin: 0.9
     voicePitchMax: 1.1
   - speakerName: Rose
     portrait: {fileID: 0}
-    dialogueText: 
+    dialogueText: "\u201CValemon\u201D? Eu reconhe\xE7o esse nome! Quem ele era?"
     voicePitchMin: 1.1
     voicePitchMax: 1.4
+  - speakerName: Linette
+    portrait: {fileID: 0}
+    dialogueText: "O pr\xEDncipe. Seu noivo. N\xE3o se\u2026 ah! Ent\xE3o voc\xEA
+      foi\u2026 Mas, a sua irm\xE3? Lembra-se dela?"
+    voicePitchMin: 0.9
+    voicePitchMax: 1.1
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Eu acho que sim\u2026 ou\u2026 eu n\xE3o sei. Me lembro de uma
+      garota de cabelos claros, voz suave\u2026 mas n\xE3o consigo lembrar o nome
+      dela."
+    voicePitchMin: 1.1
+    voicePitchMax: 1.4
+  - speakerName: Linette
+    portrait: {fileID: 0}
+    dialogueText: "N\xE3o seria Belle, ou Brienne, ou\u2026 eu\u2026 eu n\xE3o me
+      lembro\u2026 eu\u2026 ai! Minha cabe\xE7a! S\xF3 lembro da minha m\xE3e chorando,
+      os duendes levando as garotas e os homens correndo\u2026"
+    voicePitchMin: 0.9
+    voicePitchMax: 1.1
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Calma. Voc\xEA passou por muita coisa. S\xF3 me diga: para onde
+      foram os duendes?"
+    voicePitchMin: 1.1
+    voicePitchMax: 1.4
+  - speakerName: Linette
+    portrait: {fileID: 0}
+    dialogueText: "Eles foram para o cemit\xE9rio. Acho que fizeram algo com a M\xE3e
+      Aveleira. Ela nos protegia dos ataques dos duendes."
+    voicePitchMin: 0.9
+    voicePitchMax: 1.1
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Eu irei ent\xE3o. Ela saber\xE1 me dizer o que houve."
+    voicePitchMin: 1.1
+    voicePitchMax: 1.4
+  - speakerName: Linette
+    portrait: {fileID: 0}
+    dialogueText: "N\xE3o! Por favor, n\xE3o v\xE1. Eles podem lev\xE1-la tamb\xE9m. "
+    voicePitchMin: 0.9
+    voicePitchMax: 1.1
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Linette, eu tenho que fazer isso. \xC9 a \xFAnica maneira de descobrir
+      o que aconteceu com minha irm\xE3. Fique aqui."
+    voicePitchMin: 1.1
+    voicePitchMax: 1.4
+  - speakerName: Linette
+    portrait: {fileID: 0}
+    dialogueText: "Tome cuidado. Eu n\xE3o quero perder mais ningu\xE9m\u2026"
+    voicePitchMin: 0.9
+    voicePitchMax: 1.1
   summaryDialogue:
   - speakerName: Linette
     portrait: {fileID: 0}
