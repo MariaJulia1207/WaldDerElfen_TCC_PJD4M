@@ -35,6 +35,14 @@ public class GameOverMenuController : MonoBehaviour
 
     public void OnRestartClicked()
     {
+        GameOverSequenceController sequenceController = FindObjectOfType<GameOverSequenceController>();
+
+        if (sequenceController != null)
+        {
+            sequenceController.PlayHide();
+            return;
+        }
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.RestartFromCheckpoint();
