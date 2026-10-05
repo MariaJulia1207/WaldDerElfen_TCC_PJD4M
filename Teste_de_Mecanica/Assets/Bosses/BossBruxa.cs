@@ -1,4 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.LightTransport;
+using UnityEngine.Rendering;
+using static UnityEngine.InputSystem.HID.HID;
 
 public class BossBruxa : MonoBehaviour, IBoss
 {
@@ -9,49 +15,99 @@ public class BossBruxa : MonoBehaviour, IBoss
         Dificil
     }
 
-    private enum EstadoAtual
-    {
-        Esperando,
-        Preparando,
-        Perseguindo,
-        Knockback,
-        Vulneravel,
-        Derrotado
-    }
+    private enum EstadoAtual 
+    { Esperando, Preparando, Perseguindo, Knockback, Vulneravel, Invocando, Derrotado }
+
+    // =========================================================
+    // VIDA
+    // =========================================================
 
     [Header("Vida")]
     [SerializeField] private int vidaMaxima = 60;
 
     private int vidaAtual;
 
+
+    // =========================================================
+    // REFERÊNCIAS
+    // =========================================================
+
     [Header("Referências")]
     [SerializeField] private Transform jogador;
     [SerializeField] private Transform centroArena;
     [SerializeField] private BossArena bossArena;
 
+    [Header("Diálogo Inicial")]
+    [SerializeField] private DialogueData dialogoInicial;
+
+    private bool dialogoInicialConcluido;
+    private bool aguardandoDialogoInicial;
+
+
+    // =========================================================
+    // FÍSICA
+    // =========================================================
+
     [Header("Física")]
     [SerializeField] private Rigidbody2D rb;
+
     [Tooltip("Collider específico da parede que deixa a Bruxa vulnerável.")]
     [SerializeField] private Collider2D paredeArena;
+
     [Tooltip("Força do recuo ao bater na parede.")]
     [SerializeField] private float forcaKnockbackParede = 2f;
+
     [Tooltip("Duração do recuo ao bater na parede.")]
     [SerializeField] private float duracaoKnockbackParede = 0.12f;
 
 
+    // =========================================================
+    // ATAQUE
+    // =========================================================
+
     [Header("Ataque")]
     [SerializeField] private int danoAtaque = 1;
 
+    [Header("Ataque de Projéteis")]
+    [SerializeField] private ProjetilPool projetilPool;
+    [SerializeField] private float raioOrbita = 1.2f;
+    [SerializeField] private float velocidadeOrbita = 180f;
+    [SerializeField] private float tempoOrbita = 1.5f;
+    [SerializeField] private float tempoEntreProjeteis = 0.05f;
+
+    private readonly List<Projetil> projetisAtivos = new List<Projetil>(); 
+    private float anguloInicial;
+
+
+    // =========================================================
+    // ANIMAÇÃO
+    // =========================================================
 
     [Header("Animação")]
     [SerializeField] private Animator anim;
 
 
+    // =========================================================
+    // FEEDBACK DE DANO
+    // =========================================================
+
     [Header("Feedback de Dano")]
     [SerializeField] private ControladorFeedBackDano feedbackDano;
-    private float tempoKnockback;
-    private Vector2 direcaoKnockback;
 
+
+    // =========================================================
+    // MORTE
+    // =========================================================
+
+    [Header("Morte")]
+    [SerializeField] private ParticleSystem particulasMorte;
+    [SerializeField] private float tempoAteParticulas = 1.5f;
+    [SerializeField] private float tempoDoEfeitoMorte = 2f;
+
+
+    // =========================================================
+    // FASE
+    // =========================================================
 
     [Header("Fase")]
     [SerializeField] private BossState faseAtual = BossState.Facil;
@@ -71,6 +127,10 @@ public class BossBruxa : MonoBehaviour, IBoss
 
         [Header("Distância para considerar que chegou")]
         public float distanciaParada = 0.1f;
+
+        [Header("Projéteis")]
+        public int quantidadeProjetis = 6;
+        public float velocidadeProjetil = 5f;
     }
 
 
@@ -90,15 +150,14 @@ public class BossBruxa : MonoBehaviour, IBoss
 
     private EstadoAtual estadoAtual = EstadoAtual.Esperando;
 
-
-    // Ponto onde o jogador estava quando a investida começou.
     private Vector2 ultimoPontoJogador;
-
-    // Direção da investida.
     private Vector2 direcaoPerseguicao;
+
+    private Vector2 direcaoKnockback;
 
     private float tempoPreparacao;
     private float tempoVulneravel;
+    private float tempoKnockback;
 
 
     // =========================================================
@@ -213,15 +272,50 @@ public class BossBruxa : MonoBehaviour, IBoss
 
         if (jogador == null)
         {
-            Debug.LogWarning("BossBruxa: Player não encontrado.");
+            Debug.LogWarning(
+                "BossBruxa: Player não encontrado.");
+
             return;
         }
 
         Debug.Log("BossBruxa: combate iniciado!");
 
+        // ---------------------------------------------------------
+        // DIÁLOGO INICIAL
+        // ---------------------------------------------------------
+
+        if (!dialogoInicialConcluido &&
+            dialogoInicial != null)
+        {
+            aguardandoDialogoInicial = true;
+
+            BossDialogueManager.Instance.StartBossDialogue(
+                dialogoInicial,
+                this);
+
+            return;
+        }
+
+        // ---------------------------------------------------------
+        // SEM DIÁLOGO / DIÁLOGO JÁ CONCLUÍDO
+        // ---------------------------------------------------------
+
         IniciarPreparacao();
     }
 
+    public void ConcluirDialogoInicial()
+    {
+        if (!aguardandoDialogoInicial)
+            return;
+
+        aguardandoDialogoInicial = false;
+        dialogoInicialConcluido = true;
+
+        Debug.Log(
+            "BossBruxa: diálogo inicial concluído.");
+
+        IniciarPreparacao();
+    }
 
     // =========================================================
     // ENCONTRAR PLAYER
@@ -256,10 +350,7 @@ public class BossBruxa : MonoBehaviour, IBoss
         anim.SetBool("IsVulnerable", false);
         anim.SetBool("IsDead", false);
 
-        // Durante a preparação ela apenas olha para o jogador.
         AtualizarDirecaoParaJogador();
-
-        Debug.Log("BossBruxa: preparando investida.");
     }
 
 
@@ -291,17 +382,12 @@ public class BossBruxa : MonoBehaviour, IBoss
 
         estadoAtual = EstadoAtual.Perseguindo;
 
-        // =====================================================
-        // IMPORTANTE:
-        // captura a posição SOMENTE UMA VEZ.
-        // =====================================================
-
+        // Captura a posição UMA ÚNICA VEZ.
         ultimoPontoJogador = jogador.position;
 
         direcaoPerseguicao =
             (ultimoPontoJogador - rb.position).normalized;
 
-        // Se o jogador estiver praticamente sobre a Bruxa.
         if (direcaoPerseguicao.sqrMagnitude < 0.001f)
         {
             direcaoPerseguicao = Vector2.down;
@@ -312,11 +398,6 @@ public class BossBruxa : MonoBehaviour, IBoss
         anim.SetBool("IsMoving", true);
         anim.SetBool("IsVulnerable", false);
         anim.SetBool("IsDead", false);
-
-        Debug.Log(
-            "BossBruxa: investida iniciada. " +
-            "Alvo capturado: " + ultimoPontoJogador
-        );
     }
 
 
@@ -331,23 +412,22 @@ public class BossBruxa : MonoBehaviour, IBoss
         Vector2 novaPosicao = Vector2.MoveTowards(
             posicaoAtual,
             ultimoPontoJogador,
-            ConfiguracaoAtual.velocidadePerseguicao * Time.fixedDeltaTime
+            ConfiguracaoAtual.velocidadePerseguicao *
+            Time.fixedDeltaTime
         );
 
         rb.MovePosition(novaPosicao);
 
-        // Mantém a animação apontada para a direção da investida.
         AtualizarBlendTree(direcaoPerseguicao);
 
-        // Chegou ao ponto onde o jogador estava.
-        if (Vector2.Distance(novaPosicao, ultimoPontoJogador)
+        if (Vector2.Distance(
+                novaPosicao,
+                ultimoPontoJogador)
             <= ConfiguracaoAtual.distanciaParada)
         {
             rb.MovePosition(ultimoPontoJogador);
 
             rb.linearVelocity = Vector2.zero;
-
-            Debug.Log("BossBruxa: chegou ao ponto do jogador.");
 
             IniciarPreparacao();
         }
@@ -398,8 +478,6 @@ public class BossBruxa : MonoBehaviour, IBoss
         {
             CausarDanoNoJogador(collision.gameObject);
 
-            Debug.Log("BossBruxa: atingiu o jogador.");
-
             return;
         }
 
@@ -416,6 +494,7 @@ public class BossBruxa : MonoBehaviour, IBoss
             if (contato.collider == paredeArena)
             {
                 IniciarKnockbackParede();
+
                 return;
             }
         }
@@ -423,21 +502,7 @@ public class BossBruxa : MonoBehaviour, IBoss
 
 
     // =========================================================
-    // DANO NO PLAYER
-    // =========================================================
-
-    private void CausarDanoNoJogador(GameObject player)
-    {
-        player.SendMessage(
-            "ReceberDano",
-            danoAtaque,
-            SendMessageOptions.DontRequireReceiver
-        );
-    }
-
-
-    // =========================================================
-    // VULNERABILIDADE
+    // KNOCKBACK
     // =========================================================
 
     private void IniciarKnockbackParede()
@@ -447,23 +512,24 @@ public class BossBruxa : MonoBehaviour, IBoss
 
         estadoAtual = EstadoAtual.Knockback;
 
-        // Recuar na direção oposta à investida.
-        direcaoKnockback = -direcaoPerseguicao.normalized;
+        direcaoKnockback =
+            -direcaoPerseguicao.normalized;
 
-        tempoKnockback = duracaoKnockbackParede;
+        tempoKnockback =
+            duracaoKnockbackParede;
 
         rb.linearVelocity = Vector2.zero;
 
         anim.SetBool("IsMoving", false);
-
-        Debug.Log("BossBruxa: impacto com a parede! Knockback.");
     }
+
 
     private void AtualizarKnockback()
     {
         rb.linearVelocity = Vector2.zero;
 
-        Vector2 novaPosicao = rb.position +
+        Vector2 novaPosicao =
+            rb.position +
             direcaoKnockback *
             forcaKnockbackParede *
             Time.fixedDeltaTime;
@@ -480,6 +546,25 @@ public class BossBruxa : MonoBehaviour, IBoss
         }
     }
 
+
+    // =========================================================
+    // DANO AO PLAYER
+    // =========================================================
+
+    private void CausarDanoNoJogador(GameObject player)
+    {
+        player.SendMessage(
+            "ReceberDano",
+            danoAtaque,
+            SendMessageOptions.DontRequireReceiver
+        );
+    }
+
+
+    // =========================================================
+    // VULNERABILIDADE
+    // =========================================================
+
     private void ComecarVulnerabilidade()
     {
         if (estadoAtual != EstadoAtual.Knockback)
@@ -487,7 +572,8 @@ public class BossBruxa : MonoBehaviour, IBoss
 
         estadoAtual = EstadoAtual.Vulneravel;
 
-        tempoVulneravel = ConfiguracaoAtual.tempoVulneravel;
+        tempoVulneravel =
+            ConfiguracaoAtual.tempoVulneravel;
 
         rb.linearVelocity = Vector2.zero;
 
@@ -495,11 +581,11 @@ public class BossBruxa : MonoBehaviour, IBoss
         anim.SetBool("IsVulnerable", true);
         anim.SetBool("IsDead", false);
 
-        // Força imediatamente a animação de vulnerabilidade.
+        // Força a entrada na animação.
         anim.Play("Vulnerable", 0, 0f);
-
-        Debug.Log("BossBruxa: ficou vulnerável.");
     }
+
+
     private void AtualizarVulnerabilidade()
     {
         rb.linearVelocity = Vector2.zero;
@@ -514,22 +600,22 @@ public class BossBruxa : MonoBehaviour, IBoss
         }
     }
 
+
     // =========================================================
     // VOLTAR AO CENTRO
     // =========================================================
 
-    private void VoltarAoCentro()
-    {
-        if (centroArena != null)
-        {
-            rb.position = centroArena.position;
-        }
-
-        anim.SetBool("IsVulnerable", false);
-        anim.SetBool("IsMoving", false);
-
-        IniciarPreparacao();
+    private void VoltarAoCentro() 
+    { 
+        if (centroArena != null) 
+        { 
+            rb.position = centroArena.position; 
+        } 
+        anim.SetBool("IsVulnerable", false); 
+        anim.SetBool("IsMoving", false); 
+        StartCoroutine(AtaqueProjetis()); 
     }
+
 
     // =========================================================
     // RECEBER DANO
@@ -537,16 +623,10 @@ public class BossBruxa : MonoBehaviour, IBoss
 
     public void ReceberDano(int dano)
     {
-        // Só pode receber dano quando vulnerável.
         if (estadoAtual != EstadoAtual.Vulneravel)
             return;
 
         vidaAtual -= dano;
-
-        Debug.Log(
-            "BossBruxa recebeu dano. Vida: " +
-            vidaAtual + "/" + vidaMaxima
-        );
 
         if (feedbackDano != null)
         {
@@ -596,20 +676,81 @@ public class BossBruxa : MonoBehaviour, IBoss
 
     private void Morrer()
     {
+        if (estadoAtual == EstadoAtual.Derrotado)
+            return;
+
         estadoAtual = EstadoAtual.Derrotado;
 
         rb.linearVelocity = Vector2.zero;
 
+        // Impede novas interações físicas.
+        rb.simulated = false;
+
+        // Desliga parâmetros de combate.
         anim.SetBool("IsMoving", false);
         anim.SetBool("IsVulnerable", false);
         anim.SetBool("IsDead", true);
+
+        // Força diretamente a animação de morte.
+        anim.Play("Death", 0, 0f);
+
+        Debug.Log("BossBruxa: derrotada!");
+
+        StartCoroutine(SequenciaMorte());
+    }
+
+
+    // =========================================================
+    // SEQUÊNCIA DE MORTE
+    // =========================================================
+
+    private IEnumerator SequenciaMorte()
+    {
+        // Dá tempo para a animação de morte começar.
+        yield return new WaitForSeconds(tempoAteParticulas);
+
+
+        // -----------------------------------------------------
+        // PARTÍCULAS
+        // -----------------------------------------------------
+
+        if (particulasMorte != null)
+        {
+            ParticleSystem efeito =
+                Instantiate(
+                    particulasMorte,
+                    transform.position,
+                    Quaternion.identity
+                );
+
+            efeito.Play();
+
+            Debug.Log("BossBruxa: partículas de morte ativadas.");
+        }
+
+
+        // -----------------------------------------------------
+        // TEMPO DO EFEITO
+        // -----------------------------------------------------
+
+        yield return new WaitForSeconds(tempoDoEfeitoMorte);
+
+
+        // -----------------------------------------------------
+        // ARENA
+        // -----------------------------------------------------
 
         if (bossArena != null)
         {
             bossArena.BossDerrotado();
         }
 
-        Debug.Log("BossBruxa: derrotada!");
+
+        // -----------------------------------------------------
+        // DESTRUIÇÃO
+        // -----------------------------------------------------
+
+        Destroy(gameObject);
     }
 
 
@@ -630,5 +771,129 @@ public class BossBruxa : MonoBehaviour, IBoss
     public BossState GetFaseAtual()
     {
         return faseAtual;
+    }
+
+    private IEnumerator AtaqueProjetis()
+    {
+        estadoAtual = EstadoAtual.Invocando;
+
+        rb.linearVelocity = Vector2.zero;
+
+        anim.SetBool("IsMoving", false);
+        anim.SetBool("IsVulnerable", false);
+        anim.SetBool("IsDead", false);
+        anim.SetBool("IsInvocando", true);
+
+        projetisAtivos.Clear();
+        anguloInicial = 0f;
+
+        int quantidade = ConfiguracaoAtual.quantidadeProjetis;
+        float velocidade = ConfiguracaoAtual.velocidadeProjetil;
+
+        // =========================================================
+        // CRIA OS PROJÉTEIS
+        // =========================================================
+
+        for (int i = 0; i < quantidade; i++)
+        {
+            Projetil projetil = projetilPool.Pegar();
+
+            float angulo =
+                anguloInicial +
+                (360f / quantidade) * i;
+
+            float radianos =
+                angulo * Mathf.Deg2Rad;
+
+            Vector2 offset =
+                new Vector2(
+                    Mathf.Cos(radianos),
+                    Mathf.Sin(radianos)
+                ) * raioOrbita;
+
+            projetil.transform.position =
+                (Vector2)transform.position + offset;
+
+            projetisAtivos.Add(projetil);
+
+            yield return new WaitForSeconds(tempoEntreProjeteis);
+        }
+
+        // =========================================================
+        // ÓRBITA
+        // =========================================================
+
+        float tempo = 0f;
+
+        while (tempo < tempoOrbita)
+        {
+            tempo += Time.deltaTime;
+
+            anguloInicial += velocidadeOrbita * Time.deltaTime;
+
+            for (int i = 0; i < projetisAtivos.Count; i++)
+            {
+                Projetil projetil = projetisAtivos[i];
+
+                if (projetil == null || !projetil.gameObject.activeSelf)
+                    continue;
+
+                float angulo =
+                    anguloInicial +
+                    (360f / quantidade) * i;
+
+                float radianos =
+                    angulo * Mathf.Deg2Rad;
+
+                Vector2 offset =
+                    new Vector2(
+                        Mathf.Cos(radianos),
+                        Mathf.Sin(radianos)
+                    ) * raioOrbita;
+
+                projetil.transform.position =
+                    (Vector2)transform.position + offset;
+            }
+
+            yield return null;
+        }
+
+        // =========================================================
+        // DISPARO
+        // =========================================================
+
+        for (int i = 0; i < projetisAtivos.Count; i++)
+        {
+            Projetil projetil = projetisAtivos[i];
+
+            if (projetil == null || !projetil.gameObject.activeSelf)
+                continue;
+
+            float angulo =
+                anguloInicial +
+                (360f / quantidade) * i;
+
+            float radianos =
+                angulo * Mathf.Deg2Rad;
+
+            Vector2 direcao =
+                new Vector2(
+                    Mathf.Cos(radianos),
+                    Mathf.Sin(radianos)
+                );
+
+            projetil.Disparar(
+                direcao,
+                velocidade
+            );
+        }
+
+        projetisAtivos.Clear();
+
+        anim.SetBool("IsInvocando", false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        IniciarPreparacao();
     }
 }

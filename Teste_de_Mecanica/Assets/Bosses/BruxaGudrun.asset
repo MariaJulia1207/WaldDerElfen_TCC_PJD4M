@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
+  m_Name: BruxaGudrun
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  playOnlyOnce: 0
+  voiceSoundName: DialogueVoice
+  mainDialogue:
+  - speakerName: "Gudrun, a Bruxa dos P\xE1ssaros"
+    portrait: {fileID: 0}
+    dialogueText: "Ora, ora, ora. O que os ventos me trazem?\nMeus velhos olhos n\xE3o
+      me enganem, mas n\xE3o ser\xE1 isto aqui uma bela jovem?"
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Deixe de charadas, bruxa! Sei que voc\xEA \xE9 serva do Rei dos
+      Duendes. Liberte aqueles que voc\xEA aprisionou e leve-me at\xE9 ele! "
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1
+  - speakerName: "Gudrun, a Bruxa dos P\xE1ssaros"
+    portrait: {fileID: 0}
+    dialogueText: "Insol\xEAncia! Aquele pr\xEDncipe idiota j\xE1 testou minha paci\xEAncia...\nAgora
+      uma pobre e infeliz camponesa se atreve a vir em sua defesa! "
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Voc\xEA j\xE1 causou dor e sofrimento demais aos meus amigos e
+      \xE0 minha fam\xEDlia. Eu n\xE3o deixarei esta sala sem ter arrancado de voc\xEA
+      a chave para derrotar Alberich e ter minha irm\xE3 de volta!"
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1
+  - speakerName: "Gudrun, a Bruxa dos P\xE1ssaros"
+    portrait: {fileID: 0}
+    dialogueText: "Que beleza! Mais um enfeite para minha cole\xE7\xE3o.\nQue moleza!
+      Ser\xE1 uma honra lutar por meu mestre e entreg\xE1-lo seu cora\xE7\xE3o. "
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1
+  summaryDialogue: []
