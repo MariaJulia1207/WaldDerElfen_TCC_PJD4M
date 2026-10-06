@@ -7,6 +7,21 @@ public class Heart : MonoBehaviour, IItem
 
     [SerializeField] private int vidaParaAdicionar = 1;
 
+    private BounceEffect bounceEffect;
+
+    private void Awake()
+    {
+        bounceEffect = GetComponent<BounceEffect>();
+    }
+
+    private void Start()
+    {
+        if (bounceEffect != null)
+        {
+            bounceEffect.StartBounce();
+        }
+    }
+
     public void Collect()
     {
         HealthSystem playerHealth = FindObjectOfType<HealthSystem>();
@@ -16,7 +31,9 @@ public class Heart : MonoBehaviour, IItem
             playerHealth.ReceberCura(vidaParaAdicionar);
             OnHeartCollect?.Invoke(vidaParaAdicionar);
         }
+
         SoundEffectManager.Play("HeartCollect");
+
         Destroy(gameObject);
     }
 }

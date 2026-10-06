@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5888611406414896072}
   - component: {fileID: 8544945953530658548}
   - component: {fileID: 5535099300540579637}
+  - component: {fileID: 6337773467849799453}
   m_Layer: 0
   m_Name: Heart
   m_TagString: Untagged
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1588425555, guid: 276f07df90d567b4cac7e77ed820aeb9, type: 3}
+  m_Sprite: {fileID: 5202744932359769452, guid: 0892389dbb7efd643afb8a86200497a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -124,12 +125,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.05, y: 0.05}
-  m_Radius: 0.35
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.37
 --- !u!114 &5535099300540579637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,3 +144,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Heart
   vidaParaAdicionar: 1
+--- !u!114 &6337773467849799453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4191010881764617171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5913caf428dc64da19b9b88728eb3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BounceEffect
+  bounceHeight: 0.3
+  bounceDuration: 0.4
+  bounceCount: 2
