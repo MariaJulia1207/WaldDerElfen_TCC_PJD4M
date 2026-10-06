@@ -35,11 +35,11 @@ public class GameOverMenuController : MonoBehaviour
 
     public void OnRestartClicked()
     {
-        GameOverSequenceController sequenceController = FindObjectOfType<GameOverSequenceController>();
+        GameOverSequenceController sequenceController = FindAnyObjectByType<GameOverSequenceController>();
 
         if (sequenceController != null)
         {
-            sequenceController.PlayHide();
+            sequenceController.PlayHideAndRestart();
             return;
         }
 
@@ -51,6 +51,14 @@ public class GameOverMenuController : MonoBehaviour
 
     public void OnMenuClicked()
     {
+        GameOverSequenceController sequenceController = FindAnyObjectByType<GameOverSequenceController>();
+
+        if (sequenceController != null)
+        {
+            sequenceController.PlayHideAndGoToMenu();
+            return;
+        }
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.VoltarAoMenu();

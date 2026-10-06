@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 240736617}
   - component: {fileID: 240736621}
   - component: {fileID: 240736622}
+  - component: {fileID: 240736623}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -261,6 +262,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &240736623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240736616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcec821a64f95d449dd8de2c8410c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameOverSequenceController
+  animator: {fileID: 240736622}
+  blackFade: {fileID: 1626493043}
+  gameOverPanel: {fileID: 1344269236}
 --- !u!1 &479289150
 GameObject:
   m_ObjectHideFlags: 0
