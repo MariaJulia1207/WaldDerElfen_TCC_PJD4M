@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     [Header("Input")]
     [SerializeField] private PlayerInput playerInput;
 
+    [Header("Sons")]
+    [SerializeField] private float intervaloPasso = 0.42f;
+
     [Header("Hitboxes do Ataque")]
     [SerializeField] private GameObject attackUp;
     [SerializeField] private GameObject attackDown;
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 movimento;
 
     private bool atacando;
+    private float proximoPassoTempo;
 
     // =========================================================
     // CONTROLE DO PLAYER
@@ -87,6 +91,7 @@ public class PlayerController : MonoBehaviour
 
         LerMovimento();
         AtualizarAnimacao();
+        TocarSomDePasso();
 
         if (attackAction != null && attackAction.WasPressedThisFrame())
         {
@@ -239,9 +244,31 @@ public class PlayerController : MonoBehaviour
     // ATAQUE
     // =========================================================
 
+    private void TocarSomDePasso()
+    {
+        if (!controlesAtivos || atacando)
+        {
+            proximoPassoTempo = Time.time;
+            return;
+        }
+
+        if (movimento == Vector2.zero)
+        {
+            proximoPassoTempo = Time.time;
+            return;
+        }
+
+        if (Time.time >= proximoPassoTempo)
+        {
+            SoundEffectManager.Play("Walk");
+            proximoPassoTempo = Time.time + intervaloPasso;
+        }
+    }
+
     private void Atacar()
     {
         atacando = true;
+        SoundEffectManager.Play("Sword");
 
         movimento = Vector2.zero;
 

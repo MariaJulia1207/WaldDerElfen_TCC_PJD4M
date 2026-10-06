@@ -155,6 +155,11 @@ public class GameOverMenuController : MonoBehaviour
             menuButton.interactable = false;
         }
 
+        if (restart && CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint)
+        {
+            CheckpointManager.Instance.RestaurarPlayerNoCheckpoint(false);
+        }
+
         if (gameOverCanvas != null)
         {
             gameOverCanvas.interactable = false;
@@ -172,13 +177,6 @@ public class GameOverMenuController : MonoBehaviour
             gameOverCanvas.alpha = 0f;
         }
 
-        if (gameOverCanvas != null)
-        {
-            gameOverCanvas.gameObject.SetActive(false);
-        }
-
-        Time.timeScale = 1f;
-
         if (restart && GameManager.Instance != null)
         {
             GameManager.Instance.RestartFromCheckpoint();
@@ -188,6 +186,12 @@ public class GameOverMenuController : MonoBehaviour
             GameManager.Instance.VoltarAoMenu();
         }
 
+        if (gameOverCanvas != null)
+        {
+            gameOverCanvas.gameObject.SetActive(false);
+        }
+
+        Time.timeScale = 1f;
         isTransitioning = false;
     }
 

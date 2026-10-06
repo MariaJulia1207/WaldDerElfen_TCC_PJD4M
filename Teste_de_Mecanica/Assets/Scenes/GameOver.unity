@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScreenFader
   canvasGroup: {fileID: 205220491}
-  fadeDuration: 0.8
+  fadeDuration: 1
 --- !u!114 &205220493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,6 +695,7 @@ MonoBehaviour:
   gameOverCanvas: {fileID: 1344269241}
   restartButton: {fileID: 1533521955}
   menuButton: {fileID: 1942127091}
+  screenFader: {fileID: 205220492}
 --- !u!225 &1344269241
 CanvasGroup:
   m_ObjectHideFlags: 0

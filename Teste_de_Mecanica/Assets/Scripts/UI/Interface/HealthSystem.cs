@@ -44,7 +44,7 @@ public class HealthSystem : MonoBehaviour
     public void ReceberDano(int dano)
     {
         // Se já estiver morto, não recebe mais dano
-        if (isDead)
+        if (isDead || dano <= 0)
             return;
 
         vida -= dano;
@@ -54,6 +54,8 @@ public class HealthSystem : MonoBehaviour
         {
             vida = 0;
         }
+
+        SoundEffectManager.Play("Damage");
 
         // Flash vermelho
         if (vida > 0)

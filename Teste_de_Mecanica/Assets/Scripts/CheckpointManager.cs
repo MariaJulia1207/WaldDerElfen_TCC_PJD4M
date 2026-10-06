@@ -28,9 +28,9 @@ public class CheckpointManager : MonoBehaviour
         LastCheckpointPosition = position;
     }
 
-    public void RestaurarPlayerNoCheckpoint()
+    public void RestaurarPlayerNoCheckpoint(bool unloadGameOverScene = true)
     {
-        if (GameManager.Instance != null)
+        if (unloadGameOverScene && GameManager.Instance != null)
         {
             string nomeCenaGameOver = GameManager.Instance.NomeCenaGameOver;
             Scene cenaGameOver = SceneManager.GetSceneByName(nomeCenaGameOver);
