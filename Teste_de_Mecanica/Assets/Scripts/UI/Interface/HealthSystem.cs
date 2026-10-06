@@ -157,6 +157,18 @@ public class HealthSystem : MonoBehaviour
         {
             SceneManager.LoadScene(nomeCenaGameOver, LoadSceneMode.Additive);
         }
+
+        StartCoroutine(EsperarGameOverUI());
+    }
+
+    private IEnumerator EsperarGameOverUI()
+    {
+        while (GameOverMenuController.Instance == null)
+        {
+            yield return null;
+        }
+
+        GameOverMenuController.Instance.ShowGameOver();
     }
 
     public void RestaurarParaCheckpoint()
