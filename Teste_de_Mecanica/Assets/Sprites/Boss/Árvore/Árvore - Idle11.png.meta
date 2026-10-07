@@ -186,7 +186,7 @@ TextureImporter:
         width: 738
         height: 866
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -199,11 +199,33 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: "\xC1rvore - Idle11_1"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d12b71376b7e8a468f1c34ccd11f530
+      internalID: -762070437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d8f1ef2d1c3c2824087bc71f470c6e2d
     internalID: 0
     vertices: []
     indices: 
@@ -214,6 +236,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       "\xC1rvore - Idle11_0": 6843310251704369294
+      "\xC1rvore - Idle11_1": -762070437
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

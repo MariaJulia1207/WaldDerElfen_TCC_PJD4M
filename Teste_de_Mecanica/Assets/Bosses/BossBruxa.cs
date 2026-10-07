@@ -51,8 +51,8 @@ public class BossBruxa : MonoBehaviour, IBoss
     [Header("Física")]
     [SerializeField] private Rigidbody2D rb;
 
-    [Tooltip("Collider específico da parede que deixa a Bruxa vulnerável.")]
-    [SerializeField] private Collider2D paredeArena;
+    [Tooltip("Colliders das paredes que fazem a Bruxa ficar vulnerável.")]
+    [SerializeField] private List<Collider2D> paredesArena = new List<Collider2D>();
 
     [Tooltip("Força do recuo ao bater na parede.")]
     [SerializeField] private float forcaKnockbackParede = 2f;
@@ -470,28 +470,35 @@ public class BossBruxa : MonoBehaviour, IBoss
             return;
 
 
-        // -----------------------------------------------------
+        // =========================================================
         // PLAYER
-        // -----------------------------------------------------
+        // =========================================================
 
         if (collision.gameObject.CompareTag("Player"))
         {
             CausarDanoNoJogador(collision.gameObject);
 
+            // A perseguição termina imediatamente ao atingir o jogador.
+            PararAposAtingirJogador();
+
             return;
         }
 
 
-        // -----------------------------------------------------
-        // PAREDE DA ARENA
-        // -----------------------------------------------------
+        // =========================================================
+        // PAREDES DA ARENA
+        // =========================================================
 
-        if (paredeArena == null)
+        if (paredesArena == null ||
+            paredesArena.Count == 0)
+        {
             return;
+        }
+
 
         foreach (ContactPoint2D contato in collision.contacts)
         {
-            if (contato.collider == paredeArena)
+            if (paredesArena.Contains(contato.collider))
             {
                 IniciarKnockbackParede();
 
@@ -500,6 +507,46 @@ public class BossBruxa : MonoBehaviour, IBoss
         }
     }
 
+    private void PararAposAtingirJogador()
+    {
+        if (estadoAtual != EstadoAtual.Perseguindo)
+            return;
+
+        rb.linearVelocity = Vector2.zero;
+
+        estadoAtual = EstadoAtual.Esperando;
+
+        anim.SetBool("IsMoving", false);
+        anim.SetBool("IsVulnerable", false);
+        anim.SetBool("IsDead", false);
+        anim.SetBool("IsInvocando", false);
+
+        StartCoroutine(EscolherProximoAtaque());
+    }
+
+    private IEnumerator EscolherProximoAtaque()
+    {
+        // Pequena pausa em Idle após atingir o jogador.
+        yield return new WaitForSeconds(0.25f);
+
+        if (estadoAtual == EstadoAtual.Derrotado)
+            yield break;
+
+
+        // 50% perseguição
+        // 50% projéteis
+        bool usarProjeteis = Random.value < 0.5f;
+
+
+        if (usarProjeteis)
+        {
+            StartCoroutine(AtaqueProjetis());
+        }
+        else
+        {
+            IniciarPreparacao();
+        }
+    }
 
     // =========================================================
     // KNOCKBACK

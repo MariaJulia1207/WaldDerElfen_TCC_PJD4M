@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BossArvore : MonoBehaviour
+public class BossArvore : MonoBehaviour, IBoss
 {
     // =========================================================
     // ESTADOS
@@ -61,11 +61,21 @@ public class BossArvore : MonoBehaviour
     [SerializeField] private float duracaoAtaqueBraco = 1.5f;
     [SerializeField] private float duracaoInvocacao = 1.5f;
 
+    [Header("Raízes")]
+    [SerializeField] private BossRaizPool raizPool;
+
+    [Header("Quantidade de raízes")]
+    [SerializeField] private int raizesFacil = 2;
+    [SerializeField] private int raizesMedio = 4;
+    [SerializeField] private int raizesDificil = 6;
+
     private bool combateIniciado = false;
     private bool morreu = false;
     private bool atacando = false;
 
     private Coroutine rotinaCombate;
+    private bool aguardandoDialogoInicial;
+    private bool dialogoInicialConcluido;
 
     // =========================================================
     // INÍCIO
@@ -82,6 +92,28 @@ public class BossArvore : MonoBehaviour
     // =========================================================
     // INICIAR COMBATE
     // =========================================================
+
+    public void IniciarBoss()
+    {
+        if (combateIniciado || morreu)
+            return;
+
+        combateIniciado = true;
+
+        AtualizarEstado();
+
+        rotinaCombate = StartCoroutine(RotinaCombate());
+
+        Debug.Log("Boss Árvore: combate iniciado!");
+    }
+
+    public void ConcluirDialogoInicial()
+    {
+        Debug.Log("Boss Árvore: diálogo inicial concluído.");
+
+        IniciarBoss();
+    }
+
 
     public void IniciarCombate()
     {
@@ -272,11 +304,50 @@ public class BossArvore : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Invocar");
 
-        Debug.Log("Boss: invocando raízes!");
+        Debug.Log("Boss: preparando invocação de raízes!");
 
-        // Tempo provisório até a animação ser adicionada
-        yield return new WaitForSeconds(duracaoInvocacao);
+        yield return null;
+    }
+    
+    private int ObterQuantidadeRaizes()
+    {
+        switch (estadoAtual)
+        {
+            case EstadoBoss.Facil:
+                return raizesFacil;
 
+            case EstadoBoss.Medio:
+                return raizesMedio;
+
+            case EstadoBoss.Dificil:
+                return raizesDificil;
+
+            default:
+                return 0;
+        }
+    }
+
+    public void ExecutarInvocacaoRaizes()
+    {
+        if (morreu)
+            return;
+
+        if (raizPool == null)
+            return;
+
+        int quantidade = ObterQuantidadeRaizes();
+
+        raizPool.InvocarRaizes(quantidade);
+
+        Debug.Log(
+            "Boss invocou " +
+            quantidade +
+            " raízes."
+        );
+    }
+
+    public void FinalizarAtaque()
+    {
         atacando = false;
     }
 
@@ -351,4 +422,5 @@ public class BossArvore : MonoBehaviour
     {
         return morreu;
     }
+
 }

@@ -6,8 +6,9 @@ public class BossArena : MonoBehaviour
     [SerializeField] private GameObject aberturaEntrada;
     [SerializeField] private GameObject aberturaSaida;
 
-[Header("Boss")]
-    [SerializeField] private GameObject boss;
+    [Header("Boss")]
+    [SerializeField] private GameObject bossObjeto;
+    private IBoss boss;
 
     [Header("Objeto de Teste - Opcional")]
     [SerializeField] private GameObject objetoTeste;
@@ -19,19 +20,9 @@ public class BossArena : MonoBehaviour
 
     private void Awake()
     {
-        if (boss != null)
-        {
-            bossScript = boss.GetComponent<IBoss>();
-
-            if (bossScript == null)
-            {
-                Debug.LogError(
-                    "BossArena: O Boss não possui um script que implemente IBoss."
-                );
-            }
-        }
+        if (bossObjeto != null)
+            boss = bossObjeto.GetComponent<IBoss>();
     }
-
     private void Update()
     {
         // O objeto de teste continua disponível para testes.
@@ -61,26 +52,16 @@ public class BossArena : MonoBehaviour
     {
         combateIniciado = true;
 
-        // Fecha as aberturas.
         if (aberturaEntrada != null)
             aberturaEntrada.SetActive(true);
 
         if (aberturaSaida != null)
             aberturaSaida.SetActive(true);
 
-        Debug.Log("Boss Arena: Combate iniciado!");
+        if (boss != null)
+            boss.IniciarBoss();
 
-        // Inicia o boss.
-        if (bossScript != null)
-        {
-            bossScript.IniciarBoss();
-        }
-        else
-        {
-            Debug.LogWarning(
-                "BossArena: Nenhum Boss válido foi configurado."
-            );
-        }
+        Debug.Log("Boss Arena: Combate iniciado!");
     }
 
     // =========================================================
