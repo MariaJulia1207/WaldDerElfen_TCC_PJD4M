@@ -4,7 +4,7 @@ using UnityEngine;
 public class BossArvore : MonoBehaviour, IBoss
 {
     // =========================================================
-    // ESTADOS
+    // ESTADO DO BOSS
     // =========================================================
 
     public enum EstadoBoss
@@ -32,9 +32,10 @@ public class BossArvore : MonoBehaviour, IBoss
     // REFERÊNCIAS
     // =========================================================
 
-    [Header("Referências")]
+    [Header("Componentes")]
     [SerializeField] private Animator animator;
     [SerializeField] private BossPapoula papoula;
+    [SerializeField] private BossRaizPool raizPool;
 
     [Header("Feedback de Dano")]
     [SerializeField] private ControladorFeedBackDano feedbackDano;
@@ -52,149 +53,126 @@ public class BossArvore : MonoBehaviour, IBoss
     // ATAQUES
     // =========================================================
 
-    [Header("Ataques")]
-    [SerializeField] private float intervaloAtaqueFacil = 5f;
-    [SerializeField] private float intervaloAtaqueMedio = 3.5f;
-    [SerializeField] private float intervaloAtaqueDificil = 2.5f;
+    [Header("Intervalo entre ataques")]
+    [SerializeField] private float intervaloFacil = 5f;
+    [SerializeField] private float intervaloMedio = 3.5f;
+    [SerializeField] private float intervaloDificil = 2.5f;
 
-    [Header("Duração dos Ataques")]
-    [SerializeField] private float duracaoAtaqueBraco = 1.5f;
-    [SerializeField] private float duracaoInvocacao = 1.5f;
+    [Header("Duração da invocação")]
+    [SerializeField] private float duracaoInvocacaoFacil = 3f;
+    [SerializeField] private float duracaoInvocacaoMedio = 4f;
+    [SerializeField] private float duracaoInvocacaoDificil = 5f;
 
-    [Header("Raízes")]
-    [SerializeField] private BossRaizPool raizPool;
+    // =========================================================
+    // RAÍZES
+    // =========================================================
 
-    [Header("Quantidade de raízes")]
+    [Header("Quantidade de raízes por invocação")]
     [SerializeField] private int raizesFacil = 2;
     [SerializeField] private int raizesMedio = 4;
     [SerializeField] private int raizesDificil = 6;
 
-    private bool combateIniciado = false;
-    private bool morreu = false;
-    private bool atacando = false;
+    // =========================================================
+    // CONTROLE
+    // =========================================================
+
+    private bool combateIniciado;
+    private bool atacando;
+    private bool morreu;
 
     private Coroutine rotinaCombate;
-    private bool aguardandoDialogoInicial;
-    private bool dialogoInicialConcluido;
+    private Coroutine rotinaAtaque;
 
     // =========================================================
-    // INÍCIO
+    // AWAKE
     // =========================================================
 
-    private void Start()
+    private void Awake()
     {
         vida = vidaMaxima;
 
         if (animator == null)
             animator = GetComponent<Animator>();
+
+        if (feedbackDano == null)
+            feedbackDano = GetComponent<ControladorFeedBackDano>();
     }
 
     // =========================================================
-    // INICIAR COMBATE
+    // START
+    // =========================================================
+
+    private void Start()
+    {
+        if (animator == null)
+        {
+            Debug.LogError(
+                "BossArvore: Animator não encontrado.",
+                this
+            );
+
+            return;
+        }
+
+        // Mesmo padrão usado na Bruxa.
+        animator.SetBool("IsInvocando", false);
+        animator.SetBool("IsDead", false);
+
+        animator.Play("Idle", 0, 0f);
+
+        Debug.Log(
+            "BossArvore: iniciado em Idle."
+        );
+    }
+
+    // =========================================================
+    // IBOSS
     // =========================================================
 
     public void IniciarBoss()
     {
-        if (combateIniciado || morreu)
+        if (combateIniciado)
+            return;
+
+        if (morreu)
             return;
 
         combateIniciado = true;
 
         AtualizarEstado();
 
-        rotinaCombate = StartCoroutine(RotinaCombate());
+        Debug.Log(
+            "BossArvore: combate iniciado!"
+        );
 
-        Debug.Log("Boss Árvore: combate iniciado!");
+        if (rotinaCombate != null)
+            StopCoroutine(rotinaCombate);
+
+        rotinaCombate =
+            StartCoroutine(
+                RotinaCombate()
+            );
     }
 
     public void ConcluirDialogoInicial()
     {
-        Debug.Log("Boss Árvore: diálogo inicial concluído.");
+        if (morreu)
+            return;
+
+        Debug.Log(
+            "BossArvore: diálogo inicial concluído."
+        );
 
         IniciarBoss();
     }
 
+    // =========================================================
+    // COMPATIBILIDADE
+    // =========================================================
 
     public void IniciarCombate()
     {
-        if (combateIniciado || morreu)
-            return;
-
-        combateIniciado = true;
-
-        AtualizarEstado();
-
-        rotinaCombate = StartCoroutine(RotinaCombate());
-
-        Debug.Log("Boss Árvore: combate iniciado!");
-    }
-
-    // =========================================================
-    // DANO
-    // =========================================================
-
-    public void ReceberDano(int dano)
-    {
-        if (morreu)
-            return;
-
-        // Só recebe dano enquanto a papoula está aberta
-        if (papoula != null && !papoula.EstaAberta())
-            return;
-
-        vida -= dano;
-
-        if (vida < 0)
-            vida = 0;
-
-        Debug.Log("Boss Árvore recebeu dano. Vida: " + vida);
-
-        if (feedbackDano != null)
-            feedbackDano.ExecutarFeedback();
-
-        AtualizarEstado();
-
-        if (vida <= 0)
-        {
-            Morrer();
-        }
-    }
-
-    // =========================================================
-    // ATUALIZAR ESTADO
-    // =========================================================
-
-    private void AtualizarEstado()
-    {
-        if (morreu)
-        {
-            estadoAtual = EstadoBoss.Morrendo;
-            return;
-        }
-
-        if (!combateIniciado)
-        {
-            estadoAtual = EstadoBoss.Parado;
-            return;
-        }
-
-        // 35 - 24 = Fácil
-        if (vida >= 24)
-        {
-            estadoAtual = EstadoBoss.Facil;
-        }
-        // 23 - 12 = Médio
-        else if (vida >= 12)
-        {
-            estadoAtual = EstadoBoss.Medio;
-        }
-        // 11 - 1 = Difícil
-        else
-        {
-            estadoAtual = EstadoBoss.Dificil;
-        }
-
-        Debug.Log("Estado do Boss: " + estadoAtual);
+        IniciarBoss();
     }
 
     // =========================================================
@@ -203,41 +181,45 @@ public class BossArvore : MonoBehaviour, IBoss
 
     private IEnumerator RotinaCombate()
     {
+        // Pequena espera antes do primeiro ataque.
+        yield return new WaitForSeconds(1f);
+
         while (!morreu)
         {
-            float intervalo = ObterIntervaloAtaque();
+            // =================================================
+            // ESPERA ENTRE ATAQUES
+            // =================================================
 
-            yield return new WaitForSeconds(intervalo);
+            float intervalo =
+                ObterIntervaloAtaque();
+
+            Debug.Log(
+                "BossArvore: esperando " +
+                intervalo +
+                " segundos."
+            );
+
+            yield return new WaitForSeconds(
+                intervalo
+            );
 
             if (morreu)
                 yield break;
 
-            if (atacando)
-                continue;
+            // =================================================
+            // ESCOLHER ATAQUE
+            // =================================================
 
-            EscolherAtaque();
-        }
-    }
+            if (!atacando)
+            {
+                EscolherAtaque();
+            }
 
-    // =========================================================
-    // INTERVALO DE ATAQUE
-    // =========================================================
-
-    private float ObterIntervaloAtaque()
-    {
-        switch (estadoAtual)
-        {
-            case EstadoBoss.Facil:
-                return intervaloAtaqueFacil;
-
-            case EstadoBoss.Medio:
-                return intervaloAtaqueMedio;
-
-            case EstadoBoss.Dificil:
-                return intervaloAtaqueDificil;
-
-            default:
-                return 5f;
+            // Espera o ataque terminar.
+            while (atacando && !morreu)
+            {
+                yield return null;
+            }
         }
     }
 
@@ -247,68 +229,146 @@ public class BossArvore : MonoBehaviour, IBoss
 
     private void EscolherAtaque()
     {
-        int ataque = Random.Range(0, 2);
+        if (morreu)
+            return;
 
-        if (ataque == 0)
-        {
-            StartCoroutine(AtaqueBraco());
-        }
-        else
-        {
-            StartCoroutine(InvocarRaizes());
-        }
+        // Por enquanto existe apenas um ataque.
+        Debug.Log(
+            "BossArvore: escolhendo ataque -> RAÍZES."
+        );
+
+        StartCoroutine(
+            AtaqueRaizes()
+        );
     }
 
     // =========================================================
-    // ATAQUE COM BRAÇO
+    // ATAQUE DAS RAÍZES
     // =========================================================
 
-    private IEnumerator AtaqueBraco()
+    private IEnumerator AtaqueRaizes()
     {
-        atacando = true;
+        Debug.Log("========== TESTE RAÍZES ==========");
 
-        // Escolhe aleatoriamente o braço
-        bool usarBracoEsquerdo = Random.value < 0.5f;
-
-        if (usarBracoEsquerdo)
+        if (animator != null)
         {
-            if (animator != null)
-                animator.SetTrigger("AtaqueBracoEsquerdo");
-        }
-        else
-        {
-            if (animator != null)
-                animator.SetTrigger("AtaqueBracoDireito");
+            Debug.Log(
+                "Animator encontrado: " +
+                animator.gameObject.name
+            );
+
+            animator.SetBool(
+                "IsInvocando",
+                true
+            );
+
+            Debug.Log(
+                "IsInvocando = TRUE"
+            );
         }
 
-        Debug.Log(
-            usarBracoEsquerdo
-            ? "Boss: ataque com braço esquerdo"
-            : "Boss: ataque com braço direito"
+        yield return new WaitForSeconds(3f);
+
+        animator.SetBool(
+            "IsInvocando",
+            false
         );
 
-        // Tempo provisório até a animação ser adicionada
-        yield return new WaitForSeconds(duracaoAtaqueBraco);
+        Debug.Log(
+            "IsInvocando = FALSE"
+        );
 
         atacando = false;
     }
 
     // =========================================================
-    // INVOCAR RAÍZES
+    // DURAÇÃO DA INVocação
     // =========================================================
 
-    private IEnumerator InvocarRaizes()
+    private float ObterDuracaoInvocacao()
     {
-        atacando = true;
+        switch (estadoAtual)
+        {
+            case EstadoBoss.Facil:
+                return duracaoInvocacaoFacil;
 
-        if (animator != null)
-            animator.SetTrigger("Invocar");
+            case EstadoBoss.Medio:
+                return duracaoInvocacaoMedio;
 
-        Debug.Log("Boss: preparando invocação de raízes!");
+            case EstadoBoss.Dificil:
+                return duracaoInvocacaoDificil;
 
-        yield return null;
+            default:
+                return duracaoInvocacaoFacil;
+        }
     }
-    
+
+    // =========================================================
+    // INTERVALO ENTRE ATAQUES
+    // =========================================================
+
+    private float ObterIntervaloAtaque()
+    {
+        switch (estadoAtual)
+        {
+            case EstadoBoss.Facil:
+                return intervaloFacil;
+
+            case EstadoBoss.Medio:
+                return intervaloMedio;
+
+            case EstadoBoss.Dificil:
+                return intervaloDificil;
+
+            default:
+                return intervaloFacil;
+        }
+    }
+
+    // =========================================================
+    // ANIMATION EVENT
+    // =========================================================
+
+    public void ExecutarInvocacaoRaizes()
+    {
+        if (morreu)
+            return;
+
+        if (!combateIniciado)
+            return;
+
+        if (!atacando)
+            return;
+
+        if (raizPool == null)
+        {
+            Debug.LogWarning(
+                "BossArvore: BossRaizPool não foi atribuído.",
+                this
+            );
+
+            return;
+        }
+
+        int quantidade =
+            ObterQuantidadeRaizes();
+
+        raizPool.InvocarRaizes(
+            quantidade
+        );
+
+        Debug.Log(
+            "BossArvore: Animation Event -> " +
+            "Invocando " +
+            quantidade +
+            " raízes."
+        );
+    }
+
+    // =========================================================
+    // QUANTIDADE DE RAÍZES
+    // =========================================================
+
     private int ObterQuantidadeRaizes()
     {
         switch (estadoAtual)
@@ -323,32 +383,93 @@ public class BossArvore : MonoBehaviour, IBoss
                 return raizesDificil;
 
             default:
-                return 0;
+                return raizesFacil;
         }
     }
 
-    public void ExecutarInvocacaoRaizes()
+    // =========================================================
+    // ESTADO
+    // =========================================================
+
+    private void AtualizarEstado()
+    {
+        if (morreu)
+        {
+            estadoAtual =
+                EstadoBoss.Morrendo;
+
+            return;
+        }
+
+        if (!combateIniciado)
+        {
+            estadoAtual =
+                EstadoBoss.Parado;
+
+            return;
+        }
+
+        float porcentagemVida =
+            (float)vida / vidaMaxima;
+
+        if (porcentagemVida <= 0.33f)
+        {
+            estadoAtual =
+                EstadoBoss.Dificil;
+        }
+        else if (porcentagemVida <= 0.66f)
+        {
+            estadoAtual =
+                EstadoBoss.Medio;
+        }
+        else
+        {
+            estadoAtual =
+                EstadoBoss.Facil;
+        }
+
+        Debug.Log(
+            "BossArvore: fase = " +
+            estadoAtual
+        );
+    }
+
+    // =========================================================
+    // DANO
+    // =========================================================
+
+    public void ReceberDano(int dano)
     {
         if (morreu)
             return;
 
-        if (raizPool == null)
+        if (papoula != null &&
+            !papoula.EstaAberta())
+        {
             return;
+        }
 
-        int quantidade = ObterQuantidadeRaizes();
+        vida -= dano;
 
-        raizPool.InvocarRaizes(quantidade);
+        if (vida < 0)
+            vida = 0;
 
         Debug.Log(
-            "Boss invocou " +
-            quantidade +
-            " raízes."
+            "BossArvore recebeu dano. Vida: " +
+            vida
         );
-    }
 
-    public void FinalizarAtaque()
-    {
-        atacando = false;
+        if (feedbackDano != null)
+        {
+            feedbackDano.ExecutarFeedback();
+        }
+
+        AtualizarEstado();
+
+        if (vida <= 0)
+        {
+            Morrer();
+        }
     }
 
     // =========================================================
@@ -361,18 +482,61 @@ public class BossArvore : MonoBehaviour, IBoss
             return;
 
         morreu = true;
-        estadoAtual = EstadoBoss.Morrendo;
+
+        estadoAtual =
+            EstadoBoss.Morrendo;
+
+        atacando = false;
 
         if (rotinaCombate != null)
-            StopCoroutine(rotinaCombate);
+        {
+            StopCoroutine(
+                rotinaCombate
+            );
+
+            rotinaCombate = null;
+        }
+
+        if (rotinaAtaque != null)
+        {
+            StopCoroutine(
+                rotinaAtaque
+            );
+
+            rotinaAtaque = null;
+        }
 
         if (papoula != null)
+        {
             papoula.Desativar();
+        }
 
         if (animator != null)
-            animator.SetTrigger("Morrer");
+        {
+            animator.SetBool(
+                "IsInvocando",
+                false
+            );
 
-        StartCoroutine(SequenciaMorte());
+            animator.SetBool(
+                "IsDead",
+                true
+            );
+
+            animator.Play(
+                "Morrendo",
+                0,
+                0f
+            );
+        }
+
+        Debug.Log(
+            "BossArvore: morreu."
+        );
+
+        StartCoroutine(
+            SequenciaMorte()
+        );
     }
 
     // =========================================================
@@ -381,15 +545,18 @@ public class BossArvore : MonoBehaviour, IBoss
 
     private IEnumerator SequenciaMorte()
     {
-        yield return new WaitForSeconds(tempoAteParticulas);
+        yield return new WaitForSeconds(
+            tempoAteParticulas
+        );
 
         if (particulasMorte != null)
         {
-            ParticleSystem efeito = Instantiate(
-                particulasMorte,
-                transform.position,
-                Quaternion.identity
-            );
+            ParticleSystem efeito =
+                Instantiate(
+                    particulasMorte,
+                    transform.position,
+                    Quaternion.identity
+                );
 
             efeito.Play();
 
@@ -399,13 +566,15 @@ public class BossArvore : MonoBehaviour, IBoss
             );
         }
 
-        yield return new WaitForSeconds(tempoDoEfeitoMorte);
+        yield return new WaitForSeconds(
+            tempoDoEfeitoMorte
+        );
 
         Destroy(gameObject);
     }
 
     // =========================================================
-    // ACESSO
+    // ACESSORES
     // =========================================================
 
     public int GetVida()
@@ -423,4 +592,13 @@ public class BossArvore : MonoBehaviour, IBoss
         return morreu;
     }
 
+    public bool CombateIniciado()
+    {
+        return combateIniciado;
+    }
+
+    public bool EstaAtacando()
+    {
+        return atacando;
+    }
 }

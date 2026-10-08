@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class BossRaizPool : MonoBehaviour
 {
-    [Header("Prefab da raiz")]
+    [Header("Prefab")]
     [SerializeField] private BossRaiz prefabRaiz;
 
-    [Header("Quantidade no Pool")]
+    [Header("Pool")]
     [SerializeField] private int quantidadeNoPool = 6;
 
-    [Header("Pontos possíveis da arena")]
+    [Header("Pontos da Arena")]
     [SerializeField] private Transform[] pontosSpawn;
 
     private readonly List<BossRaiz> pool =
@@ -20,14 +20,29 @@ public class BossRaizPool : MonoBehaviour
         CriarPool();
     }
 
+    // =========================================================
+    // CRIAR POOL
+    // =========================================================
+
     private void CriarPool()
     {
+        if (prefabRaiz == null)
+        {
+            Debug.LogError(
+                "BossRaizPool: prefab da raiz não foi atribuído.",
+                this
+            );
+
+            return;
+        }
+
         for (int i = 0; i < quantidadeNoPool; i++)
         {
-            BossRaiz raiz = Instantiate(
-                prefabRaiz,
-                transform
-            );
+            BossRaiz raiz =
+                Instantiate(
+                    prefabRaiz,
+                    transform
+                );
 
             raiz.gameObject.SetActive(false);
 
@@ -38,18 +53,36 @@ public class BossRaizPool : MonoBehaviour
     }
 
     // =========================================================
-    // INVOCAR RAÍZES
+    // INVOCAR
     // =========================================================
 
     public void InvocarRaizes(int quantidade)
     {
-        int invocadas = 0;
+        if (pontosSpawn == null ||
+            pontosSpawn.Length == 0)
+        {
+            Debug.LogWarning(
+                "BossRaizPool: nenhum ponto de spawn foi configurado.",
+                this
+            );
+
+            return;
+        }
 
         List<Transform> pontosDisponiveis =
-            new List<Transform>(pontosSpawn);
+            new List<Transform>();
 
-        // Embaralha os pontos
+        for (int i = 0; i < pontosSpawn.Length; i++)
+        {
+            if (pontosSpawn[i] != null)
+                pontosDisponiveis.Add(
+                    pontosSpawn[i]
+                );
+        }
+
         Embaralhar(pontosDisponiveis);
+
+        int invocadas = 0;
 
         foreach (BossRaiz raiz in pool)
         {
@@ -59,20 +92,28 @@ public class BossRaizPool : MonoBehaviour
             if (raiz.EstaAtiva())
                 continue;
 
-            if (pontosDisponiveis.Count == 0)
+            if (invocadas >= pontosDisponiveis.Count)
                 break;
 
             Transform ponto =
                 pontosDisponiveis[invocadas];
 
-            raiz.Ativar(ponto.position);
+            raiz.Ativar(
+                ponto.position
+            );
 
             invocadas++;
         }
+
+        Debug.Log(
+            "BossRaizPool: " +
+            invocadas +
+            " raízes ativadas."
+        );
     }
 
     // =========================================================
-    // DEVOLVER PARA O POOL
+    // DEVOLVER
     // =========================================================
 
     public void DevolverRaiz(BossRaiz raiz)
@@ -87,17 +128,25 @@ public class BossRaizPool : MonoBehaviour
     // EMBARALHAR
     // =========================================================
 
-    private void Embaralhar(List<Transform> lista)
+    private void Embaralhar(
+        List<Transform> lista)
     {
         for (int i = 0; i < lista.Count; i++)
         {
-            int indiceAleatorio =
-                Random.Range(i, lista.Count);
+            int indice =
+                Random.Range(
+                    i,
+                    lista.Count
+                );
 
-            Transform temporario = lista[i];
+            Transform temporario =
+                lista[i];
 
-            lista[i] = lista[indiceAleatorio];
-            lista[indiceAleatorio] = temporario;
+            lista[i] =
+                lista[indice];
+
+            lista[indice] =
+                temporario;
         }
     }
 }

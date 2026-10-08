@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1107 &-2266670264757906852
+--- !u!1107 &-6582263151049856182
 AnimatorStateMachine:
   serializedVersion: 7
   m_ObjectHideFlags: 1
@@ -10,7 +10,7 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 2481305033619300718}
+    m_State: {fileID: 8580536254845521865}
     m_Position: {x: 200, y: 0, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
@@ -21,26 +21,20 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 2481305033619300718}
+  m_DefaultState: {fileID: 8580536254845521865}
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: "Ra\xEDz"
+  m_Name: Linette
   serializedVersion: 6
-  m_AnimatorParameters:
-  - m_Name: Atacar
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+  m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
-    m_StateMachine: {fileID: -2266670264757906852}
+    m_StateMachine: {fileID: -6582263151049856182}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
@@ -51,14 +45,14 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   m_EvaluateTransitionsOnStart: 1
---- !u!1102 &2481305033619300718
+--- !u!1102 &8580536254845521865
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: "Ra\xEDz"
+  m_Name: Linette
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -71,7 +65,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: eb84eea47f40a06439a5d433178b6b52, type: 2}
+  m_Motion: {fileID: 7400000, guid: 63ab20b3904f0a14f8efcce404f3fef7, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

@@ -104,7 +104,7 @@ public class BossPapoula : MonoBehaviour
         if (animator != null)
             animator.SetBool("Fechar", false);
 
-        Debug.Log("Papoula aberta!");
+//        Debug.Log("Papoula aberta!");
     }
 
     public void FecharPapoula()
@@ -114,7 +114,7 @@ public class BossPapoula : MonoBehaviour
         if (colisor != null)
             colisor.enabled = false;
 
-        Debug.Log("Papoula fechada!");
+//        Debug.Log("Papoula fechada!");
     }
 
     // =========================================================

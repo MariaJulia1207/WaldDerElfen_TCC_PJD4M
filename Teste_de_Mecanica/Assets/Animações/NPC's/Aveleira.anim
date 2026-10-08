@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Invocando
+  m_Name: Aveleira
   serializedVersion: 8
   m_Legacy: 0
   m_Compressed: 0
@@ -21,15 +21,15 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -348282918, guid: 4e3e98a46d4e26d4cab8d375c64dfccc, type: 3}
-    - time: 0.16666667
-      value: {fileID: -1203289071, guid: 4e1878d3826bfb14a8220c698bc9424b, type: 3}
-    - time: 0.33333334
-      value: {fileID: -762070437, guid: bd2b2bfa139220e46bae3c727652a15d, type: 3}
+      value: {fileID: 918026510660810692, guid: 74f8bcb9b2e18f04a84cbf44c2fbb7b8, type: 3}
+    - time: 0.25
+      value: {fileID: -7595786822608437223, guid: bbb03e6e503c3e4468b1e17b16106a5c, type: 3}
     - time: 0.5
-      value: {fileID: -1483904090, guid: 57abb3c5bde28514d9593780ea2604cc, type: 3}
-    - time: 0.6666667
-      value: {fileID: -348282918, guid: 4e3e98a46d4e26d4cab8d375c64dfccc, type: 3}
+      value: {fileID: -7867416048597715698, guid: 0c97f3ee1047bc14ca2bb8268f6c5a01, type: 3}
+    - time: 0.75
+      value: {fileID: 8885361139169245103, guid: 8c05a9d9fbde7414a87b94ae4ad4ec30, type: 3}
+    - time: 1
+      value: {fileID: 918026510660810692, guid: 74f8bcb9b2e18f04a84cbf44c2fbb7b8, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -53,17 +53,17 @@ AnimationClip:
       isSerializeReferenceCurve: 0
       metaData: 0
     pptrCurveMapping:
-    - {fileID: -348282918, guid: 4e3e98a46d4e26d4cab8d375c64dfccc, type: 3}
-    - {fileID: -1203289071, guid: 4e1878d3826bfb14a8220c698bc9424b, type: 3}
-    - {fileID: -762070437, guid: bd2b2bfa139220e46bae3c727652a15d, type: 3}
-    - {fileID: -1483904090, guid: 57abb3c5bde28514d9593780ea2604cc, type: 3}
-    - {fileID: -348282918, guid: 4e3e98a46d4e26d4cab8d375c64dfccc, type: 3}
+    - {fileID: 918026510660810692, guid: 74f8bcb9b2e18f04a84cbf44c2fbb7b8, type: 3}
+    - {fileID: -7595786822608437223, guid: bbb03e6e503c3e4468b1e17b16106a5c, type: 3}
+    - {fileID: -7867416048597715698, guid: 0c97f3ee1047bc14ca2bb8268f6c5a01, type: 3}
+    - {fileID: 8885361139169245103, guid: 8c05a9d9fbde7414a87b94ae4ad4ec30, type: 3}
+    - {fileID: 918026510660810692, guid: 74f8bcb9b2e18f04a84cbf44c2fbb7b8, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.68333334
+    m_StopTime: 1.0166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -82,11 +82,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.33333334
-    functionName: ExecutarInvocacaoRaizes
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

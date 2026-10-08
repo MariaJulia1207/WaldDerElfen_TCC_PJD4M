@@ -2,32 +2,41 @@ using UnityEngine;
 
 public class BossRaiz : MonoBehaviour
 {
-    [Header("Animação")]
+    [Header("Componentes")]
     [SerializeField] private Animator animator;
+    [SerializeField] private Collider2D hitbox;
 
-    [Header("Hitbox")]
-    [SerializeField] private GameObject hitbox;
+    [Header("Dano")]
+    [SerializeField] private int dano = 1;
+
+    [Header("Knockback")]
+    [SerializeField] private float forcaKnockback = 4f;
 
     private BossRaizPool pool;
 
-    private bool ativa = false;
+    private bool ativa;
+    private bool jogadorAtingido;
+
+    private const string ESTADO_ATACAR = "Atacar";
 
     private void Awake()
     {
         if (animator == null)
             animator = GetComponent<Animator>();
 
-        if (hitbox != null)
-            hitbox.SetActive(false);
+        if (hitbox == null)
+            hitbox = GetComponent<Collider2D>();
+
+        DesativarHitbox();
     }
 
     // =========================================================
     // POOL
     // =========================================================
 
-    public void DefinirPool(BossRaizPool novaPool)
+    public void DefinirPool(BossRaizPool novoPool)
     {
-        pool = novaPool;
+        pool = novoPool;
     }
 
     // =========================================================
@@ -39,18 +48,25 @@ public class BossRaiz : MonoBehaviour
         transform.position = posicao;
 
         ativa = true;
+        jogadorAtingido = false;
 
         gameObject.SetActive(true);
 
-        if (hitbox != null)
-            hitbox.SetActive(false);
+        DesativarHitbox();
 
         if (animator != null)
         {
             animator.Play(
-                "Invocacao",
+                ESTADO_ATACAR,
                 0,
                 0f
+            );
+        }
+        else
+        {
+            Debug.LogError(
+                "BossRaiz: Animator não encontrado.",
+                this
             );
         }
     }
@@ -64,8 +80,63 @@ public class BossRaiz : MonoBehaviour
         if (!ativa)
             return;
 
+        jogadorAtingido = false;
+
         if (hitbox != null)
-            hitbox.SetActive(true);
+            hitbox.enabled = true;
+    }
+
+    // =========================================================
+    // ANIMATION EVENT
+    // =========================================================
+
+    public void DesativarHitbox()
+    {
+        if (hitbox != null)
+            hitbox.enabled = false;
+    }
+
+    // =========================================================
+    // DANO
+    // =========================================================
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!ativa)
+            return;
+
+        if (jogadorAtingido)
+            return;
+
+        if (!other.CompareTag("Player"))
+            return;
+
+        HealthSystem health =
+            other.GetComponent<HealthSystem>();
+
+        if (health != null)
+        {
+            health.ReceberDano(dano);
+        }
+
+        Rigidbody2D rb =
+            other.GetComponent<Rigidbody2D>();
+
+        if (rb != null)
+        {
+            Vector2 direcao =
+                (
+                    other.transform.position -
+                    transform.position
+                ).normalized;
+
+            rb.AddForce(
+                direcao * forcaKnockback,
+                ForceMode2D.Impulse
+            );
+        }
+
+        jogadorAtingido = true;
     }
 
     // =========================================================
@@ -74,8 +145,10 @@ public class BossRaiz : MonoBehaviour
 
     public void FinalizarRaiz()
     {
-        if (hitbox != null)
-            hitbox.SetActive(false);
+        if (!ativa)
+            return;
+
+        DesativarHitbox();
 
         ativa = false;
 
@@ -88,10 +161,6 @@ public class BossRaiz : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-
-    // =========================================================
-    // ESTADO
-    // =========================================================
 
     public bool EstaAtiva()
     {
