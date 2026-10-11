@@ -1,3 +1,4 @@
+
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -10,32 +11,25 @@ public class DialogueManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject dialoguePanel;
-
     [SerializeField] private Image portraitImage;
-
     [SerializeField] private TMP_Text speakerNameText;
-
     [SerializeField] private TMP_Text dialogueText;
 
     [Header("Typewriter")]
     [SerializeField] private float letterDelay = 0.03f;
 
     private DialogueLine[] currentLines;
-
     private int currentLineIndex;
-
     private Coroutine typingCoroutine;
 
     private bool isTyping;
-
     private bool ignoreNextInput;
+    private bool currentDialogueIsMain;
 
     private string fullText;
 
     private NPCInteractable currentNPC;
-
     private DialogueData currentDialogueData;
-
     private PlayerController playerController;
 
     public bool IsDialogueOpen
@@ -54,13 +48,15 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
-        dialoguePanel.SetActive(false);
+        if (dialoguePanel != null)
+            dialoguePanel.SetActive(false);
 
-        var player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player =
+            GameObject.FindGameObjectWithTag("Player");
+
         if (player != null)
-        {
-            playerController = player.GetComponent<PlayerController>();
-        }
+            playerController =
+                player.GetComponent<PlayerController>();
     }
 
     private void Update()
@@ -81,73 +77,80 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(
-        DialogueData dialogueData,
-        NPCInteractable npc,
-        bool alreadyCompleted)
+    public void StartDialogue(DialogueData dialogueData,NPCInteractable npc,bool alreadyCompleted)
     {
+        if (dialogueData == null || npc == null)
+            return;
+
+        if (IsDialogueOpen)
+            return;
+
         currentDialogueData = dialogueData;
         currentNPC = npc;
 
-        if (dialogueData.playOnlyOnce &&
-            alreadyCompleted)
+        currentDialogueIsMain =
+            !(dialogueData.playOnlyOnce && alreadyCompleted);
+
+        currentLines = currentDialogueIsMain
+            ? dialogueData.mainDialogue
+            : dialogueData.summaryDialogue;
+
+        if (currentLines == null || currentLines.Length == 0)
         {
-            currentLines =
-                dialogueData.summaryDialogue;
-        }
-        else
-        {
-            currentLines =
-                dialogueData.mainDialogue;
+            currentNPC = null;
+            currentDialogueData = null;
+            return;
         }
 
         currentLineIndex = 0;
+        isTyping = false;
+        ignoreNextInput = true;
 
-        // Esconde o bot�o enquanto o di�logo estiver aberto
         ObserverManager.Notify("HideInteractButton");
 
         if (playerController != null)
-        {
             playerController.DisableControls();
-        }
 
         dialoguePanel.SetActive(true);
-
-        // Impede que o mesmo E usado para iniciar o di�logo tamb�m avance a primeira linha.
-        ignoreNextInput = true;
 
         ShowLine();
     }
 
     private void ShowLine()
     {
-        DialogueLine line =
-            currentLines[currentLineIndex];
+        if (currentLines == null ||
+            currentLineIndex < 0 ||
+            currentLineIndex >= currentLines.Length)
+        {
+            EndDialogue();
+            return;
+        }
 
-        portraitImage.sprite =
-            line.portrait;
+        DialogueLine line = currentLines[currentLineIndex];
 
-        speakerNameText.text =
-            line.speakerName;
+        if (line == null)
+        {
+            currentLineIndex++;
+            ShowLine();
+            return;
+        }
 
-        fullText =
-            line.dialogueText;
+        portraitImage.sprite = line.portrait;
+        speakerNameText.text = line.speakerName;
+        fullText = line.dialogueText ?? "";
 
         if (typingCoroutine != null)
             StopCoroutine(typingCoroutine);
 
-        typingCoroutine =
-            StartCoroutine(TypeText());
+        typingCoroutine = StartCoroutine(TypeText());
     }
 
     private IEnumerator TypeText()
     {
         isTyping = true;
-
         dialogueText.text = "";
 
-        DialogueLine line =
-            currentLines[currentLineIndex];
+        DialogueLine line = currentLines[currentLineIndex];
 
         foreach (char letter in fullText)
         {
@@ -163,42 +166,47 @@ public class DialogueManager : MonoBehaviour
         }
 
         isTyping = false;
+        typingCoroutine = null;
     }
 
     private void PlayVoiceSound(DialogueLine line)
     {
-        if (currentDialogueData == null)
+        if (line == null || currentDialogueData == null)
             return;
 
-        if (string.IsNullOrEmpty(
+        if (string.IsNullOrWhiteSpace(
             currentDialogueData.voiceSoundName))
             return;
 
-        float pitch = Random.Range(
+        SoundEffectManager.PlayVoiceForSpeaker(
+            currentDialogueData.voiceSoundName,
+            line.speakerName,
             line.voicePitchMin,
             line.voicePitchMax);
-
-        SoundEffectManager.PlayWithPitch(
-            currentDialogueData.voiceSoundName,
-            pitch);
     }
 
     public void NextLine()
     {
+        if (!IsDialogueOpen)
+            return;
+
         if (isTyping)
         {
-            StopCoroutine(typingCoroutine);
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+                typingCoroutine = null;
+            }
 
             dialogueText.text = fullText;
-
             isTyping = false;
-
             return;
         }
 
         currentLineIndex++;
 
-        if (currentLineIndex >= currentLines.Length)
+        if (currentLines == null ||
+            currentLineIndex >= currentLines.Length)
         {
             EndDialogue();
             return;
@@ -209,26 +217,89 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
-        if (
-            currentDialogueData.playOnlyOnce &&
-            currentNPC != null
-        )
+        SoundEffectManager.ResetVoicePitch();
+
+        if (typingCoroutine != null)
         {
-            currentNPC.CompleteDialogue();
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
+        isTyping = false;
+
+        // Guarda as referências antes de limpar o estado.
+        NPCInteractable npc = currentNPC;
+        DialogueData data = currentDialogueData;
+        bool terminouDialogoPrincipal = currentDialogueIsMain;
+
+        // Registra a conclusão do diálogo de uso único.
+        if (terminouDialogoPrincipal &&
+            data != null &&
+            data.playOnlyOnce &&
+            npc != null)
+        {
+            npc.CompleteDialogue();
+        }
+
+        // As recompensas e o deslocamento só ocorrem
+        // depois do diálogo principal, nunca no resumo.
+        if (terminouDialogoPrincipal &&
+            data != null &&
+            npc != null)
+        {
+            ExecutarAcoesPosDialogo(data, npc);
         }
 
         dialoguePanel.SetActive(false);
 
         if (playerController != null)
-        {
             playerController.EnableControls();
+
+        currentNPC = null;
+        currentDialogueData = null;
+        currentLines = null;
+        currentDialogueIsMain = false;
+
+        ObserverManager.Notify("ShowInteractButton");
+    }
+
+    private void ExecutarAcoesPosDialogo(DialogueData data,NPCInteractable npc)
+    {
+        // Move o NPC para a posição configurada.
+        if (data.moverNpcAposDialogo)
+        {
+            npc.transform.position =
+                new Vector3(
+                    data.posicaoDestinoNpc.x,
+                    data.posicaoDestinoNpc.y,
+                    npc.transform.position.z);
         }
 
-        // Se o Player ainda estiver dentro do trigger,
-        // o bot�o volta a aparecer.
-        if (InteractOM.Instance != null)
+        // Cria o item entre o NPC e o jogador.
+        if (data.criarItemAposDialogo &&
+            data.prefabItemColetavel != null)
         {
-            ObserverManager.Notify("ShowInteractButton");
+            Vector2 posicaoNpc = npc.transform.position;
+            Vector2 posicaoBase = posicaoNpc;
+
+            GameObject player =
+                GameObject.FindGameObjectWithTag("Player");
+
+            if (player != null)
+            {
+                posicaoBase = (
+                    posicaoNpc +
+                    (Vector2)player.transform.position
+                ) * 0.5f;
+            }
+
+            Vector2 posicaoItem =
+                posicaoBase + data.deslocamentoItem;
+
+            Instantiate(
+                data.prefabItemColetavel,
+                posicaoItem,
+                Quaternion.identity);
         }
     }
 }

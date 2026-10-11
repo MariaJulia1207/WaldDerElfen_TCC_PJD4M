@@ -23,8 +23,8 @@ MonoBehaviour:
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: "Quem\u2026 quem \xE9 voc\xEA?"
-    voicePitchMin: 1.2
-    voicePitchMax: 1.4
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: Hans
     portrait: {fileID: 0}
     dialogueText: "Sou eu, Hans Ouri\xE7o, o andarilho. N\xE3o se lembra de mim?"
@@ -35,8 +35,8 @@ MonoBehaviour:
     dialogueText: "Eu\u2026 eu n\xE3o sei. N\xE3o consigo lembrar. S\xF3 me lembro
       de um estrondo, uma luz cegante e\u2026 s\xF3 consigo me lembrar de uma garota
       de cabelos claros e um urso ferido."
-    voicePitchMin: 1.1
-    voicePitchMax: 1.4
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: Hans
     portrait: {fileID: 0}
     dialogueText: "Ent\xE3o... eles devem ter te enfeiti\xE7ado\u2026 removido suas
@@ -46,8 +46,8 @@ MonoBehaviour:
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: "\u201CEles\u201D? \u201CEles\u201D quem?"
-    voicePitchMin: 1.1
-    voicePitchMax: 1.4
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: Hans
     portrait: {fileID: 0}
     dialogueText: "Os duendes. Eles atacaram o vilarejo h\xE1 alguns dias. Eu estava
@@ -58,8 +58,8 @@ MonoBehaviour:
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: "Talvez elas saibam o que aconteceu. Qual a dire\xE7\xE3o do vilarejo?"
-    voicePitchMin: 1.1
-    voicePitchMax: 1.4
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: Hans
     portrait: {fileID: 0}
     dialogueText: "Siga a estrada, em dire\xE7\xE3o ao sudoeste. Mas, seja cautelosa.
@@ -71,11 +71,16 @@ MonoBehaviour:
     dialogueText: "Certo. E, por favor, Hans. H\xE1 um urso naquela caverna. Ele
       est\xE1 ferido e, por algum motivo, sinto que h\xE1 alguma conex\xE3o entre
       ele e as poucas lembran\xE7as que ainda tenho do meu passado."
-    voicePitchMin: 1.1
-    voicePitchMax: 1.4
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: Hans
     portrait: {fileID: 0}
     dialogueText: "Est\xE1 bem, eu irei v\xEA-lo. Tome cuidado."
     voicePitchMin: 0.7
     voicePitchMax: 0.9
   summaryDialogue: []
+  moverNpcAposDialogo: 1
+  posicaoDestinoNpc: {x: 5, y: 50}
+  criarItemAposDialogo: 0
+  prefabItemColetavel: {fileID: 0}
+  deslocamentoItem: {x: 0, y: 0.5}

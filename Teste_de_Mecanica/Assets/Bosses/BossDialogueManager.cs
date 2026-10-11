@@ -32,7 +32,8 @@ public class BossDialogueManager : MonoBehaviour
 
     private string fullText;
 
-    private BossBruxa bossAtual;
+    private BossBruxa bossBruxaAtual;
+    private BossArvore bossArvoreAtual;
 
     private DialogueData currentDialogueData;
 
@@ -101,15 +102,42 @@ public class BossDialogueManager : MonoBehaviour
     // INICIAR DIÁLOGO
     // =========================================================
 
-    public void StartBossDialogue(
-        DialogueData dialogueData,
-        BossBruxa boss)
+
+    public void StartBossDialogue(DialogueData dialogueData,BossBruxa boss)
+    {
+        bossBruxaAtual = boss;
+        bossArvoreAtual = null;
+
+        IniciarDialogo(dialogueData);
+    }
+
+    public void StartBossDialogue(DialogueData dialogueData,BossArvore boss)
+    {
+        bossArvoreAtual = boss;
+        bossBruxaAtual = null;
+
+        IniciarDialogo(dialogueData);
+    }
+
+    private void IniciarDialogo(DialogueData dialogueData)
     {
         if (dialogueData == null)
         {
             Debug.LogWarning(
-                "BossDialogueManager: DialogueData não foi definido.");
+                "BossDialogueManager: DialogueData não foi definido."
+            );
 
+            NotificarDialogoConcluido();
+            return;
+        }
+
+        if (IsDialogueOpen)
+        {
+            Debug.LogWarning(
+                "BossDialogueManager: já existe um diálogo aberto."
+            );
+
+            NotificarDialogoConcluido();
             return;
         }
 
@@ -117,85 +145,65 @@ public class BossDialogueManager : MonoBehaviour
             dialogueData.mainDialogue.Length == 0)
         {
             Debug.LogWarning(
-                "BossDialogueManager: o diálogo não possui linhas.");
+                "BossDialogueManager: o diálogo não possui linhas."
+            );
 
+            NotificarDialogoConcluido();
             return;
         }
 
-        if (dialoguePanel == null)
-        {
-            Debug.LogError(
-                "BossDialogueManager: Dialogue Panel não foi atribuído no Inspector.");
-
-            return;
-        }
-
-        if (portraitImage == null ||
+        if (dialoguePanel == null ||
+            portraitImage == null ||
             speakerNameText == null ||
             dialogueText == null)
         {
             Debug.LogError(
-                "BossDialogueManager: uma ou mais referências da UI não foram atribuídas.");
+                "BossDialogueManager: referências da UI não atribuídas."
+            );
 
+            NotificarDialogoConcluido();
             return;
         }
 
-
-        // ---------------------------------------------------------
-        // GUARDA AS REFERÊNCIAS DO DIÁLOGO
-        // ---------------------------------------------------------
-
-        bossAtual = boss;
-
         currentDialogueData = dialogueData;
-
         currentLines = dialogueData.mainDialogue;
-
         currentLineIndex = 0;
-
-
-        // ---------------------------------------------------------
-        // CONTROLE DE INPUT
-        // ---------------------------------------------------------
 
         ignoreNextInput = true;
 
-
-        // ---------------------------------------------------------
-        // ESCONDE BOTÃO DE INTERAÇÃO
-        // ---------------------------------------------------------
-
         ObserverManager.Notify("HideInteractButton");
-
-
-        // ---------------------------------------------------------
-        // DESABILITA CONTROLES DO PLAYER
-        // ---------------------------------------------------------
 
         GameObject player =
             GameObject.FindGameObjectWithTag("Player");
 
         if (player != null)
         {
-            PlayerController playerController =
+            PlayerController controller =
                 player.GetComponent<PlayerController>();
 
-            if (playerController != null)
-            {
-                playerController.DisableControls();
-            }
+            if (controller != null)
+                controller.DisableControls();
         }
-
-
-        // ---------------------------------------------------------
-        // ABRE PAINEL
-        // ---------------------------------------------------------
 
         dialoguePanel.SetActive(true);
 
         ShowLine();
     }
 
+    private void NotificarDialogoConcluido()
+    {
+        BossBruxa bruxa = bossBruxaAtual;
+        BossArvore arvore = bossArvoreAtual;
+
+        bossBruxaAtual = null;
+        bossArvoreAtual = null;
+
+        if (bruxa != null)
+            bruxa.ConcluirDialogoInicial();
+
+        if (arvore != null)
+            arvore.ConcluirDialogoInicial();
+    }
 
     // =========================================================
     // MOSTRAR LINHA
@@ -308,31 +316,22 @@ public class BossDialogueManager : MonoBehaviour
     // VOZ
     // =========================================================
 
+
     private void PlayVoiceSound(DialogueLine line)
     {
-        if (line == null)
+        if (line == null || currentDialogueData == null)
             return;
 
-        if (currentDialogueData == null)
-            return;
-
-        if (string.IsNullOrEmpty(
+        if (string.IsNullOrWhiteSpace(
             currentDialogueData.voiceSoundName))
-        {
             return;
-        }
 
-
-        float pitch = Random.Range(
+        SoundEffectManager.PlayVoiceForSpeaker(
+            currentDialogueData.voiceSoundName,
+            line.speakerName,
             line.voicePitchMin,
             line.voicePitchMax);
-
-
-        SoundEffectManager.PlayWithPitch(
-            currentDialogueData.voiceSoundName,
-            pitch);
     }
-
 
     // =========================================================
     // PRÓXIMA LINHA
@@ -389,6 +388,8 @@ public class BossDialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        SoundEffectManager.ResetVoicePitch();
+
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
@@ -431,32 +432,6 @@ public class BossDialogueManager : MonoBehaviour
         // GUARDA O BOSS
         // ---------------------------------------------------------
 
-        BossBruxa boss =
-            bossAtual;
-
-        bossAtual = null;
-
-
-        // ---------------------------------------------------------
-        // LIMPA DADOS DO DIÁLOGO
-        // ---------------------------------------------------------
-
-        currentLines = null;
-
-        currentDialogueData = null;
-
-        currentLineIndex = 0;
-
-        fullText = "";
-
-
-        // ---------------------------------------------------------
-        // AVISA O BOSS
-        // ---------------------------------------------------------
-
-        if (boss != null)
-        {
-            boss.ConcluirDialogoInicial();
-        }
+        NotificarDialogoConcluido();
     }
 }

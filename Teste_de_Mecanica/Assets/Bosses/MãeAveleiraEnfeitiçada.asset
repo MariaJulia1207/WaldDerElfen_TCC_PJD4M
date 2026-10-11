@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
+  m_Name: "M\xE3eAveleiraEnfeiti\xE7ada"
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  playOnlyOnce: 0
+  voiceSoundName: DialogueVoice
+  mainDialogue:
+  - speakerName: "Guardi\xE3 Sombria"
+    portrait: {fileID: 0}
+    dialogueText: "... quem... quem vem l\xE1?"
+    voicePitchMin: 0.1
+    voicePitchMax: 3
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "M\xE3e Aveleira, o que fizeram com voc\xEA?"
+    voicePitchMin: 0.7
+    voicePitchMax: 1
+  - speakerName: "Guardi\xE3 Sombria"
+    portrait: {fileID: 0}
+    dialogueText: "... forasteira... estais condenada a perecer... d\xEA meia volta...
+      ordens do Senhor da Floresta Negra..."
+    voicePitchMin: 0.1
+    voicePitchMax: 3
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Por favor, deixe-me ajud\xE1-la. Eu n\xE3o quero ferir a senhora.
+      Deixe me libert\xE1-la do feiti\xE7o dos duendes."
+    voicePitchMin: 0.7
+    voicePitchMax: 1
+  - speakerName: "Guardi\xE3 Sombria"
+    portrait: {fileID: 0}
+    dialogueText: "... ningu\xE9m pode deixar este lugar com vida... assim ordenou
+      o Rei dos Duendes... "
+    voicePitchMin: 0.1
+    voicePitchMax: 3
+  - speakerName: "Guardi\xE3 Sombria"
+    portrait: {fileID: 0}
+    dialogueText: "assim foi dito... assim... SER\xC1 FEITO!!!!! "
+    voicePitchMin: 0.1
+    voicePitchMax: 3
+  summaryDialogue: []
+  moverNpcAposDialogo: 0
+  posicaoDestinoNpc: {x: 0, y: 0}
+  criarItemAposDialogo: 1
+  prefabItemColetavel: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
+  deslocamentoItem: {x: 0, y: 0.5}

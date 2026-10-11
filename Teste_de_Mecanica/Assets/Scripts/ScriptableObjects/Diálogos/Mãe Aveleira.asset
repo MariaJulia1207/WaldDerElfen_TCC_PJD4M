@@ -14,5 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
   playOnlyOnce: 0
   voiceSoundName: DialogueVoice
-  mainDialogue: []
-  summaryDialogue: []
+  mainDialogue:
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: 
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: 
+    voicePitchMin: 0.7
+    voicePitchMax: 1
+  - speakerName: 
+    portrait: {fileID: 0}
+    dialogueText: 
+    voicePitchMin: 0
+    voicePitchMax: 0
+  summaryDialogue:
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: "V\xE1, minha crian\xE7a. Derrote Gudrun e encontre o caminho para
+      o covil dos duendes. "
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  moverNpcAposDialogo: 0
+  posicaoDestinoNpc: {x: 0, y: 0}
+  criarItemAposDialogo: 0
+  prefabItemColetavel: {fileID: 0}
+  deslocamentoItem: {x: 0, y: 0.5}

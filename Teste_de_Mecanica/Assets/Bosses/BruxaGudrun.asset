@@ -25,8 +25,8 @@ MonoBehaviour:
     portrait: {fileID: 0}
     dialogueText: "Deixe de charadas, bruxa! Sei que voc\xEA \xE9 serva do Rei dos
       Duendes. Liberte aqueles que voc\xEA aprisionou e leve-me at\xE9 ele! "
-    voicePitchMin: 0.1
-    voicePitchMax: 0.1
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: "Gudrun, a Bruxa dos P\xE1ssaros"
     portrait: {fileID: 0}
     dialogueText: "Insol\xEAncia! Aquele pr\xEDncipe idiota j\xE1 testou minha paci\xEAncia...\nAgora
@@ -38,8 +38,8 @@ MonoBehaviour:
     dialogueText: "Voc\xEA j\xE1 causou dor e sofrimento demais aos meus amigos e
       \xE0 minha fam\xEDlia. Eu n\xE3o deixarei esta sala sem ter arrancado de voc\xEA
       a chave para derrotar Alberich e ter minha irm\xE3 de volta!"
-    voicePitchMin: 0.1
-    voicePitchMax: 0.1
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: "Gudrun, a Bruxa dos P\xE1ssaros"
     portrait: {fileID: 0}
     dialogueText: "Que beleza! Mais um enfeite para minha cole\xE7\xE3o.\nQue moleza!
@@ -47,3 +47,8 @@ MonoBehaviour:
     voicePitchMin: 0.1
     voicePitchMax: 0.1
   summaryDialogue: []
+  moverNpcAposDialogo: 0
+  posicaoDestinoNpc: {x: 0, y: 0}
+  criarItemAposDialogo: 0
+  prefabItemColetavel: {fileID: 0}
+  deslocamentoItem: {x: 0, y: 0.5}

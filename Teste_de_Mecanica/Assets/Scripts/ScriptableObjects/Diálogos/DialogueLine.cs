@@ -10,7 +10,7 @@ public class DialogueLine
     [TextArea(2, 5)]
     public string dialogueText;
 
-    [Header("Voz")]
+    [Header("Voz do personagem")]
     [Range(0.1f, 3f)]
     public float voicePitchMin = 0.9f;
 

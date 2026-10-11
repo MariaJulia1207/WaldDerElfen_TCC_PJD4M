@@ -18,31 +18,36 @@ MonoBehaviour:
   - speakerName: Valemon
     portrait: {fileID: 0}
     dialogueText: ...Rose... Rose...
-    voicePitchMin: 0.5
-    voicePitchMax: 0.8
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: "Voc\xEA... voc\xEA pode falar! Como sabe meu nome?"
-    voicePitchMin: 1.1
-    voicePitchMax: 1.4
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: Valemon
     portrait: {fileID: 0}
     dialogueText: Rose... eu... Valemon...
-    voicePitchMin: 0.5
-    voicePitchMax: 0.8
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: "Espere. Voc\xEA est\xE1 ferido. Vou procurar ajuda."
-    voicePitchMin: 1.1
-    voicePitchMax: 1.4
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   - speakerName: Valemon
     portrait: {fileID: 0}
     dialogueText: '...capturados... duendes... a floresta...  '
-    voicePitchMin: 0.5
-    voicePitchMax: 0.8
+    voicePitchMin: 0.1
+    voicePitchMax: 0.1
   summaryDialogue:
   - speakerName: Valemon
     portrait: {fileID: 0}
     dialogueText: '...capturados... duendes... a floresta... '
     voicePitchMin: 0.1
     voicePitchMax: 0.1
+  moverNpcAposDialogo: 0
+  posicaoDestinoNpc: {x: 0, y: 0}
+  criarItemAposDialogo: 0
+  prefabItemColetavel: {fileID: 0}
+  deslocamentoItem: {x: 0, y: 0.5}
