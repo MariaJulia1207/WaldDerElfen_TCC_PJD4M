@@ -388,6 +388,7 @@ public class BossDialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        SoundEffectManager.StopVoice();
         SoundEffectManager.ResetVoicePitch();
 
         if (typingCoroutine != null)

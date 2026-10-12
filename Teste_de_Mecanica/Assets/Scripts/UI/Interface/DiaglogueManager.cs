@@ -217,6 +217,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        SoundEffectManager.StopVoice();
         SoundEffectManager.ResetVoicePitch();
 
         if (typingCoroutine != null)

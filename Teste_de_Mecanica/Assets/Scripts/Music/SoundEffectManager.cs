@@ -335,6 +335,15 @@ public class SoundEffectManager : MonoBehaviour
         Instance.voiceAudioSource.pitch = 1f;
     }
 
+    public static void StopVoice()
+    {
+        if (Instance == null || Instance.voiceAudioSource == null)
+            return;
+
+        Instance.voiceAudioSource.Stop();
+        Instance.voiceAudioSource.pitch = 1f;
+    }
+
     // =====================================================
     // VOLUME
     // =====================================================

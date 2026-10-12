@@ -23,8 +23,8 @@ MonoBehaviour:
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: 
-    voicePitchMin: 0.7
-    voicePitchMax: 1
+    voicePitchMin: 0.9
+    voicePitchMax: 1.2
   - speakerName: 
     portrait: {fileID: 0}
     dialogueText: 
@@ -40,5 +40,5 @@ MonoBehaviour:
   moverNpcAposDialogo: 0
   posicaoDestinoNpc: {x: 0, y: 0}
   criarItemAposDialogo: 0
-  prefabItemColetavel: {fileID: 0}
+  prefabItemColetavel: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
   deslocamentoItem: {x: 0, y: 0.5}
