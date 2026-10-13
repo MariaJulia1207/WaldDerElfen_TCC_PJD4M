@@ -17,6 +17,7 @@ public class ScreenFader : MonoBehaviour
         }
 
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         if (canvasGroup == null)
         {

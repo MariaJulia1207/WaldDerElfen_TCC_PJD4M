@@ -89,6 +89,7 @@ public class Pause : MonoBehaviour
             playerHealth = 100
         };
 
+        SaveManager.Instance.CaptureCurrentWorldState(data);
         SaveManager.Instance.SaveCurrentStateToSlot(SaveManager.AutoSaveSlot, data);
     }
 

@@ -12,11 +12,21 @@ public class MenuUI : MonoBehaviour
 
     private void Start()
     {
+        if (continueButton != null)
+        {
+            continueButton.SetActive(false);
+        }
+
         UpdateContinueButton();
     }
 
     private void OnEnable()
     {
+        if (continueButton != null)
+        {
+            continueButton.SetActive(false);
+        }
+
         UpdateContinueButton();
     }
 

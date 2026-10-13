@@ -98,6 +98,48 @@ public class SaveRestoreManager : MonoBehaviour
             CheckpointManager.Instance.AtualizarCheckpoint(pendingSave.sceneName, targetPosition);
         }
 
+        RestoreWorldState(pendingSave);
+
         Debug.Log($"SaveRestoreManager: applied pending save from slot {pendingSlot}.");
+    }
+
+    private void RestoreWorldState(SaveData saveData)
+    {
+        if (saveData == null)
+        {
+            return;
+        }
+
+        if (saveData.interactedNPCs == null)
+        {
+            saveData.interactedNPCs = new System.Collections.Generic.List<string>();
+        }
+
+        if (saveData.defeatedBosses == null)
+        {
+            saveData.defeatedBosses = new System.Collections.Generic.List<string>();
+        }
+
+        NPCInteractable[] npcs = FindObjectsByType<NPCInteractable>(FindObjectsSortMode.None);
+        foreach (NPCInteractable npc in npcs)
+        {
+            if (npc == null)
+            {
+                continue;
+            }
+
+            npc.ApplySaveState(saveData.interactedNPCs.Contains(npc.SaveId));
+        }
+
+        BossArena[] bossArenas = FindObjectsByType<BossArena>(FindObjectsSortMode.None);
+        foreach (BossArena bossArena in bossArenas)
+        {
+            if (bossArena == null)
+            {
+                continue;
+            }
+
+            bossArena.ApplySaveState(saveData.defeatedBosses.Contains(bossArena.SaveId));
+        }
     }
 }

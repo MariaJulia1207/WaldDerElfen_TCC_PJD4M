@@ -47,6 +47,25 @@ public class CameraFollowPlayer : MonoBehaviour
         if (cameraCinemachine != null && alvo != null)
         {
             cameraCinemachine.Follow = alvo;
+            SnapToTarget(alvo);
         }
+    }
+
+    public void SnapToTarget(Transform alvo)
+    {
+        if (cameraCinemachine == null)
+        {
+            cameraCinemachine = GetComponent<CinemachineCamera>();
+        }
+
+        if (cameraCinemachine == null || alvo == null)
+        {
+            return;
+        }
+
+        Vector3 novaPosicao = cameraCinemachine.transform.position;
+        novaPosicao.x = alvo.position.x;
+        novaPosicao.y = alvo.position.y;
+        cameraCinemachine.transform.position = novaPosicao;
     }
 }

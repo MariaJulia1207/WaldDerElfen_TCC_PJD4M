@@ -60,16 +60,17 @@ public class CheckpointManager : MonoBehaviour
 
             player.transform.position = LastCheckpointPosition;
 
+            if (cameraFollow != null)
+            {
+                cameraFollow.SnapToTarget(player.transform);
+                cameraFollow.ReativarSeguido(player.transform);
+            }
+
             HealthSystem health = player.GetComponent<HealthSystem>();
             if (health != null)
             {
                 health.RestaurarParaCheckpoint();
             }
-        }
-
-        if (cameraFollow != null && player != null)
-        {
-            cameraFollow.ReativarSeguido(player.transform);
         }
     }
 

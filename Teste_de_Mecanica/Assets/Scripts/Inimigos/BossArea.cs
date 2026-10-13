@@ -8,6 +8,7 @@ public class BossArena : MonoBehaviour
 
     [Header("Boss")]
     [SerializeField] private GameObject bossObjeto;
+    [SerializeField] private string saveId;
     private IBoss boss;
 
     [Header("Objeto de Teste - Opcional")]
@@ -17,6 +18,9 @@ public class BossArena : MonoBehaviour
     private bool combateFinalizado = false;
 
     private IBoss bossScript;
+
+    public string SaveId => string.IsNullOrEmpty(saveId) ? gameObject.name : saveId;
+    public bool IsDefeated => combateFinalizado;
 
     private void Awake()
     {
@@ -64,6 +68,34 @@ public class BossArena : MonoBehaviour
         Debug.Log("Boss Arena: Combate iniciado!");
     }
 
+    public void ApplySaveState(bool defeated)
+    {
+        combateFinalizado = defeated;
+        combateIniciado = defeated || combateIniciado;
+
+        if (bossObjeto != null)
+        {
+            bossObjeto.SetActive(!defeated);
+        }
+
+        if (defeated)
+        {
+            if (aberturaEntrada != null)
+                aberturaEntrada.SetActive(false);
+
+            if (aberturaSaida != null)
+                aberturaSaida.SetActive(false);
+        }
+        else if (combateIniciado)
+        {
+            if (aberturaEntrada != null)
+                aberturaEntrada.SetActive(true);
+
+            if (aberturaSaida != null)
+                aberturaSaida.SetActive(true);
+        }
+    }
+
     // =========================================================
     // BOSS DERROTADO
     // =========================================================
@@ -81,6 +113,9 @@ public class BossArena : MonoBehaviour
 
         if (aberturaSaida != null)
             aberturaSaida.SetActive(false);
+
+        if (bossObjeto != null)
+            bossObjeto.SetActive(false);
 
         Debug.Log("Boss Arena: Boss derrotado! Arena aberta.");
     }

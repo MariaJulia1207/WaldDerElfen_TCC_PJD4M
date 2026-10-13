@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -52,7 +53,7 @@ public class SaveManager : MonoBehaviour
    public SaveData BuildDefaultSave()
    {
        string currentScene = SceneManager.GetActiveScene().name;
-       return new SaveData
+       SaveData data = new SaveData
        {
            sceneName = string.IsNullOrEmpty(currentScene) ? DefaultSceneName : currentScene,
            levelIndex = 0,
@@ -62,6 +63,9 @@ public class SaveManager : MonoBehaviour
            checkpointPosition = Vector3.zero,
            checkpointReached = false
        };
+
+       CaptureCurrentWorldState(data);
+       return data;
    }
 
    public void SaveCurrentStateToSlot(int slot, SaveData data)
@@ -131,6 +135,35 @@ public class SaveManager : MonoBehaviour
        {
            Debug.LogWarning($"SaveManager: failed to load slot {slot}. {ex.Message}");
            return null;
+       }
+   }
+
+   public void CaptureCurrentWorldState(SaveData data)
+   {
+       if (data == null)
+       {
+           return;
+       }
+
+       data.interactedNPCs = new List<string>();
+       data.defeatedBosses = new List<string>();
+
+       NPCInteractable[] npcs = FindObjectsByType<NPCInteractable>(FindObjectsSortMode.None);
+       foreach (NPCInteractable npc in npcs)
+       {
+           if (npc != null && npc.IsDialogueCompleted)
+           {
+               data.interactedNPCs.Add(npc.SaveId);
+           }
+       }
+
+       BossArena[] bossArenas = FindObjectsByType<BossArena>(FindObjectsSortMode.None);
+       foreach (BossArena bossArena in bossArenas)
+       {
+           if (bossArena != null && bossArena.IsDefeated)
+           {
+               data.defeatedBosses.Add(bossArena.SaveId);
+           }
        }
    }
 

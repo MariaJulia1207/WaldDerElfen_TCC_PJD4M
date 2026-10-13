@@ -4,8 +4,13 @@ public class NPCInteractable : MonoBehaviour
 {
     [SerializeField]
     private DialogueData dialogueData;
+    [SerializeField]
+    private string saveId;
 
     private bool dialogueCompleted;
+
+    public string SaveId => string.IsNullOrEmpty(saveId) ? gameObject.name : saveId;
+    public bool IsDialogueCompleted => dialogueCompleted;
 
     public void Interact()
     {
@@ -18,5 +23,10 @@ public class NPCInteractable : MonoBehaviour
     public void CompleteDialogue()
     {
         dialogueCompleted = true;
+    }
+
+    public void ApplySaveState(bool completed)
+    {
+        dialogueCompleted = completed;
     }
 }
