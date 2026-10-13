@@ -38,6 +38,14 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(LoadScene(sceneName));
     }
 
+    public void TransitionQuit()
+    {
+        if (carregando)
+            return;
+
+        StartCoroutine(QuitGame());
+    }
+
     private IEnumerator WaitForFadeIn()
     {
         yield return new WaitForSeconds(fadeDuration);
@@ -56,5 +64,23 @@ public class LevelLoader : MonoBehaviour
         yield return new WaitForSeconds(fadeDuration);
 
         SceneManager.LoadScene(sceneName);
+    }
+
+    private IEnumerator QuitGame()
+    {
+        carregando = true;
+
+        if (transitionAnim != null)
+        {
+            transitionAnim.SetTrigger("Start");
+        }
+
+        yield return new WaitForSeconds(fadeDuration);
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

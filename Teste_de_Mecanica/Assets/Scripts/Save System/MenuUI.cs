@@ -8,6 +8,7 @@ public class MenuUI : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject continueButton;
+    [SerializeField] private LevelLoader levelLoader;
 
     private void Start()
     {
@@ -32,6 +33,11 @@ public class MenuUI : MonoBehaviour
 
     public void OnNewGameClicked()
     {
+        if (TryUseLevelLoader(firstLevelScene))
+        {
+            return;
+        }
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.ForceSceneChange(firstLevelScene);
@@ -51,6 +57,11 @@ public class MenuUI : MonoBehaviour
             SaveData data = SaveManager.Instance.LoadFromSlot(SaveManager.AutoSaveSlot);
             if (data != null && GameManager.Instance != null && !string.IsNullOrEmpty(data.sceneName))
             {
+                if (TryUseLevelLoader(data.sceneName))
+                {
+                    return;
+                }
+
                 GameManager.Instance.ForceSceneChange(data.sceneName);
             }
         }
@@ -67,6 +78,37 @@ public class MenuUI : MonoBehaviour
     public void OnQuitClicked()
     {
         Debug.Log("MenuUI: Quit requested.");
+
+        LevelLoader loader = ResolveLevelLoader();
+        if (loader != null)
+        {
+            loader.TransitionQuit();
+            return;
+        }
+
         Application.Quit();
+    }
+
+    private LevelLoader ResolveLevelLoader()
+    {
+        if (levelLoader != null)
+        {
+            return levelLoader;
+        }
+
+        levelLoader = FindAnyObjectByType<LevelLoader>(FindObjectsInactive.Include);
+        return levelLoader;
+    }
+
+    private bool TryUseLevelLoader(string sceneName)
+    {
+        LevelLoader loader = ResolveLevelLoader();
+        if (loader == null)
+        {
+            return false;
+        }
+
+        loader.Transition(sceneName);
+        return true;
     }
 }

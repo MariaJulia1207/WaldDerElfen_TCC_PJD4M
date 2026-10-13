@@ -30,9 +30,10 @@ public class MainMenu : MonoBehaviour
     // =========================
     public void Jogar()
     {
-        if (levelLoader != null)
+        LevelLoader loader = ResolveLevelLoader();
+        if (loader != null)
         {
-            levelLoader.Transition(cutsceneScene);
+            loader.Transition(cutsceneScene);
             return;
         }
 
@@ -99,8 +100,26 @@ public class MainMenu : MonoBehaviour
     // =========================
     public void Sair()
     {
-        Application.Quit();
+        LevelLoader loader = ResolveLevelLoader();
+        if (loader != null)
+        {
+            loader.TransitionQuit();
+            Debug.Log("Jogo fechado");
+            return;
+        }
 
+        Application.Quit();
         Debug.Log("Jogo fechado");
+    }
+
+    private LevelLoader ResolveLevelLoader()
+    {
+        if (levelLoader != null)
+        {
+            return levelLoader;
+        }
+
+        levelLoader = FindAnyObjectByType<LevelLoader>(FindObjectsInactive.Include);
+        return levelLoader;
     }
 }

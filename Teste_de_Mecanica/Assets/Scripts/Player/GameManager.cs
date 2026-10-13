@@ -162,12 +162,34 @@ public class GameManager : MonoBehaviour
 
     public void ForceSceneChange(string sceneName)
     {
+        if (TryUseLevelLoader(sceneName))
+        {
+            return;
+        }
+
         SceneManager.LoadScene(sceneName);
     }
 
     public void RequestSceneChange(string sceneName)
     {
+        if (TryUseLevelLoader(sceneName))
+        {
+            return;
+        }
+
         SceneManager.LoadScene(sceneName);
+    }
+
+    private bool TryUseLevelLoader(string sceneName)
+    {
+        LevelLoader levelLoader = FindAnyObjectByType<LevelLoader>(FindObjectsInactive.Include);
+        if (levelLoader == null)
+        {
+            return false;
+        }
+
+        levelLoader.Transition(sceneName);
+        return true;
     }
 
     public void RestartFromCheckpoint()
