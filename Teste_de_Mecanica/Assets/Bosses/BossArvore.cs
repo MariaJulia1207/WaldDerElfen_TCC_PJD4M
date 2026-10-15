@@ -81,8 +81,8 @@ public class BossArvore : MonoBehaviour, IBoss
     [SerializeField] private float duracaoInvocacaoMedio = 4f;
     [SerializeField] private float duracaoInvocacaoDificil = 5f;
 
-    [Header("Duração Ataque dos Braços (Provisório)")]
-    [SerializeField] private float duracaoAtaqueBraco = 2f;
+    [Header("Duração Ataque dos Braços")]
+    [SerializeField] private float duracaoAtaqueBraco;
 
     // =========================================================
     // RAÍZES
@@ -311,8 +311,12 @@ public class BossArvore : MonoBehaviour, IBoss
         }
     }
 
+    [Header("Hitboxes dos Braços")]
+    [SerializeField] private BossHitboxBraco hitboxBracoEsquerdo;
+    [SerializeField] private BossHitboxBraco hitboxBracoDireito;
+
     // =========================================================
-    // ATAQUES DE BRAÇO (LÓGICA ESTRUTURAL / PROVISÓRIA)
+    // CORROTINAS DOS BRAÇOS
     // =========================================================
 
     private IEnumerator AtaqueBracoEsquerdo()
@@ -320,12 +324,17 @@ public class BossArvore : MonoBehaviour, IBoss
         if (morreu)
             yield break;
 
+        // Libera a hitbox para causar dano neste novo golpe
+        if (hitboxBracoEsquerdo != null)
+        {
+            hitboxBracoEsquerdo.ResetarHitbox();
+        }
+
         if (animator != null)
         {
             animator.SetBool("IsAtacandoEsquerdo", true);
         }
 
-        // Aguarda a duração da animação/ataque
         yield return new WaitForSeconds(duracaoAtaqueBraco);
 
         if (animator != null)
@@ -341,12 +350,17 @@ public class BossArvore : MonoBehaviour, IBoss
         if (morreu)
             yield break;
 
+        // Libera a hitbox para causar dano neste novo golpe
+        if (hitboxBracoDireito != null)
+        {
+            hitboxBracoDireito.ResetarHitbox();
+        }
+
         if (animator != null)
         {
             animator.SetBool("IsAtacandoDireito", true);
         }
 
-        // Aguarda a duração da animação/ataque
         yield return new WaitForSeconds(duracaoAtaqueBraco);
 
         if (animator != null)
@@ -355,6 +369,29 @@ public class BossArvore : MonoBehaviour, IBoss
         }
 
         FinalizarAtaque();
+    }
+
+    // =========================================================
+    // ANIMATION EVENT DE FINALIZAÇÃO (Chamado no último frame)
+    // =========================================================
+
+    public void FinalizarAtaqueAnimacao()
+    {
+        if (morreu)
+            return;
+
+        DesativarBoolsAtaque();
+        FinalizarAtaque();
+    }
+
+    private void DesativarBoolsAtaque()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("IsAtacandoEsquerdo", false);
+            animator.SetBool("IsAtacandoDireito", false);
+            animator.SetBool("IsInvocando", false);
+        }
     }
 
     // =========================================================

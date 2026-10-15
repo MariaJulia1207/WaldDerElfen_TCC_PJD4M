@@ -72,13 +72,17 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.05
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5535099300540579637, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7110105414206692851}
+    - targetCorrespondingSourceObject: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7703720770331889695}
   m_SourcePrefab: {fileID: 100100000, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
 --- !u!1 &3206599800795972859 stripped
 GameObject:
@@ -107,3 +111,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7703720770331889695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3206599800795972859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5698364922c8283429f567a9e4c889e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeartPiece
+  aumentoVidaMaxima: 1
+  preencherNovoCoracao: 1
+  nomeSomColeta: HeartCollect

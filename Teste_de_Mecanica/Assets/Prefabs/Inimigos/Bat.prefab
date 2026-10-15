@@ -217,7 +217,7 @@ MonoBehaviour:
   lootTable:
   - itemPrefab: {fileID: 0}
     dropChance: 35
-  - itemPrefab: {fileID: 0}
+  - itemPrefab: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
     dropChance: 50
   - itemPrefab: {fileID: 3206599800795972859, guid: 4c14dba75329d8f4ebabd3d90dc8afe9, type: 3}
     dropChance: 15
@@ -234,8 +234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaypointMover
   waypointParent: {fileID: 7397860267579817962}
-  moveSpeed: 2
-  waitTime: 2
+  moveSpeed: 3
+  waitTime: 0.5
   loopWaypoints: 1
 --- !u!95 &773008918501180903
 Animator:
@@ -272,6 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerDamage
   heart: {fileID: 0}
+  knockbackForce: 5
 --- !u!1 &1623538355688647823
 GameObject:
   m_ObjectHideFlags: 0

@@ -280,6 +280,10 @@ PrefabInstance:
       propertyPath: particulaDano
       value: 
       objectReference: {fileID: 6535489561349080676, guid: b82db296f9e068a41a57a490c49eadd1, type: 3}
+    - target: {fileID: 6915332201261162303, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
+      propertyPath: velocidade
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -317,7 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaypointMover
   waypointParent: {fileID: 7060280895531675882}
-  moveSpeed: 2
+  moveSpeed: 3
   waitTime: 2
   loopWaypoints: 1
 --- !u!4 &7480185609673911470 stripped

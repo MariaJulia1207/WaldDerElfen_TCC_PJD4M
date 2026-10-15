@@ -12,24 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
   m_Name: "M\xE3e Aveleira"
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
-  playOnlyOnce: 0
+  playOnlyOnce: 1
   voiceSoundName: DialogueVoice
   mainDialogue:
   - speakerName: "M\xE3e Aveleira"
     portrait: {fileID: 0}
-    dialogueText: 
+    dialogueText: q
     voicePitchMin: 0.6
     voicePitchMax: 0.9
   - speakerName: Rose
     portrait: {fileID: 0}
-    dialogueText: 
+    dialogueText: q
     voicePitchMin: 0.9
     voicePitchMax: 1.2
-  - speakerName: 
+  - speakerName: "M\xE3e Aveleira"
     portrait: {fileID: 0}
-    dialogueText: 
-    voicePitchMin: 0
-    voicePitchMax: 0
+    dialogueText: q
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
   summaryDialogue:
   - speakerName: "M\xE3e Aveleira"
     portrait: {fileID: 0}
@@ -39,6 +39,6 @@ MonoBehaviour:
     voicePitchMax: 0.9
   moverNpcAposDialogo: 0
   posicaoDestinoNpc: {x: 0, y: 0}
-  criarItemAposDialogo: 0
+  criarItemAposDialogo: 1
   prefabItemColetavel: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
-  deslocamentoItem: {x: 0, y: 0.5}
+  deslocamentoItem: {x: 0, y: -2}

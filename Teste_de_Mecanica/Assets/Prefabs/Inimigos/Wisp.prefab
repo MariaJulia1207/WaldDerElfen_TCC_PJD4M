@@ -649,7 +649,7 @@ MonoBehaviour:
   lootTable:
   - itemPrefab: {fileID: 0}
     dropChance: 35
-  - itemPrefab: {fileID: 0}
+  - itemPrefab: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
     dropChance: 50
   - itemPrefab: {fileID: 3206599800795972859, guid: 4c14dba75329d8f4ebabd3d90dc8afe9, type: 3}
     dropChance: 15
@@ -703,7 +703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd112cd49d86a974a953c6b8f46a3c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWisp
-  velocidade: 2
+  velocidade: 3
   distanciaDeteccao: 5
   distanciaAtaque: 2.5
   tempoEntreAtaques: 1.5
