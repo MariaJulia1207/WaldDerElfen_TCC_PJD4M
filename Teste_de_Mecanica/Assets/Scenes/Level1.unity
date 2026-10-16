@@ -16889,6 +16889,7 @@ MonoBehaviour:
   aberturaEntrada: {fileID: 70064915}
   aberturaSaida: {fileID: 0}
   bossObjeto: {fileID: 753047254}
+  saveId: 
   objetoTeste: {fileID: 753047254}
 --- !u!4 &394903663
 Transform:
@@ -24263,6 +24264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 0}
+  saveId: 
 --- !u!212 &547724731
 SpriteRenderer:
   serializedVersion: 3
@@ -42149,6 +42151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 0}
+  saveId: 
 --- !u!212 &947770166
 SpriteRenderer:
   serializedVersion: 3
@@ -42448,6 +42451,7 @@ Transform:
   - {fileID: 96622951}
   - {fileID: 1678769569}
   - {fileID: 1208559912}
+  - {fileID: 1201361232}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &952097211
@@ -54808,10 +54812,13 @@ MonoBehaviour:
   duracaoInvocacaoFacil: 3
   duracaoInvocacaoMedio: 4
   duracaoInvocacaoDificil: 5
+  duracaoAtaqueBraco: 0
   raizesFacil: 2
   raizesMedio: 4
   raizesDificil: 6
   tempoAteInvocarRaizes: 1.5
+  hitboxBracoEsquerdo: {fileID: 0}
+  hitboxBracoDireito: {fileID: 0}
 --- !u!212 &1089620315
 SpriteRenderer:
   serializedVersion: 3
@@ -61341,7 +61348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1201361232
 Transform:
   m_ObjectHideFlags: 0
@@ -61351,11 +61358,11 @@ Transform:
   m_GameObject: {fileID: 1201361231}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 29.7, y: 8.7, z: 0}
+  m_LocalPosition: {x: 13.512211, y: -3.6125298, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 950399709}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &1201361233
 ParticleSystemRenderer:
@@ -61402,8 +61409,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 731888949
-  m_SortingLayer: 3
+  m_SortingLayerID: 1975513933
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_RenderMode: 0
@@ -73680,6 +73687,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1302345363}
   m_CullTransparentMesh: 1
+--- !u!1 &1307529027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1307529029}
+  - component: {fileID: 1307529028}
+  m_Layer: 0
+  m_Name: _MusicController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1307529028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307529027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133f56d61cbe8454f8901f9ae84d40a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneBGM
+  playOnStart: 1
+  musicName: Dream
+  testAudioClip: {fileID: 0}
+--- !u!4 &1307529029
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307529027}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1309383409
 GameObject:
   m_ObjectHideFlags: 0
@@ -84423,6 +84477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 11400000, guid: f8ff90fc244c93d4f81ac8f7f8da72ab, type: 2}
+  saveId: 
 --- !u!212 &1550202089
 SpriteRenderer:
   serializedVersion: 3
@@ -87182,6 +87237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 0}
+  saveId: 
 --- !u!212 &1661131929
 SpriteRenderer:
   serializedVersion: 3
@@ -95197,6 +95253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteractable
   dialogueData: {fileID: 0}
+  saveId: 
 --- !u!212 &1849513477
 SpriteRenderer:
   serializedVersion: 3
@@ -105465,6 +105522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 11400000, guid: 713293dfa71d42c488c9596143cbd567, type: 2}
+  saveId: 
 --- !u!212 &2064806600
 SpriteRenderer:
   serializedVersion: 3
@@ -141108,12 +141166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e5c7718e645c34785d27238a892f87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LifeHUD
-  coracao:
-  - {fileID: 753595460}
-  - {fileID: 11593489}
-  - {fileID: 1515111951}
-  - {fileID: 1241738897}
-  - {fileID: 1952126400}
+  coracoes: []
+  coracaoPrefab: {fileID: 0}
+  containerCoracoes: {fileID: 0}
   cheio: {fileID: 7353259036936998148, guid: 276f07df90d567b4cac7e77ed820aeb9, type: 3}
   vazio: {fileID: 1547192499, guid: 276f07df90d567b4cac7e77ed820aeb9, type: 3}
 --- !u!114 &2102165577
@@ -141288,12 +141343,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e5c7718e645c34785d27238a892f87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LifeHUD
-  coracao:
-  - {fileID: 1260231254}
-  - {fileID: 506130649}
-  - {fileID: 1247514413}
-  - {fileID: 51817292}
-  - {fileID: 376988495}
+  coracoes: []
+  coracaoPrefab: {fileID: 0}
+  containerCoracoes: {fileID: 0}
   cheio: {fileID: 7353259036936998148, guid: 276f07df90d567b4cac7e77ed820aeb9, type: 3}
   vazio: {fileID: 1547192499, guid: 276f07df90d567b4cac7e77ed820aeb9, type: 3}
 --- !u!114 &2112300169
@@ -143108,6 +143160,6 @@ SceneRoots:
   - {fileID: 884995785}
   - {fileID: 102841743}
   - {fileID: 1853962303}
-  - {fileID: 1201361232}
   - {fileID: 394903663}
   - {fileID: 4899682510183053913}
+  - {fileID: 1307529029}

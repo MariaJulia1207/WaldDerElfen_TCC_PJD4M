@@ -7,11 +7,13 @@ public class BackgroundMusic : MonoBehaviour
 {
     public static BackgroundMusic Instance { get; private set; }
 
+    [Header("Componentes")]
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private MusicLibrary musicLibrary;
     [SerializeField] private Slider bgmSlider;
 
     private const string PlayerPrefKey = "bgmVolume";
-    private List<Slider> registeredSliders = new List<Slider>();
+    private readonly List<Slider> registeredSliders = new List<Slider>();
     private float currentVolume = 1f;
 
     private void Awake()
@@ -21,8 +23,12 @@ public class BackgroundMusic : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
+            if (audioSource == null)
+                audioSource = GetComponent<AudioSource>();
+
             currentVolume = PlayerPrefs.HasKey(PlayerPrefKey) ? PlayerPrefs.GetFloat(PlayerPrefKey) : 1f;
-            if (audioSource != null) audioSource.volume = currentVolume;
+            if (audioSource != null)
+                audioSource.volume = currentVolume;
 
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -44,7 +50,11 @@ public class BackgroundMusic : MonoBehaviour
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            Instance = null;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -54,7 +64,6 @@ public class BackgroundMusic : MonoBehaviour
 
     private void RegisterSceneSliders()
     {
-        // include inactive sliders; filter to those in loaded scenes
         Slider[] sliders = Resources.FindObjectsOfTypeAll<Slider>();
         foreach (var slider in sliders)
         {
@@ -92,19 +101,61 @@ public class BackgroundMusic : MonoBehaviour
         PlayerPrefs.SetFloat(PlayerPrefKey, currentVolume);
         PlayerPrefs.Save();
 
-        for (int i = 0; i < registeredSliders.Count; i++)
+        for (int i = registeredSliders.Count - 1; i >= 0; i--)
         {
             var s = registeredSliders[i];
-            if (s == null) continue;
+            if (s == null)
+            {
+                registeredSliders.RemoveAt(i);
+                continue;
+            }
+
             if (Mathf.Approximately(s.value, currentVolume)) continue;
             s.SetValueWithoutNotify(currentVolume);
         }
     }
 
+    public static void Play(string musicName)
+    {
+        if (Instance == null)
+        {
+            Debug.LogError("BackgroundMusic: Nenhuma instância ativa encontrada.");
+            return;
+        }
+
+        if (Instance.musicLibrary == null)
+        {
+            Debug.LogError("BackgroundMusic: MusicLibrary não atribuída no Inspector.", Instance);
+            return;
+        }
+
+        AudioClip clip = Instance.musicLibrary.GetClip(musicName);
+        if (clip == null)
+        {
+            Debug.LogWarning($"BackgroundMusic: Nenhum clipe encontrado para '{musicName}'.", Instance);
+            return;
+        }
+
+        Instance.PlayLoop(clip);
+    }
+
+    public static void Play(AudioClip clip)
+    {
+        if (Instance == null)
+        {
+            Debug.LogError("BackgroundMusic: Nenhuma instância ativa encontrada.");
+            return;
+        }
+
+        Instance.PlayLoop(clip);
+    }
+
     public void PlayLoop(AudioClip clip)
     {
-        if (audioSource == null) return;
-        if (clip == null) return;
+        if (audioSource == null || clip == null) return;
+
+        // Não reinicia a música se o mesmo clipe já estiver tocando
+        if (audioSource.clip == clip && audioSource.isPlaying) return;
 
         audioSource.clip = clip;
         audioSource.loop = true;
