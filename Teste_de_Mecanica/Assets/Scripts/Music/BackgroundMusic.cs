@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +9,18 @@ public class BackgroundMusic : MonoBehaviour
     public static BackgroundMusic Instance { get; private set; }
 
     [Header("Componentes")]
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource primaryAudioSource;
+    [SerializeField] private AudioSource secondaryAudioSource;
     [SerializeField] private MusicLibrary musicLibrary;
     [SerializeField] private Slider bgmSlider;
 
     private const string PlayerPrefKey = "bgmVolume";
     private readonly List<Slider> registeredSliders = new List<Slider>();
+
     private float currentVolume = 1f;
+    private AudioSource activeSource;
+    private AudioSource inactiveSource;
+    private Coroutine crossfadeCoroutine;
 
     private void Awake()
     {
@@ -23,12 +29,10 @@ public class BackgroundMusic : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            if (audioSource == null)
-                audioSource = GetComponent<AudioSource>();
+            SetupAudioSources();
 
             currentVolume = PlayerPrefs.HasKey(PlayerPrefKey) ? PlayerPrefs.GetFloat(PlayerPrefKey) : 1f;
-            if (audioSource != null)
-                audioSource.volume = currentVolume;
+            SetVolume(currentVolume);
 
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -36,6 +40,23 @@ public class BackgroundMusic : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void SetupAudioSources()
+    {
+        AudioSource[] sources = GetComponents<AudioSource>();
+
+        primaryAudioSource = sources.Length >= 1 ? sources[0] : gameObject.AddComponent<AudioSource>();
+        secondaryAudioSource = sources.Length >= 2 ? sources[1] : gameObject.AddComponent<AudioSource>();
+
+        primaryAudioSource.loop = true;
+        primaryAudioSource.playOnAwake = false;
+
+        secondaryAudioSource.loop = true;
+        secondaryAudioSource.playOnAwake = false;
+
+        activeSource = primaryAudioSource;
+        inactiveSource = secondaryAudioSource;
     }
 
     private void Start()
@@ -67,8 +88,7 @@ public class BackgroundMusic : MonoBehaviour
         Slider[] sliders = Resources.FindObjectsOfTypeAll<Slider>();
         foreach (var slider in sliders)
         {
-            if (slider == null) continue;
-            if (!slider.gameObject.scene.isLoaded) continue;
+            if (slider == null || !slider.gameObject.scene.isLoaded) continue;
 
             if (slider.gameObject.name.Equals("bgmSlider") || slider.CompareTag("BgmSlider") || slider.CompareTag("bgmSlider"))
             {
@@ -80,14 +100,10 @@ public class BackgroundMusic : MonoBehaviour
 
     public void RegisterSlider(Slider slider)
     {
-        if (slider == null) return;
-        if (registeredSliders.Contains(slider)) return;
+        if (slider == null || registeredSliders.Contains(slider)) return;
 
         registeredSliders.Add(slider);
-        if (bgmSlider == null)
-        {
-            bgmSlider = slider;
-        }
+        if (bgmSlider == null) bgmSlider = slider;
 
         slider.SetValueWithoutNotify(currentVolume);
         slider.onValueChanged.AddListener(SetVolume);
@@ -96,7 +112,12 @@ public class BackgroundMusic : MonoBehaviour
     public void SetVolume(float volume)
     {
         currentVolume = Mathf.Clamp01(volume);
-        if (audioSource != null) audioSource.volume = currentVolume;
+
+        if (crossfadeCoroutine == null)
+        {
+            if (activeSource != null) activeSource.volume = currentVolume;
+            if (inactiveSource != null) inactiveSource.volume = 0f;
+        }
 
         PlayerPrefs.SetFloat(PlayerPrefKey, currentVolume);
         PlayerPrefs.Save();
@@ -117,11 +138,17 @@ public class BackgroundMusic : MonoBehaviour
 
     public static void Play(string musicName)
     {
-        if (Instance == null)
-        {
-            Debug.LogError("BackgroundMusic: Nenhuma instância ativa encontrada.");
-            return;
-        }
+        CrossfadeTo(musicName, 1.5f);
+    }
+
+    public static void Play(AudioClip clip)
+    {
+        CrossfadeTo(clip, 1.5f);
+    }
+
+    public static void CrossfadeTo(string musicName, float fadeDuration = 1.5f)
+    {
+        if (Instance == null) return;
 
         if (Instance.musicLibrary == null)
         {
@@ -130,41 +157,97 @@ public class BackgroundMusic : MonoBehaviour
         }
 
         AudioClip clip = Instance.musicLibrary.GetClip(musicName);
-        if (clip == null)
+        if (clip != null)
         {
-            Debug.LogWarning($"BackgroundMusic: Nenhum clipe encontrado para '{musicName}'.", Instance);
-            return;
+            Instance.CrossfadeToInternal(clip, fadeDuration);
         }
-
-        Instance.PlayLoop(clip);
+        else
+        {
+            Debug.LogWarning($"BackgroundMusic: Música '{musicName}' não encontrada na biblioteca.", Instance);
+        }
     }
 
-    public static void Play(AudioClip clip)
+    public static void CrossfadeTo(AudioClip clip, float fadeDuration = 1.5f)
     {
-        if (Instance == null)
-        {
-            Debug.LogError("BackgroundMusic: Nenhuma instância ativa encontrada.");
-            return;
-        }
-
-        Instance.PlayLoop(clip);
+        if (Instance == null) return;
+        Instance.CrossfadeToInternal(clip, fadeDuration);
     }
 
     public void PlayLoop(AudioClip clip)
     {
-        if (audioSource == null || clip == null) return;
-
-        // Não reinicia a música se o mesmo clipe já estiver tocando
-        if (audioSource.clip == clip && audioSource.isPlaying) return;
-
-        audioSource.clip = clip;
-        audioSource.loop = true;
-        audioSource.Play();
+        CrossfadeToInternal(clip, 0.5f);
     }
 
-    public void Stop()
+    private void CrossfadeToInternal(AudioClip newClip, float fadeDuration)
     {
-        if (audioSource == null) return;
-        audioSource.Stop();
+        if (newClip == null) return;
+
+        // Se o novo clipe já estiver tocando na fonte ativa, não interrompe
+        if (activeSource.clip == newClip && activeSource.isPlaying) return;
+
+        if (crossfadeCoroutine != null)
+        {
+            StopCoroutine(crossfadeCoroutine);
+        }
+
+        crossfadeCoroutine = StartCoroutine(CrossfadeRoutine(newClip, fadeDuration));
+    }
+
+    private IEnumerator CrossfadeRoutine(AudioClip newClip, float fadeDuration)
+    {
+        inactiveSource.clip = newClip;
+        inactiveSource.volume = 0f;
+        inactiveSource.Play();
+
+        float timer = 0f;
+        float startActiveVolume = activeSource.volume;
+
+        if (fadeDuration <= 0f) fadeDuration = 0.01f;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            float progress = timer / fadeDuration;
+
+            inactiveSource.volume = Mathf.Lerp(0f, currentVolume, progress);
+            activeSource.volume = Mathf.Lerp(startActiveVolume, 0f, progress);
+
+            yield return null;
+        }
+
+        activeSource.Stop();
+        activeSource.volume = 0f;
+        inactiveSource.volume = currentVolume;
+
+        // Alterna as fontes: a inativa torna-se a nova fonte ativa
+        AudioSource temp = activeSource;
+        activeSource = inactiveSource;
+        inactiveSource = temp;
+
+        crossfadeCoroutine = null;
+    }
+
+    public void Stop(float fadeOutDuration = 1.0f)
+    {
+        if (crossfadeCoroutine != null) StopCoroutine(crossfadeCoroutine);
+        StartCoroutine(FadeOutRoutine(fadeOutDuration));
+    }
+
+    private IEnumerator FadeOutRoutine(float duration)
+    {
+        float startVolume = activeSource.volume;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            activeSource.volume = Mathf.Lerp(startVolume, 0f, timer / duration);
+            yield return null;
+        }
+
+        activeSource.Stop();
+        inactiveSource.Stop();
+        activeSource.volume = 0f;
+        inactiveSource.volume = 0f;
     }
 }
