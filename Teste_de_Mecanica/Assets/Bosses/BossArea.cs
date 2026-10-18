@@ -17,8 +17,6 @@ public class BossArena : MonoBehaviour
     private bool combateIniciado = false;
     private bool combateFinalizado = false;
 
-    private IBoss bossScript;
-
     public string SaveId => string.IsNullOrEmpty(saveId) ? gameObject.name : saveId;
     public bool IsDefeated => combateFinalizado;
 
@@ -27,14 +25,27 @@ public class BossArena : MonoBehaviour
         if (bossObjeto != null)
             boss = bossObjeto.GetComponent<IBoss>();
     }
+
     private void Update()
     {
-        // O objeto de teste continua disponível para testes.
-        // Se estiver preenchido, sua destruição também pode
-        // abrir a arena.
         if (combateIniciado && !combateFinalizado)
         {
+            // 1. Verificação via objeto de teste
             if (objetoTeste != null && objetoTeste == null)
+            {
+                BossDerrotado();
+                return;
+            }
+
+            // 2. Verificação se o GameObject do Boss foi destruído
+            if (bossObjeto == null)
+            {
+                BossDerrotado();
+                return;
+            }
+
+            // 3. Verificação se o Boss morreu
+            if (boss != null && boss.EstaMorto())
             {
                 BossDerrotado();
             }
@@ -73,6 +84,7 @@ public class BossArena : MonoBehaviour
         combateFinalizado = defeated;
         combateIniciado = defeated || combateIniciado;
 
+        // Ao carregar um save onde o boss já foi derrotado, esconde o objeto imediatamente
         if (bossObjeto != null)
         {
             bossObjeto.SetActive(!defeated);
@@ -96,10 +108,6 @@ public class BossArena : MonoBehaviour
         }
     }
 
-    // =========================================================
-    // BOSS DERROTADO
-    // =========================================================
-
     public void BossDerrotado()
     {
         if (combateFinalizado)
@@ -107,17 +115,16 @@ public class BossArena : MonoBehaviour
 
         combateFinalizado = true;
 
-        // Abre as passagens.
+        // Abre as passagens da arena
         if (aberturaEntrada != null)
             aberturaEntrada.SetActive(false);
 
         if (aberturaSaida != null)
             aberturaSaida.SetActive(false);
 
-        if (bossObjeto != null)
-            bossObjeto.SetActive(false);
+        // O bossObjeto NÃO é desativado via SetActive(false) aqui para permitir
+        // que a animação de morte, partículas e o spawn do NPC terminem normalmente.
 
         Debug.Log("Boss Arena: Boss derrotado! Arena aberta.");
     }
-
 }

@@ -138,36 +138,51 @@ public class SaveManager : MonoBehaviour
        }
    }
 
-   public void CaptureCurrentWorldState(SaveData data)
-   {
-       if (data == null)
-       {
-           return;
-       }
+    public void CaptureCurrentWorldState(SaveData data)
+    {
+        if (data == null)
+        {
+            return;
+        }
 
-       data.interactedNPCs = new List<string>();
-       data.defeatedBosses = new List<string>();
+        // 1. Salva a posição atual do jogador
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            data.playerPosition = player.transform.position;
+        }
 
-       NPCInteractable[] npcs = FindObjectsByType<NPCInteractable>(FindObjectsSortMode.None);
-       foreach (NPCInteractable npc in npcs)
-       {
-           if (npc != null && npc.IsDialogueCompleted)
-           {
-               data.interactedNPCs.Add(npc.SaveId);
-           }
-       }
+        // 2. Salva os dados de Checkpoint ativos
+        if (CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint)
+        {
+            data.checkpointReached = true;
+            data.checkpointPosition = CheckpointManager.Instance.LastCheckpointPosition;
+        }
 
-       BossArena[] bossArenas = FindObjectsByType<BossArena>(FindObjectsSortMode.None);
-       foreach (BossArena bossArena in bossArenas)
-       {
-           if (bossArena != null && bossArena.IsDefeated)
-           {
-               data.defeatedBosses.Add(bossArena.SaveId);
-           }
-       }
-   }
+        // 3. Captura estado de NPCs
+        data.interactedNPCs = new List<string>();
+        NPCInteractable[] npcs = FindObjectsByType<NPCInteractable>(FindObjectsSortMode.None);
+        foreach (NPCInteractable npc in npcs)
+        {
+            if (npc != null && npc.IsDialogueCompleted)
+            {
+                data.interactedNPCs.Add(npc.SaveId);
+            }
+        }
 
-   public void ClearSlot(int slot)
+        // 4. Captura estado das Arenas de Boss
+        data.defeatedBosses = new List<string>();
+        BossArena[] bossArenas = FindObjectsByType<BossArena>(FindObjectsSortMode.None);
+        foreach (BossArena bossArena in bossArenas)
+        {
+            if (bossArena != null && bossArena.IsDefeated)
+            {
+                data.defeatedBosses.Add(bossArena.SaveId);
+            }
+        }
+    }
+
+    public void ClearSlot(int slot)
    {
        string path = GetPath(slot);
        if (File.Exists(path))

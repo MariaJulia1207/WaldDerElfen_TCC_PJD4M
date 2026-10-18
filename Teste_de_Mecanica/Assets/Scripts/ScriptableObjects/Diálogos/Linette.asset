@@ -88,14 +88,14 @@ MonoBehaviour:
   summaryDialogue:
   - speakerName: Linette
     portrait: {fileID: 0}
-    dialogueText: 
+    dialogueText: "Mam\xE3e, por favor, pode me ouvir?"
     voicePitchMin: 1.3
     voicePitchMax: 1.6
-  - speakerName: Linette
+  - speakerName: Frau Jeanne
     portrait: {fileID: 0}
-    dialogueText: "\"Pela estrada afora \nEuvou bem sozinha...\""
-    voicePitchMin: 1.3
-    voicePitchMax: 1.6
+    dialogueText: Li... Linette... deixem-na... em paz...
+    voicePitchMin: 0.7
+    voicePitchMax: 1
   moverNpcAposDialogo: 1
   posicaoDestinoNpc: {x: 369, y: -86}
   criarItemAposDialogo: 0

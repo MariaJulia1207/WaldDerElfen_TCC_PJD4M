@@ -1908,7 +1908,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &73116057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1922,7 +1922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AdaptiveMusicZone
   playerTag: Player
-  musicName: Sad
+  musicName: Boat
   testAudioClip: {fileID: 0}
   fadeDuration: 2
 --- !u!61 &73116058
@@ -12100,7 +12100,7 @@ MonoBehaviour:
   aberturaEntrada: {fileID: 70064915}
   aberturaSaida: {fileID: 0}
   bossObjeto: {fileID: 753047254}
-  saveId: 
+  saveId: Bruxa Gudrun
   objetoTeste: {fileID: 753047254}
 --- !u!4 &394903663
 Transform:
@@ -45140,12 +45140,12 @@ MonoBehaviour:
   duracaoInvocacaoMedio: 4
   duracaoInvocacaoDificil: 5
   duracaoAtaqueBraco: 0
+  hitboxBracoEsquerdo: {fileID: 0}
+  hitboxBracoDireito: {fileID: 0}
   raizesFacil: 2
   raizesMedio: 4
   raizesDificil: 6
   tempoAteInvocarRaizes: 1.5
-  hitboxBracoEsquerdo: {fileID: 0}
-  hitboxBracoDireito: {fileID: 0}
 --- !u!212 &1089620315
 SpriteRenderer:
   serializedVersion: 3
@@ -51323,6 +51323,7 @@ Transform:
   - {fileID: 1307529029}
   - {fileID: 1516939997}
   - {fileID: 73116059}
+  - {fileID: 1479793499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1161159206 stripped
@@ -64064,7 +64065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1307529028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73460,6 +73461,101 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1479793498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1479793499}
+  - component: {fileID: 1479793501}
+  - component: {fileID: 1479793500}
+  m_Layer: 0
+  m_Name: Zone_Cave3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1479793499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479793498}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -31.59489, y: -8.95788, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1157831008}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1479793500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479793498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0cc1824e5421042aea4bba77dffcb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdaptiveMusicZone
+  playerTag: Player
+  musicName: Cave
+  testAudioClip: {fileID: 0}
+  fadeDuration: 2
+--- !u!61 &1479793501
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479793498}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 102.5, y: 44}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 100, y: 40}
+  m_EdgeRadius: 0
 --- !u!1 &1481681858
 GameObject:
   m_ObjectHideFlags: 0
@@ -74055,7 +74151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1516939995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74069,7 +74165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AdaptiveMusicZone
   playerTag: Player
-  musicName: Quiet
+  musicName: Dream
   testAudioClip: {fileID: 0}
   fadeDuration: 2
 --- !u!61 &1516939996
@@ -74933,7 +75029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 11400000, guid: f8ff90fc244c93d4f81ac8f7f8da72ab, type: 2}
-  saveId: 
+  saveId: NPC_Valemon
 --- !u!212 &1550202089
 SpriteRenderer:
   serializedVersion: 3

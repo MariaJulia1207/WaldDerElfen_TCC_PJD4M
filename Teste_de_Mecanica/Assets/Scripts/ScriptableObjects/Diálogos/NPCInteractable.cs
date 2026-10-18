@@ -23,10 +23,27 @@ public class NPCInteractable : MonoBehaviour
     public void CompleteDialogue()
     {
         dialogueCompleted = true;
+
+        // Move o NPC imediatamente se o diálogo recém-concluído tiver a opção ativada
+        MoverNpcSeNecessario();
     }
 
     public void ApplySaveState(bool completed)
     {
         dialogueCompleted = completed;
+
+        // Reposiciona o NPC ao carregar um jogo onde o diálogo já foi concluído
+        if (dialogueCompleted)
+        {
+            MoverNpcSeNecessario();
+        }
+    }
+
+    private void MoverNpcSeNecessario()
+    {
+        if (dialogueData != null && dialogueData.moverNpcAposDialogo)
+        {
+            transform.position = dialogueData.posicaoDestinoNpc;
+        }
     }
 }

@@ -84,6 +84,10 @@ public class BossArvore : MonoBehaviour, IBoss
     [Header("Duração Ataque dos Braços")]
     [SerializeField] private float duracaoAtaqueBraco;
 
+    [Header("Hitboxes dos Braços")]
+    [SerializeField] private BossHitboxBraco hitboxBracoEsquerdo;
+    [SerializeField] private BossHitboxBraco hitboxBracoDireito;
+
     // =========================================================
     // RAÍZES
     // =========================================================
@@ -132,11 +136,7 @@ public class BossArvore : MonoBehaviour, IBoss
     {
         if (animator == null)
         {
-            Debug.LogError(
-                "BossArvore: Animator não encontrado.",
-                this
-            );
-
+            Debug.LogError("BossArvore: Animator não encontrado.", this);
             return;
         }
 
@@ -171,25 +171,16 @@ public class BossArvore : MonoBehaviour, IBoss
 
         if (BossDialogueManager.Instance == null)
         {
-            Debug.LogWarning(
-                "BossArvore: BossDialogueManager não encontrado. " +
-                "O combate será iniciado sem diálogo.",
-                this
-            );
-
+            Debug.LogWarning("BossArvore: BossDialogueManager não encontrado. O combate será iniciado sem diálogo.", this);
             dialogoInicialConcluido = true;
             IniciarCombate();
             return;
         }
 
         aguardandoDialogoInicial = true;
-
         Debug.Log("BossArvore: iniciando diálogo inicial.");
 
-        BossDialogueManager.Instance.StartBossDialogue(
-            dialogoInicial,
-            this
-        );
+        BossDialogueManager.Instance.StartBossDialogue(dialogoInicial, this);
     }
 
     public void ConcluirDialogoInicial()
@@ -204,7 +195,6 @@ public class BossArvore : MonoBehaviour, IBoss
         dialogoInicialConcluido = true;
 
         Debug.Log("BossArvore: diálogo inicial concluído.");
-
         IniciarCombate();
     }
 
@@ -217,7 +207,6 @@ public class BossArvore : MonoBehaviour, IBoss
             return;
 
         combateIniciado = true;
-
         AtualizarEstado();
 
         Debug.Log("BossArvore: combate iniciado!");
@@ -239,7 +228,6 @@ public class BossArvore : MonoBehaviour, IBoss
         while (!morreu)
         {
             float intervalo = ObterIntervaloAtaque();
-
             Debug.Log("BossArvore: esperando " + intervalo + " segundos.");
 
             yield return new WaitForSeconds(intervalo);
@@ -269,23 +257,18 @@ public class BossArvore : MonoBehaviour, IBoss
             return;
 
         List<TipoAtaque> ataquesDisponiveis = new List<TipoAtaque>();
-
-        // O ataque de raízes sempre está disponível.
         ataquesDisponiveis.Add(TipoAtaque.Raizes);
 
-        // Braço esquerdo só pode ser escolhido se o último ataque NÃO tiver sido ele.
         if (ultimoAtaque != TipoAtaque.BracoEsquerdo)
         {
             ataquesDisponiveis.Add(TipoAtaque.BracoEsquerdo);
         }
 
-        // Braço direito só pode ser escolhido se o último ataque NÃO tiver sido ele.
         if (ultimoAtaque != TipoAtaque.BracoDireito)
         {
             ataquesDisponiveis.Add(TipoAtaque.BracoDireito);
         }
 
-        // Sorteia entre os ataques permitidos.
         int indiceSorteado = Random.Range(0, ataquesDisponiveis.Count);
         TipoAtaque ataqueEscolhido = ataquesDisponiveis[indiceSorteado];
 
@@ -311,10 +294,6 @@ public class BossArvore : MonoBehaviour, IBoss
         }
     }
 
-    [Header("Hitboxes dos Braços")]
-    [SerializeField] private BossHitboxBraco hitboxBracoEsquerdo;
-    [SerializeField] private BossHitboxBraco hitboxBracoDireito;
-
     // =========================================================
     // CORROTINAS DOS BRAÇOS
     // =========================================================
@@ -324,7 +303,6 @@ public class BossArvore : MonoBehaviour, IBoss
         if (morreu)
             yield break;
 
-        // Libera a hitbox para causar dano neste novo golpe
         if (hitboxBracoEsquerdo != null)
         {
             hitboxBracoEsquerdo.ResetarHitbox();
@@ -350,7 +328,6 @@ public class BossArvore : MonoBehaviour, IBoss
         if (morreu)
             yield break;
 
-        // Libera a hitbox para causar dano neste novo golpe
         if (hitboxBracoDireito != null)
         {
             hitboxBracoDireito.ResetarHitbox();
@@ -370,10 +347,6 @@ public class BossArvore : MonoBehaviour, IBoss
 
         FinalizarAtaque();
     }
-
-    // =========================================================
-    // ANIMATION EVENT DE FINALIZAÇÃO (Chamado no último frame)
-    // =========================================================
 
     public void FinalizarAtaqueAnimacao()
     {
@@ -403,28 +376,16 @@ public class BossArvore : MonoBehaviour, IBoss
         if (morreu)
             yield break;
 
-        if (animator == null)
+        if (animator == null || raizPool == null)
         {
-            Debug.LogError("BossArvore: Animator não atribuído.", this);
-            FinalizarAtaque();
-            yield break;
-        }
-
-        if (raizPool == null)
-        {
-            Debug.LogError("BossArvore: BossRaizPool não atribuído.", this);
             FinalizarAtaque();
             yield break;
         }
 
         float duracao = ObterDuracaoInvocacao();
-
-        Debug.Log("BossArvore: iniciando invocação de raízes.");
-
         animator.SetBool("IsInvocando", true);
 
         float espera = Mathf.Clamp(tempoAteInvocarRaizes, 0f, duracao);
-
         yield return new WaitForSeconds(espera);
 
         if (morreu)
@@ -433,15 +394,12 @@ public class BossArvore : MonoBehaviour, IBoss
         int quantidade = ObterQuantidadeRaizes();
         raizPool.InvocarRaizes(quantidade);
 
-        Debug.Log("BossArvore: invocou " + quantidade + " raízes.");
-
         yield return new WaitForSeconds(Mathf.Max(0f, duracao - espera));
 
         if (morreu)
             yield break;
 
         animator.SetBool("IsInvocando", false);
-
         FinalizarAtaque();
     }
 
@@ -449,8 +407,6 @@ public class BossArvore : MonoBehaviour, IBoss
     {
         atacando = false;
         rotinaAtaque = null;
-
-        Debug.Log("BossArvore: ataque finalizado.");
     }
 
     // =========================================================
@@ -461,17 +417,10 @@ public class BossArvore : MonoBehaviour, IBoss
     {
         switch (estadoAtual)
         {
-            case EstadoBoss.Facil:
-                return duracaoInvocacaoFacil;
-
-            case EstadoBoss.Medio:
-                return duracaoInvocacaoMedio;
-
-            case EstadoBoss.Dificil:
-                return duracaoInvocacaoDificil;
-
-            default:
-                return duracaoInvocacaoFacil;
+            case EstadoBoss.Facil: return duracaoInvocacaoFacil;
+            case EstadoBoss.Medio: return duracaoInvocacaoMedio;
+            case EstadoBoss.Dificil: return duracaoInvocacaoDificil;
+            default: return duracaoInvocacaoFacil;
         }
     }
 
@@ -479,52 +428,30 @@ public class BossArvore : MonoBehaviour, IBoss
     {
         switch (estadoAtual)
         {
-            case EstadoBoss.Facil:
-                return intervaloFacil;
-
-            case EstadoBoss.Medio:
-                return intervaloMedio;
-
-            case EstadoBoss.Dificil:
-                return intervaloDificil;
-
-            default:
-                return intervaloFacil;
+            case EstadoBoss.Facil: return intervaloFacil;
+            case EstadoBoss.Medio: return intervaloMedio;
+            case EstadoBoss.Dificil: return intervaloDificil;
+            default: return intervaloFacil;
         }
     }
 
     public void ExecutarInvocacaoRaizes()
     {
-        if (morreu || !combateIniciado || !atacando)
+        if (morreu || !combateIniciado || !atacando || raizPool == null)
             return;
-
-        if (raizPool == null)
-        {
-            Debug.LogWarning("BossArvore: BossRaizPool não foi atribuído.", this);
-            return;
-        }
 
         int quantidade = ObterQuantidadeRaizes();
         raizPool.InvocarRaizes(quantidade);
-
-        Debug.Log("BossArvore: Animation Event -> Invocando " + quantidade + " raízes.");
     }
 
     private int ObterQuantidadeRaizes()
     {
         switch (estadoAtual)
         {
-            case EstadoBoss.Facil:
-                return raizesFacil;
-
-            case EstadoBoss.Medio:
-                return raizesMedio;
-
-            case EstadoBoss.Dificil:
-                return raizesDificil;
-
-            default:
-                return raizesFacil;
+            case EstadoBoss.Facil: return raizesFacil;
+            case EstadoBoss.Medio: return raizesMedio;
+            case EstadoBoss.Dificil: return raizesDificil;
+            default: return raizesFacil;
         }
     }
 
@@ -560,8 +487,6 @@ public class BossArvore : MonoBehaviour, IBoss
         {
             estadoAtual = EstadoBoss.Facil;
         }
-
-        Debug.Log("BossArvore: fase = " + estadoAtual);
     }
 
     // =========================================================
@@ -583,8 +508,6 @@ public class BossArvore : MonoBehaviour, IBoss
         if (vida < 0)
             vida = 0;
 
-        Debug.Log("BossArvore recebeu dano. Vida: " + vida);
-
         if (feedbackDano != null)
         {
             feedbackDano.ExecutarFeedback();
@@ -604,7 +527,6 @@ public class BossArvore : MonoBehaviour, IBoss
             return;
 
         morreu = true;
-
         estadoAtual = EstadoBoss.Morrendo;
         atacando = false;
 
@@ -629,19 +551,19 @@ public class BossArvore : MonoBehaviour, IBoss
         {
             animator.SetBool("IsInvocando", false);
             animator.SetBool("IsDead", true);
-
             animator.Play("Morrendo", 0, 0f);
         }
 
         Debug.Log("BossArvore: morreu.");
-
         StartCoroutine(SequenciaMorte());
     }
 
     private IEnumerator SequenciaMorte()
     {
+        // 1. Aguarda o tempo da animação antes das partículas
         yield return new WaitForSeconds(tempoAteParticulas);
 
+        // 2. Instancia e toca as partículas
         if (particulasMorte != null)
         {
             ParticleSystem efeito = Instantiate(
@@ -651,12 +573,13 @@ public class BossArvore : MonoBehaviour, IBoss
             );
 
             efeito.Play();
-
             Destroy(efeito.gameObject, tempoDoEfeitoMorte);
         }
 
+        // 3. Aguarda o tempo de efeito do impacto da morte
         yield return new WaitForSeconds(tempoDoEfeitoMorte);
 
+        // 4. Instancia a Árvore Curada no mesmo local
         Vector3 posicao = transform.position;
         Quaternion rotacao = transform.rotation;
 
@@ -667,17 +590,15 @@ public class BossArvore : MonoBehaviour, IBoss
         }
         else
         {
-            Debug.LogWarning(
-                "BossArvore: prefab da árvore curada não foi atribuído.",
-                this
-            );
+            Debug.LogWarning("BossArvore: prefab da árvore curada não foi atribuído.", this);
         }
 
+        // 5. Destrói o GameObject do Boss
         Destroy(gameObject);
     }
 
     // =========================================================
-    // ACESSORES
+    // ACESSORES / IBOSS
     // =========================================================
 
     public int GetVida() => vida;

@@ -943,4 +943,13 @@ public class BossBruxa : MonoBehaviour, IBoss
 
         IniciarPreparacao();
     }
+
+    // =========================================================
+    // IBOSS
+    // =========================================================
+
+    public bool EstaMorto()
+    {
+        return estadoAtual == EstadoAtual.Derrotado;
+    }
 }
