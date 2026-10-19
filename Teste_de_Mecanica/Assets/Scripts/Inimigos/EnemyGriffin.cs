@@ -8,9 +8,14 @@ public class EnemyGriffin : MonoBehaviour
 
     [Header("Ataque e Projétil")]
     [SerializeField] private ProjetilPool poolProjetil;
-    [SerializeField] private Transform pontoDisparo;
     [SerializeField] private float velocidadeProjetil = 5f;
     [SerializeField] private float tempoEntreAtaques = 2f;
+
+    [Header("Fire Points")]
+    [SerializeField] private Transform firePointEsquerda;
+    [SerializeField] private Transform firePointDireita;
+    [SerializeField] private Transform firePointCima;
+    [SerializeField] private Transform firePointBaixo;
 
     [Header("Knockback")]
     [SerializeField] private float forcaKnockback = 3f;
@@ -96,7 +101,7 @@ public class EnemyGriffin : MonoBehaviour
 
         Vector2 direcao = waypointMover.CurrentMoveDirection;
 
-        // Atualiza a direção com base apenas na movimentação horizontal (Esquerda / Direita)
+        // Atualiza a direção com base no movimento do waypoint (prioriza o lado para onde está andado)
         if (Mathf.Abs(direcao.x) > 0.01f)
         {
             ultimaDirecao = direcao.x > 0 ? Vector2.right : Vector2.left;
@@ -119,21 +124,28 @@ public class EnemyGriffin : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         anim.SetBool("IsMoving", false);
 
-        // Virar para a direção do jogador no eixo horizontal
+        // Identifica a posição relativa do jogador nos 4 eixos (Esquerda, Direita, Cima, Baixo)
         Vector2 diferenca = jogador.position - transform.position;
-        if (diferenca.x != 0)
+
+        if (Mathf.Abs(diferenca.x) > Mathf.Abs(diferenca.y))
         {
             ultimaDirecao = diferenca.x > 0 ? Vector2.right : Vector2.left;
-            AtualizarDirecaoAnimacao(ultimaDirecao);
+        }
+        else
+        {
+            ultimaDirecao = diferenca.y > 0 ? Vector2.up : Vector2.down;
         }
 
+        AtualizarDirecaoAnimacao(ultimaDirecao);
         anim.SetTrigger("Attack");
     }
 
     private void AtualizarDirecaoAnimacao(Vector2 direcao)
     {
         anim.SetFloat("MoveX", direcao.x);
+        anim.SetFloat("MoveY", direcao.y);
         anim.SetFloat("LastMoveX", direcao.x);
+        anim.SetFloat("LastMoveY", direcao.y);
     }
 
     // =========================================================
@@ -141,7 +153,7 @@ public class EnemyGriffin : MonoBehaviour
     // =========================================================
 
     /// <summary>
-    /// Adicione este evento no frame da animação de ataque em que o projétil deve ser disparado.
+    /// Evento de animação para disparar o projétil.
     /// </summary>
     public void DispararProjetil()
     {
@@ -161,7 +173,9 @@ public class EnemyGriffin : MonoBehaviour
         Projetil projetil = poolProjetil.Pegar();
         if (projetil != null)
         {
-            Vector3 origem = pontoDisparo != null ? pontoDisparo.position : transform.position;
+            Transform fp = ObterFirePointAtual();
+            Vector3 origem = fp != null ? fp.position : transform.position;
+
             projetil.transform.position = origem;
 
             Vector2 direcaoAtaque = (jogador.position - origem).normalized;
@@ -170,7 +184,20 @@ public class EnemyGriffin : MonoBehaviour
     }
 
     /// <summary>
-    /// Adicione este evento no último frame da animação de ataque para liberar o movimento.
+    /// Seleciona o Fire Point correto com base na última direção definida.
+    /// </summary>
+    private Transform ObterFirePointAtual()
+    {
+        if (ultimaDirecao == Vector2.left) return firePointEsquerda;
+        if (ultimaDirecao == Vector2.right) return firePointDireita;
+        if (ultimaDirecao == Vector2.up) return firePointCima;
+        if (ultimaDirecao == Vector2.down) return firePointBaixo;
+
+        return transform;
+    }
+
+    /// <summary>
+    /// Evento de animação executado no último frame da animação de ataque.
     /// </summary>
     public void FinalizarAtaque()
     {

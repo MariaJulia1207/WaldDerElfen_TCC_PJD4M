@@ -113,6 +113,7 @@ public class AttackHitbox : MonoBehaviour
 
             enemy.ReceberDano(dano);
 
+            // Knockback no Goblin
             EnemyGoblin goblin =
                 enemy.GetComponentInParent<EnemyGoblin>();
 
@@ -122,6 +123,18 @@ public class AttackHitbox : MonoBehaviour
                     (enemy.transform.position - transform.position).normalized;
 
                 goblin.ReceberKnockback(direcaoKnockback);
+            }
+
+            // Knockback no Griffin
+            EnemyGriffin griffin =
+                enemy.GetComponentInParent<EnemyGriffin>();
+
+            if (griffin != null)
+            {
+                Vector2 direcaoKnockback =
+                    (enemy.transform.position - transform.position).normalized;
+
+                griffin.ReceberKnockback(direcaoKnockback);
             }
 
             return;
