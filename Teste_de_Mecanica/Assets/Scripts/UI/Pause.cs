@@ -81,6 +81,7 @@ public class Pause : MonoBehaviour
         SaveData data = new SaveData
         {
             sceneName = SceneManager.GetActiveScene().name,
+            checkpointSceneName = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointScene : string.Empty,
             playerPosition = FindPlayerPosition(),
             checkpointPosition = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointPosition : Vector3.zero,
             checkpointReached = CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint,
@@ -91,6 +92,37 @@ public class Pause : MonoBehaviour
 
         SaveManager.Instance.CaptureCurrentWorldState(data);
         SaveManager.Instance.SaveCurrentStateToSlot(SaveManager.AutoSaveSlot, data);
+    }
+
+    public void SalvarJogo()
+    {
+        if (SaveManager.Instance == null)
+        {
+            return;
+        }
+
+        SaveData data = SaveManager.Instance.BuildDefaultSave();
+        SaveManager.Instance.SaveCurrentStateToSlot(SaveManager.ManualSaveSlot, data);
+    }
+
+    public void CarregarJogo()
+    {
+        if (SaveManager.Instance == null || !SaveManager.Instance.HasManualSave)
+        {
+            return;
+        }
+
+        if (SaveRestoreManager.Instance != null)
+        {
+            SaveRestoreManager.Instance.RequestLoadSlot(SaveManager.ManualSaveSlot);
+            return;
+        }
+
+        SaveData data = SaveManager.Instance.LoadFromSlot(SaveManager.ManualSaveSlot);
+        if (data != null && GameManager.Instance != null && !string.IsNullOrEmpty(data.sceneName))
+        {
+            GameManager.Instance.ForceSceneChange(data.sceneName);
+        }
     }
 
     private Vector3 FindPlayerPosition()
@@ -122,9 +154,24 @@ public class Pause : MonoBehaviour
 
         isPaused = false;
 
-        pausePanel.SetActive(false);
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
 
-        levelLoader.Transition(cena);
+        if (levelLoader != null)
+        {
+            levelLoader.Transition(cena);
+            return;
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.VoltarAoMenu();
+            return;
+        }
+
+        SceneManager.LoadScene("Menu");
     }
 
     // =========================================================

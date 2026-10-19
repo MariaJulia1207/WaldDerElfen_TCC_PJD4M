@@ -10,8 +10,15 @@ public class CheckpointArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
+        if (other == null)
+        {
             return;
+        }
+
+        if (!other.CompareTag("Player"))
+        {
+            return;
+        }
 
         if (CheckpointManager.Instance != null)
         {

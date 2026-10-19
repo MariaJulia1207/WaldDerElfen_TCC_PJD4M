@@ -23,12 +23,84 @@ public class HealthSystem : MonoBehaviour
 
         if (sprite == null)
         {
-            sprite = GetComponent<SpriteRenderer>();
+            sprite = GetComponentInChildren<SpriteRenderer>();
         }
 
         if (sprite != null)
         {
             corOriginal = sprite.color;
+        }
+    }
+
+    private void EnsurePlayerVisible()
+    {
+        if (sprite == null)
+        {
+            sprite = GetComponentInChildren<SpriteRenderer>();
+        }
+
+        if (sprite != null)
+        {
+            sprite.enabled = true;
+            Color visibleColor = sprite.color;
+            visibleColor.a = 1f;
+            sprite.color = visibleColor;
+            corOriginal = visibleColor;
+        }
+
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            renderer.enabled = true;
+
+            if (string.Equals(renderer.name, "Circle", System.StringComparison.OrdinalIgnoreCase))
+            {
+                Color c = renderer.color;
+                c.a = 0.75f;
+                renderer.color = c;
+                continue;
+            }
+
+            Color mainColor = renderer.color;
+            mainColor.a = 1f;
+            renderer.color = mainColor;
+        }
+    }
+
+    public void ResetToFullHealth()
+    {
+        vida = vidaMaxima;
+        isDead = false;
+
+        EnsurePlayerVisible();
+
+        if (player != null)
+        {
+            player.EnableControls();
+            player.IniciarRespawn();
+            player.FinalizarRespawn();
+        }
+
+        if (flashCoroutine != null)
+        {
+            StopCoroutine(flashCoroutine);
+            flashCoroutine = null;
+        }
+
+        if (sprite != null)
+        {
+            sprite.color = corOriginal;
+        }
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
         }
     }
 
@@ -151,26 +223,20 @@ public class HealthSystem : MonoBehaviour
     {
         Time.timeScale = 0f;
 
-        string nomeCenaGameOver = GameManager.Instance != null ? GameManager.Instance.NomeCenaGameOver : "GameOver";
-
-        Scene cenaGameOver = SceneManager.GetSceneByName(nomeCenaGameOver);
-
-        if (!cenaGameOver.isLoaded)
+        if (GameOverMenuController.Instance != null)
         {
-            SceneManager.LoadScene(nomeCenaGameOver, LoadSceneMode.Additive);
+            GameOverMenuController.Instance.ShowGameOver();
+            return;
         }
 
-        StartCoroutine(EsperarGameOverUI());
-    }
-
-    private IEnumerator EsperarGameOverUI()
-    {
-        while (GameOverMenuController.Instance == null)
+        GameOverMenuController localInstance = FindAnyObjectByType<GameOverMenuController>(FindObjectsInactive.Include);
+        if (localInstance != null)
         {
-            yield return null;
+            localInstance.ShowGameOver();
+            return;
         }
 
-        GameOverMenuController.Instance.ShowGameOver();
+        Debug.LogWarning("HealthSystem: GameOverCanvas local não foi encontrado na cena. Verifique o LevelBootstrap e o prefab do canvas.");
     }
 
     public void RestaurarParaCheckpoint()
@@ -178,10 +244,18 @@ public class HealthSystem : MonoBehaviour
         vida = vidaMaxima;
         isDead = false;
 
+        EnsurePlayerVisible();
+
         if (player != null)
         {
             player.enabled = true;
             player.IniciarRespawn();
+            player.FinalizarRespawn();
+
+            if (player.Anim != null)
+            {
+                player.Anim.SetBool("IsDead", false);
+            }
         }
 
         if (flashCoroutine != null)
@@ -201,16 +275,20 @@ public class HealthSystem : MonoBehaviour
             sprite.color = corOriginal;
         }
 
-        StartCoroutine(EsperarFinalRespawn());
-    }
-
-    private IEnumerator EsperarFinalRespawn()
-    {
-        yield return new WaitForSeconds(3.1f);
-
-        if (player != null)
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
+        foreach (SpriteRenderer renderer in renderers)
         {
-            player.FinalizarRespawn();
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            if (string.Equals(renderer.name, "Circle", System.StringComparison.OrdinalIgnoreCase))
+            {
+                Color c = renderer.color;
+                c.a = 0.75f;
+                renderer.color = c;
+            }
         }
     }
 }

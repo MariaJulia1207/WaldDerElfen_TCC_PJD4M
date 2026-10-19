@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameOverMenuController : MonoBehaviour
@@ -12,10 +14,6 @@ public class GameOverMenuController : MonoBehaviour
     [Header("Botões")]
     [SerializeField] private Button restartButton;
     [SerializeField] private Button menuButton;
-
-    [Header("Fade")]
-    [SerializeField] private ScreenFader screenFader;
-    [SerializeField] private int tempoFade = 1;
 
     private bool isTransitioning;
 
@@ -68,72 +66,6 @@ public class GameOverMenuController : MonoBehaviour
         }
     }
 
-    private ScreenFader GetScreenFader()
-    {
-        if (screenFader != null)
-        {
-            return screenFader;
-        }
-
-        if (ScreenFader.Instance != null)
-        {
-            return ScreenFader.Instance;
-        }
-
-        GameObject taggedFader = GameObject.FindGameObjectWithTag("ScreenFader");
-        if (taggedFader != null)
-        {
-            ScreenFader foundFader = taggedFader.GetComponent<ScreenFader>();
-            if (foundFader != null)
-            {
-                return foundFader;
-            }
-        }
-
-        ScreenFader objectInScene = FindAnyObjectByType<ScreenFader>(FindObjectsInactive.Include);
-        if (objectInScene != null)
-        {
-            return objectInScene;
-        }
-
-        GameObject faderObject = new GameObject("ScreenFader", typeof(Canvas), typeof(CanvasGroup), typeof(ScreenFader));
-        faderObject.tag = "ScreenFader";
-
-        Canvas canvas = faderObject.GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 9999;
-
-        CanvasGroup canvasGroupRef = faderObject.GetComponent<CanvasGroup>();
-        canvasGroupRef.alpha = 0f;
-        canvasGroupRef.blocksRaycasts = false;
-        canvasGroupRef.interactable = false;
-
-        DontDestroyOnLoad(faderObject);
-
-        return faderObject.GetComponent<ScreenFader>();
-    }
-
-    private IEnumerator FadeCanvasGroup(CanvasGroup targetCanvasGroup, float targetAlpha, float duration)
-    {
-        if (targetCanvasGroup == null)
-        {
-            yield break;
-        }
-
-        float startAlpha = targetCanvasGroup.alpha;
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            targetCanvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, t);
-            yield return null;
-        }
-
-        targetCanvasGroup.alpha = targetAlpha;
-    }
-
     public void ShowGameOver()
     {
         if (gameOverCanvas == null || isTransitioning)
@@ -145,49 +77,18 @@ public class GameOverMenuController : MonoBehaviour
         Time.timeScale = 0f;
 
         gameOverCanvas.gameObject.SetActive(true);
-        gameOverCanvas.alpha = 0f;
-        gameOverCanvas.interactable = false;
-        gameOverCanvas.blocksRaycasts = false;
+        gameOverCanvas.alpha = 1f;
+        gameOverCanvas.interactable = true;
+        gameOverCanvas.blocksRaycasts = true;
 
         if (restartButton != null)
         {
-            restartButton.interactable = false;
+            restartButton.interactable = true;
         }
 
         if (menuButton != null)
         {
-            menuButton.interactable = false;
-        }
-
-        StartCoroutine(ShowGameOverRoutine());
-    }
-
-    private IEnumerator ShowGameOverRoutine()
-    {
-        ScreenFader fader = GetScreenFader();
-
-        if (fader != null)
-        {
-            yield return StartCoroutine(fader.FadeTo(1f));
-        }
-
-        if (gameOverCanvas != null)
-        {
-            gameOverCanvas.alpha = 0f;
-            gameOverCanvas.interactable = true;
-            gameOverCanvas.blocksRaycasts = true;
-
-            if (restartButton != null)
-            {
-                restartButton.interactable = true;
-            }
-
-            if (menuButton != null)
-            {
-                menuButton.interactable = true;
-            }
-
-            yield return StartCoroutine(FadeCanvasGroup(gameOverCanvas, 1f, tempoFade));
+            menuButton.interactable = true;
         }
 
         isTransitioning = false;
@@ -228,9 +129,16 @@ public class GameOverMenuController : MonoBehaviour
             menuButton.interactable = false;
         }
 
+        // Garante que o player e o HUD saiam do game over com a vida completa
+        // antes da cena ser recarregada.
+        if (restart)
+        {
+            StartCoroutine(ForcePlayerVisibleAfterRestart());
+        }
+
         if (restart && CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint)
         {
-            CheckpointManager.Instance.RestaurarPlayerNoCheckpoint(false);
+            CheckpointManager.Instance.RestoreCheckpointFromAutoSave(false);
             checkpointAlreadyRestored = true;
         }
 
@@ -238,19 +146,8 @@ public class GameOverMenuController : MonoBehaviour
         {
             gameOverCanvas.interactable = false;
             gameOverCanvas.blocksRaycasts = false;
-            gameOverCanvas.alpha = 1f;
-            yield return StartCoroutine(FadeCanvasGroup(gameOverCanvas, 0f, tempoFade));
-        }
-
-        ScreenFader fader = GetScreenFader();
-
-        if (fader != null)
-        {
-            yield return StartCoroutine(fader.FadeTo(0f));
-        }
-        else if (gameOverCanvas != null)
-        {
             gameOverCanvas.alpha = 0f;
+            gameOverCanvas.gameObject.SetActive(false);
         }
 
         if (restart && !checkpointAlreadyRestored && GameManager.Instance != null)
@@ -262,13 +159,47 @@ public class GameOverMenuController : MonoBehaviour
             GameManager.Instance.VoltarAoMenu();
         }
 
-        if (gameOverCanvas != null)
-        {
-            gameOverCanvas.gameObject.SetActive(false);
-        }
-
         Time.timeScale = 1f;
         isTransitioning = false;
+        yield break;
+    }
+
+    private IEnumerator ForcePlayerVisibleAfterRestart()
+    {
+        const float waitTimeout = 0.25f;
+        float elapsed = 0f;
+
+        while (elapsed < waitTimeout)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                SpriteRenderer[] renderers = player.GetComponentsInChildren<SpriteRenderer>(true);
+                foreach (SpriteRenderer renderer in renderers)
+                {
+                    if (renderer == null)
+                    {
+                        continue;
+                    }
+
+                    renderer.enabled = true;
+                    Color color = renderer.color;
+                    color.a = 1f;
+                    renderer.color = color;
+                }
+
+                HealthSystem health = player.GetComponent<HealthSystem>();
+                if (health != null)
+                {
+                    health.RestaurarParaCheckpoint();
+                }
+
+                yield break;
+            }
+
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
     }
 
     public void OnRestartClicked()

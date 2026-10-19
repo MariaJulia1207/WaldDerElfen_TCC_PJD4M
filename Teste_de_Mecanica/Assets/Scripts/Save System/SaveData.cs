@@ -6,6 +6,7 @@ using UnityEngine;
 public class SaveData
 {
     public string sceneName = string.Empty;
+    public string checkpointSceneName = string.Empty;
     public int levelIndex;
     public int coins;
     public int playerHealth = 100;
@@ -21,6 +22,7 @@ public class SaveData
         return new SaveData
         {
             sceneName = sceneName,
+            checkpointSceneName = checkpointSceneName,
             levelIndex = levelIndex,
             coins = coins,
             playerHealth = playerHealth,

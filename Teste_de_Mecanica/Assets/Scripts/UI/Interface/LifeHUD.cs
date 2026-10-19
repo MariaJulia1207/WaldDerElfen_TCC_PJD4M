@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LifeHUD : MonoBehaviour
@@ -15,7 +16,17 @@ public class LifeHUD : MonoBehaviour
 
     private HealthSystem healthSystem;
 
+    private void Awake()
+    {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
     private void OnEnable()
+    {
+        EncontrarPlayer();
+    }
+
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         EncontrarPlayer();
     }
@@ -29,6 +40,11 @@ public class LifeHUD : MonoBehaviour
         }
 
         AtualizarHUD();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
     }
 
     private void EncontrarPlayer()

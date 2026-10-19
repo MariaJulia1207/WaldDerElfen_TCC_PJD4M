@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuUI : MonoBehaviour
 {
@@ -37,8 +38,8 @@ public class MenuUI : MonoBehaviour
             return;
         }
 
-        bool hasAutoSave = SaveManager.Instance != null && SaveManager.Instance.HasAutosave;
-        continueButton.SetActive(hasAutoSave);
+        bool hasSave = SaveManager.Instance != null && (SaveManager.Instance.HasAutosave || SaveManager.Instance.HasManualSave);
+        continueButton.SetActive(hasSave);
     }
 
     public void OnNewGameClicked()
@@ -56,24 +57,57 @@ public class MenuUI : MonoBehaviour
 
     public void OnContinueClicked()
     {
-        if (SaveRestoreManager.Instance != null)
+        if (SaveManager.Instance != null && SaveManager.Instance.HasAutosave)
         {
-            SaveRestoreManager.Instance.RequestLoadSlot(SaveManager.AutoSaveSlot);
+            LoadSlot(SaveManager.AutoSaveSlot);
             return;
         }
 
-        if (SaveManager.Instance != null && SaveManager.Instance.SlotExists(SaveManager.AutoSaveSlot))
+        if (SaveManager.Instance != null && SaveManager.Instance.HasManualSave)
         {
-            SaveData data = SaveManager.Instance.LoadFromSlot(SaveManager.AutoSaveSlot);
-            if (data != null && GameManager.Instance != null && !string.IsNullOrEmpty(data.sceneName))
-            {
-                if (TryUseLevelLoader(data.sceneName))
-                {
-                    return;
-                }
+            LoadSlot(SaveManager.ManualSaveSlot);
+            return;
+        }
+    }
 
-                GameManager.Instance.ForceSceneChange(data.sceneName);
+    public void OnSaveGameClicked()
+    {
+        if (SaveManager.Instance == null)
+        {
+            return;
+        }
+
+        SaveData save = SaveManager.Instance.BuildDefaultSave();
+        SaveManager.Instance.SaveCurrentStateToSlot(SaveManager.ManualSaveSlot, save);
+    }
+
+    public void OnLoadManualSlotClicked()
+    {
+        LoadSlot(SaveManager.ManualSaveSlot);
+    }
+
+    private void LoadSlot(int slot)
+    {
+        if (SaveRestoreManager.Instance != null)
+        {
+            SaveRestoreManager.Instance.RequestLoadSlot(slot);
+            return;
+        }
+
+        if (SaveManager.Instance == null || !SaveManager.Instance.SlotExists(slot))
+        {
+            return;
+        }
+
+        SaveData data = SaveManager.Instance.LoadFromSlot(slot);
+        if (data != null && GameManager.Instance != null && !string.IsNullOrEmpty(data.sceneName))
+        {
+            if (TryUseLevelLoader(data.sceneName))
+            {
+                return;
             }
+
+            GameManager.Instance.ForceSceneChange(data.sceneName);
         }
     }
 
@@ -112,13 +146,29 @@ public class MenuUI : MonoBehaviour
 
     private bool TryUseLevelLoader(string sceneName)
     {
-        LevelLoader loader = ResolveLevelLoader();
-        if (loader == null)
+        if (string.IsNullOrEmpty(sceneName))
         {
             return false;
         }
 
-        loader.Transition(sceneName);
-        return true;
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (string.Equals(currentScene, sceneName, System.StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        if (sceneName == firstLevelScene || sceneName == saveSlotScene)
+        {
+            LevelLoader loader = ResolveLevelLoader();
+            if (loader == null)
+            {
+                return false;
+            }
+
+            loader.Transition(sceneName);
+            return true;
+        }
+
+        return false;
     }
 }

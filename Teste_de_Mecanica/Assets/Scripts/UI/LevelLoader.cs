@@ -32,8 +32,22 @@ public class LevelLoader : MonoBehaviour
 
     public void Transition(string sceneName)
     {
-        if (carregando)
+        if (string.IsNullOrEmpty(sceneName) || carregando)
             return;
+
+        string activeScene = SceneManager.GetActiveScene().name;
+        if (string.Equals(activeScene, sceneName, System.StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        // Gameplay restarts and GameOver screen must not go through the generic
+        // level loader fade. Those flows already handle scene reload directly.
+        if (sceneName == "GameOver" || sceneName == "Level1" || sceneName == "Level2" || sceneName == "Level3")
+        {
+            SceneManager.LoadScene(sceneName);
+            return;
+        }
 
         StartCoroutine(LoadScene(sceneName));
     }
@@ -63,7 +77,12 @@ public class LevelLoader : MonoBehaviour
 
         yield return new WaitForSeconds(fadeDuration);
 
-        SceneManager.LoadScene(sceneName);
+        if (!string.Equals(SceneManager.GetActiveScene().name, sceneName, System.StringComparison.Ordinal))
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+
+        carregando = false;
     }
 
     private IEnumerator QuitGame()

@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<string> cenasGameplay = new List<string>
     {
         "Level1",
-        "Level2"
+        "Level2",
+        "Level3"
     };
 
     [Header("Cenas sem GUI")]
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviour
     }
 
     public GameState EstadoAtual { get; private set; }
+
+    private bool shouldResetPlayerOnLoad;
 
     // =========================================================
     // AWAKE
@@ -91,6 +94,38 @@ public class GameManager : MonoBehaviour
         DefinirEstado(nomeCena);
 
         AtualizarGUI(nomeCena);
+
+        if (shouldResetPlayerOnLoad)
+        {
+            shouldResetPlayerOnLoad = false;
+            StartCoroutine(ResetPlayerAfterSceneLoad());
+        }
+    }
+
+    private System.Collections.IEnumerator ResetPlayerAfterSceneLoad()
+    {
+        yield return null;
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            yield break;
+        }
+
+        HealthSystem health = player.GetComponent<HealthSystem>();
+        if (health != null)
+        {
+            health.ResetToFullHealth();
+        }
+
+        LifeHUD[] huds = FindObjectsByType<LifeHUD>(FindObjectsSortMode.None);
+        foreach (LifeHUD hud in huds)
+        {
+            if (hud != null)
+            {
+                hud.gameObject.SetActive(true);
+            }
+        }
     }
 
     // =========================================================
@@ -182,6 +217,22 @@ public class GameManager : MonoBehaviour
 
     private bool TryUseLevelLoader(string sceneName)
     {
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            return false;
+        }
+
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (string.Equals(currentScene, sceneName, System.StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        if (cenasGameplay.Contains(sceneName) || sceneName == nomeCenaGameOver)
+        {
+            return false;
+        }
+
         LevelLoader levelLoader = FindAnyObjectByType<LevelLoader>(FindObjectsInactive.Include);
         if (levelLoader == null)
         {
@@ -198,17 +249,27 @@ public class GameManager : MonoBehaviour
 
         if (CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint)
         {
-            CheckpointManager.Instance.RestaurarPlayerNoCheckpoint();
+            CheckpointManager.Instance.RestoreCheckpointFromAutoSave(false);
+            return;
+        }
+
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (!string.IsNullOrEmpty(currentScene) && cenasGameplay.Contains(currentScene))
+        {
+            shouldResetPlayerOnLoad = true;
+            SceneManager.LoadScene(currentScene);
             return;
         }
 
         if (cenasGameplay.Count > 0)
         {
-            ForceSceneChange(cenasGameplay[0]);
+            shouldResetPlayerOnLoad = true;
+            SceneManager.LoadScene(cenasGameplay[0]);
             return;
         }
 
-        ForceSceneChange("Menu");
+        shouldResetPlayerOnLoad = false;
+        SceneManager.LoadScene("Menu");
     }
 
     public void VoltarAoMenu()

@@ -152,7 +152,15 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("IsMoving", false);
             anim.SetBool("IsDead", false);
             anim.ResetTrigger("Attack");
-            anim.SetTrigger("Respawn");
+
+            if (anim.HasState(0, Animator.StringToHash("Awakening")))
+            {
+                anim.Play("Awakening");
+            }
+            else
+            {
+                anim.SetTrigger("Respawn");
+            }
         }
 
         if (rb != null)
