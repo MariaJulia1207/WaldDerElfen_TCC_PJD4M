@@ -5,6 +5,12 @@ using UnityEngine;
 public class BossArvore : MonoBehaviour, IBoss
 {
     // =========================================================
+    // IDENTIFICAÇÃO DE SAVE
+    // =========================================================
+    [Header("Identificação do Save")]
+    [SerializeField] private string bossId = "BossArvore";
+    
+    // =========================================================
     // ESTADO DO BOSS
     // =========================================================
 
