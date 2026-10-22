@@ -11,11 +11,18 @@ public class BossArena : MonoBehaviour
     [SerializeField] private string saveId;
     private IBoss boss;
 
+    [Header("NPC Pós-Derrota")]
+    [Tooltip("Pode ser o Prefab do NPC ou um GameObject de NPC já colocado na hierarquia da cena.")]
+    [SerializeField] private GameObject arvoreCuradaNPC;
+    [Tooltip("Ponto onde o NPC vai surgir (opcional, usa a posição do Boss se ficar vazio).")]
+    [SerializeField] private Transform pontoSpawnNPC;
+
     [Header("Objeto de Teste - Opcional")]
     [SerializeField] private GameObject objetoTeste;
 
     private bool combateIniciado = false;
     private bool combateFinalizado = false;
+    private GameObject npcInstanciado;
 
     public string SaveId => string.IsNullOrEmpty(saveId) ? gameObject.name : saveId;
     public bool IsDefeated => combateFinalizado;
@@ -97,6 +104,9 @@ public class BossArena : MonoBehaviour
 
             if (aberturaSaida != null)
                 aberturaSaida.SetActive(false);
+
+            // Garante a presença do NPC ao carregar o Save
+            GarantirNPCNaCena();
         }
         else if (combateIniciado)
         {
@@ -122,9 +132,35 @@ public class BossArena : MonoBehaviour
         if (aberturaSaida != null)
             aberturaSaida.SetActive(false);
 
-        // O bossObjeto NÃO é desativado via SetActive(false) aqui para permitir
-        // que a animação de morte, partículas e o spawn do NPC terminem normalmente.
+        // Garante a criação do NPC quando o boss morre durante a partida
+        GarantirNPCNaCena();
 
-        Debug.Log("Boss Arena: Boss derrotado! Arena aberta.");
+        Debug.Log("Boss Arena: Boss derrotado! Arena aberta e NPC garantido.");
+    }
+
+    public void GarantirNPCNaCena()
+    {
+        if (arvoreCuradaNPC == null)
+        {
+            Debug.LogWarning("BossArena: Referência do 'arvoreCuradaNPC' não foi atribuída no Inspector.", this);
+            return;
+        }
+
+        // Caso 1: O GameObject é um objeto que já está colocado na hierarquia da cena (desativado)
+        if (arvoreCuradaNPC.scene.IsValid())
+        {
+            arvoreCuradaNPC.SetActive(true);
+            return;
+        }
+
+        // Caso 2: O GameObject é um Prefab e precisa ser instanciado
+        if (npcInstanciado == null)
+        {
+            Vector3 posicao = pontoSpawnNPC != null ? pontoSpawnNPC.position :
+                             (bossObjeto != null ? bossObjeto.transform.position : transform.position);
+            Quaternion rotacao = pontoSpawnNPC != null ? pontoSpawnNPC.rotation : Quaternion.identity;
+
+            npcInstanciado = Instantiate(arvoreCuradaNPC, posicao, rotacao);
+        }
     }
 }

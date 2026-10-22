@@ -9,17 +9,14 @@ public class Pause : MonoBehaviour
     [SerializeField] private GameObject pausePanel;
 
     [Header("Transição")]
-    [SerializeField] private LevelLoader levelLoader;
-    [SerializeField] private string cena;
+    [SerializeField] private string cena = "Menu";
 
     private bool isPaused;
 
     private void Start()
     {
         isPaused = false;
-
-        pausePanel.SetActive(false);
-
+        if (pausePanel != null) pausePanel.SetActive(false);
         Time.timeScale = 1f;
     }
 
@@ -31,36 +28,20 @@ public class Pause : MonoBehaviour
         }
     }
 
-    // =========================================================
-    // PAUSE
-    // =========================================================
-
     public void PauseScreen()
     {
-        if (isPaused)
-        {
-            Despausar();
-        }
-        else
-        {
-            Pausar();
-        }
+        if (isPaused) Despausar();
+        else Pausar();
     }
-
-    // =========================================================
-    // PAUSAR
-    // =========================================================
 
     public void Pausar()
     {
         isPaused = true;
         AutoSaveCurrentGame();
 
-        pausePanel.SetActive(true);
-
-        // Register any SFX slider inside pause panel so manager can sync it
         if (pausePanel != null)
         {
+            pausePanel.SetActive(true);
             Slider s = pausePanel.GetComponentInChildren<Slider>(true);
             if (s != null && SoundEffectManager.Instance != null)
             {
@@ -71,12 +52,38 @@ public class Pause : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    private void AutoSaveCurrentGame()
+    public void Despausar()
     {
-        if (SaveManager.Instance == null)
+        isPaused = false;
+        if (pausePanel != null) pausePanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void VoltarAoMenu()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
+
+        if (pausePanel != null) pausePanel.SetActive(false);
+
+        if (LevelLoader.Instance != null)
         {
+            LevelLoader.Instance.Transition(cena);
             return;
         }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.VoltarAoMenu();
+            return;
+        }
+
+        SceneManager.LoadScene(cena);
+    }
+
+    private void AutoSaveCurrentGame()
+    {
+        if (SaveManager.Instance == null) return;
 
         SaveData data = new SaveData
         {
@@ -96,21 +103,14 @@ public class Pause : MonoBehaviour
 
     public void SalvarJogo()
     {
-        if (SaveManager.Instance == null)
-        {
-            return;
-        }
-
+        if (SaveManager.Instance == null) return;
         SaveData data = SaveManager.Instance.BuildDefaultSave();
         SaveManager.Instance.SaveCurrentStateToSlot(SaveManager.ManualSaveSlot, data);
     }
 
     public void CarregarJogo()
     {
-        if (SaveManager.Instance == null || !SaveManager.Instance.HasManualSave)
-        {
-            return;
-        }
+        if (SaveManager.Instance == null || !SaveManager.Instance.HasManualSave) return;
 
         if (SaveRestoreManager.Instance != null)
         {
@@ -130,53 +130,6 @@ public class Pause : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         return player != null ? player.transform.position : Vector3.zero;
     }
-
-    // =========================================================
-    // DESPAUSAR
-    // =========================================================
-
-    public void Despausar()
-    {
-        isPaused = false;
-
-        pausePanel.SetActive(false);
-
-        Time.timeScale = 1f;
-    }
-
-    // =========================================================
-    // VOLTAR AO MENU
-    // =========================================================
-
-    public void VoltarAoMenu()
-    {
-        Time.timeScale = 1f;
-
-        isPaused = false;
-
-        if (pausePanel != null)
-        {
-            pausePanel.SetActive(false);
-        }
-
-        if (levelLoader != null)
-        {
-            levelLoader.Transition(cena);
-            return;
-        }
-
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.VoltarAoMenu();
-            return;
-        }
-
-        SceneManager.LoadScene("Menu");
-    }
-
-    // =========================================================
-    // GARANTIA
-    // =========================================================
 
     private void OnDestroy()
     {

@@ -9,7 +9,7 @@ public class BossArvore : MonoBehaviour, IBoss
     // =========================================================
     [Header("Identificação do Save")]
     [SerializeField] private string bossId = "BossArvore";
-    
+
     // =========================================================
     // ESTADO DO BOSS
     // =========================================================
@@ -113,6 +113,7 @@ public class BossArvore : MonoBehaviour, IBoss
     private bool combateIniciado;
     private bool atacando;
     private bool morreu;
+    private bool morteConcluida;
 
     private TipoAtaque ultimoAtaque = TipoAtaque.Nenhum;
 
@@ -533,6 +534,7 @@ public class BossArvore : MonoBehaviour, IBoss
             return;
 
         morreu = true;
+        morteConcluida = false;
         estadoAtual = EstadoBoss.Morrendo;
         atacando = false;
 
@@ -560,16 +562,16 @@ public class BossArvore : MonoBehaviour, IBoss
             animator.Play("Morrendo", 0, 0f);
         }
 
-        Debug.Log("BossArvore: morreu.");
+        Debug.Log("BossArvore: morrendo (animação iniciada)...");
         StartCoroutine(SequenciaMorte());
     }
 
     private IEnumerator SequenciaMorte()
     {
-        // 1. Aguarda o tempo da animação antes das partículas
+        // 1. Aguarda a duração da animação de morte antes das partículas
         yield return new WaitForSeconds(tempoAteParticulas);
 
-        // 2. Instancia e toca as partículas
+        // 2. Instancia e toca o efeito de partículas de morte
         if (particulasMorte != null)
         {
             ParticleSystem efeito = Instantiate(
@@ -582,24 +584,27 @@ public class BossArvore : MonoBehaviour, IBoss
             Destroy(efeito.gameObject, tempoDoEfeitoMorte);
         }
 
-        // 3. Aguarda o tempo de efeito do impacto da morte
+        // 3. Aguarda a duração do efeito de partículas
         yield return new WaitForSeconds(tempoDoEfeitoMorte);
 
-        // 4. Instancia a Árvore Curada no mesmo local
+        // 4. Instancia a Árvore Curada no mesmo local APÓS a morte estar completa
         Vector3 posicao = transform.position;
         Quaternion rotacao = transform.rotation;
 
         if (arvoreCuradaNPC != null)
         {
             Instantiate(arvoreCuradaNPC, posicao, rotacao);
-            Debug.Log("BossArvore: árvore curada apareceu como NPC.");
+            Debug.Log("BossArvore: árvore curada apareceu como NPC após o término da morte.");
         }
         else
         {
-            Debug.LogWarning("BossArvore: prefab da árvore curada não foi atribuído.", this);
+            Debug.LogWarning("BossArvore: prefab da árvore curada não foi atribuído no Inspector.", this);
         }
 
-        // 5. Destrói o GameObject do Boss
+        // 5. Marca a morte como totalmente concluída
+        morteConcluida = true;
+
+        // 6. Destrói o GameObject do Boss
         Destroy(gameObject);
     }
 
@@ -609,7 +614,7 @@ public class BossArvore : MonoBehaviour, IBoss
 
     public int GetVida() => vida;
     public EstadoBoss GetEstado() => estadoAtual;
-    public bool EstaMorto() => morreu;
+    public bool EstaMorto() => morteConcluida;
     public bool CombateIniciado() => combateIniciado;
     public bool EstaAtacando() => atacando;
 }

@@ -10,19 +10,43 @@ public class IntroDirector : MonoBehaviour
 
     private void Start()
     {
+        if (introTextWriter == null)
+        {
+            introTextWriter = FindAnyObjectByType<IntroTextWriter>();
+        }
+
         StartCoroutine(EsperarLoaderEIniciarIntro());
+    }
+
+    private LevelLoader GetLevelLoader()
+    {
+        return levelLoader != null ? levelLoader : LevelLoader.Instance;
     }
 
     private IEnumerator EsperarLoaderEIniciarIntro()
     {
-        if (levelLoader != null)
+        LevelLoader loader = GetLevelLoader();
+
+        if (loader != null)
         {
-            yield return StartCoroutine(levelLoader.WaitUntilTransparent());
+            // Timeout de segurança (3s) para impedir que o jogo trave se o LevelLoader não responder
+            float timeout = 3f;
+            float timer = 0f;
+
+            while (!loader.IsFullyTransparent && timer < timeout)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
         }
 
         if (introTextWriter != null)
         {
             introTextWriter.IniciarIntroducao();
+        }
+        else
+        {
+            Debug.LogError("IntroDirector: Nenhum IntroTextWriter encontrado na cena!");
         }
     }
 
@@ -33,9 +57,11 @@ public class IntroDirector : MonoBehaviour
 
     public void LoadLevel1()
     {
-        if (levelLoader != null)
+        LevelLoader loader = GetLevelLoader();
+
+        if (loader != null)
         {
-            levelLoader.Transition("Level1");
+            loader.Transition("Level1");
             return;
         }
 

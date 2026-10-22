@@ -13,74 +13,56 @@ public class MainMenu : MonoBehaviour
     [Header("Nome das Cenas")]
     public string cutsceneScene = "Cutscene_EraUmaVez";
     public string gameplayScene = "Level1";
-    public LevelLoader levelLoader;
 
     void Start()
     {
-        // Apenas o menu principal começa ativo
-        mainPanel.SetActive(true);
-
-        manualPanel.SetActive(false);
-        creditosPanel.SetActive(false);
-        settingsPanel.SetActive(false);
+        if (mainPanel != null) mainPanel.SetActive(true);
+        if (manualPanel != null) manualPanel.SetActive(false);
+        if (creditosPanel != null) creditosPanel.SetActive(false);
+        if (settingsPanel != null) settingsPanel.SetActive(false);
     }
 
-    // =========================
-    // BOTÃO JOGAR
-    // =========================
     public void Jogar()
     {
-        LevelLoader loader = ResolveLevelLoader();
-        if (loader != null)
+        if (LevelLoader.Instance != null)
         {
-            loader.Transition(cutsceneScene);
+            LevelLoader.Instance.Transition(cutsceneScene);
             return;
         }
 
         SceneManager.LoadScene(cutsceneScene);
     }
 
-    // =========================
-    // MANUAL
-    // =========================
     public void AbrirManual()
     {
-        mainPanel.SetActive(false);
-        manualPanel.SetActive(true);
+        if (mainPanel != null) mainPanel.SetActive(false);
+        if (manualPanel != null) manualPanel.SetActive(true);
     }
 
     public void FecharManual()
     {
-        manualPanel.SetActive(false);
-        mainPanel.SetActive(true);
+        if (manualPanel != null) manualPanel.SetActive(false);
+        if (mainPanel != null) mainPanel.SetActive(true);
     }
 
-    // =========================
-    // CRÉDITOS
-    // =========================
     public void AbrirCreditos()
     {
-        mainPanel.SetActive(false);
-        creditosPanel.SetActive(true);
+        if (mainPanel != null) mainPanel.SetActive(false);
+        if (creditosPanel != null) creditosPanel.SetActive(true);
     }
 
     public void FecharCreditos()
     {
-        creditosPanel.SetActive(false);
-        mainPanel.SetActive(true);
+        if (creditosPanel != null) creditosPanel.SetActive(false);
+        if (mainPanel != null) mainPanel.SetActive(true);
     }
-    
-    // =========================
-    // CONFIGURAÇÕES
-    // =========================
+
     public void AbrirSettings()
     {
-        mainPanel.SetActive(false);
-        settingsPanel.SetActive(true);
-
-        // Register any SFX slider inside the settings panel so it syncs with the manager
+        if (mainPanel != null) mainPanel.SetActive(false);
         if (settingsPanel != null)
         {
+            settingsPanel.SetActive(true);
             Slider s = settingsPanel.GetComponentInChildren<Slider>(true);
             if (s != null && SoundEffectManager.Instance != null)
             {
@@ -91,35 +73,18 @@ public class MainMenu : MonoBehaviour
 
     public void FecharSettings()
     {
-        settingsPanel.SetActive(false);
-        mainPanel.SetActive(true);
+        if (settingsPanel != null) settingsPanel.SetActive(false);
+        if (mainPanel != null) mainPanel.SetActive(true);
     }
 
-    // =========================
-    // SAIR
-    // =========================
     public void Sair()
     {
-        LevelLoader loader = ResolveLevelLoader();
-        if (loader != null)
+        if (LevelLoader.Instance != null)
         {
-            loader.TransitionQuit();
-            Debug.Log("Jogo fechado");
+            LevelLoader.Instance.TransitionQuit();
             return;
         }
 
         Application.Quit();
-        Debug.Log("Jogo fechado");
-    }
-
-    private LevelLoader ResolveLevelLoader()
-    {
-        if (levelLoader != null)
-        {
-            return levelLoader;
-        }
-
-        levelLoader = FindAnyObjectByType<LevelLoader>(FindObjectsInactive.Include);
-        return levelLoader;
     }
 }

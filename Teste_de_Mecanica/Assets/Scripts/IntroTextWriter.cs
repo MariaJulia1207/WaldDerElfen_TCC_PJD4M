@@ -6,7 +6,7 @@ using UnityEngine;
 public class IntroTextWriter : MonoBehaviour
 {
     [Header("Texto")]
-    private TMP_Text _texto;
+    [SerializeField] private TMP_Text texto;
 
     [TextArea(5, 20)]
     [SerializeField] private string[] paragrafos;
@@ -25,27 +25,41 @@ public class IntroTextWriter : MonoBehaviour
 
     private void Awake()
     {
-        _texto = GetComponent<TMP_Text>();
-
-        if (_texto == null)
+        if (texto == null)
         {
-            Debug.LogError("IntroTextWriter: este objeto não possui um TMP_Text/TextMeshProUGUI.");
+            texto = GetComponent<TMP_Text>();
+        }
+
+        if (texto == null)
+        {
+            Debug.LogError("IntroTextWriter: Nenhum componente TMP_Text foi atribuído ou encontrado no objeto!");
             enabled = false;
             return;
         }
 
-        _canvasGroup = _texto.GetComponent<CanvasGroup>();
+        _canvasGroup = texto.GetComponent<CanvasGroup>();
 
         if (_canvasGroup == null)
         {
-            _canvasGroup = _texto.gameObject.AddComponent<CanvasGroup>();
+            _canvasGroup = texto.gameObject.AddComponent<CanvasGroup>();
+        }
+
+        if (introDirector == null)
+        {
+            introDirector = FindAnyObjectByType<IntroDirector>();
         }
     }
 
     public void IniciarIntroducao()
     {
-        StopAllCoroutines();
+        if (paragrafos == null || paragrafos.Length == 0)
+        {
+            Debug.LogWarning("IntroTextWriter: O array de parágrafos está vazio!");
+            if (introDirector != null) introDirector.LoadLevel1();
+            return;
+        }
 
+        StopAllCoroutines();
         StartCoroutine(ExecutarIntroducao());
     }
 
@@ -55,63 +69,40 @@ public class IntroTextWriter : MonoBehaviour
 
         foreach (string paragrafo in paragrafos)
         {
-            // -----------------------------
-            // COMEÇA COM O TEXTO INVISÍVEL
-            // -----------------------------
-
             _canvasGroup.alpha = 1f;
-            _texto.text = "";
-
-            // -----------------------------
-            // DIGITAÇÃO
-            // -----------------------------
+            texto.text = "";
 
             foreach (char letra in paragrafo)
             {
-                _texto.text += letra;
+                texto.text += letra;
 
-                // Tocar efeito sonoro a cada letra (pula espaços em branco)
                 if (!char.IsWhiteSpace(letra))
                 {
-                    SoundEffectManager.Play("Typing");
+                    try
+                    {
+                        SoundEffectManager.Play("Typing");
+                    }
+                    catch { }
                 }
 
                 yield return new WaitForSeconds(velocidadeDigitacao);
             }
 
-            // -----------------------------
-            // ESPERA APÓS TERMINAR
-            // -----------------------------
-
             yield return new WaitForSeconds(tempoDepoisDaDigitacao);
-
-            // -----------------------------
-            // DESAPARECIMENTO
-            // -----------------------------
 
             float tempo = 0f;
 
             while (tempo < tempoDesaparecimento)
             {
                 tempo += Time.deltaTime;
-
                 float progresso = tempo / tempoDesaparecimento;
-
                 _canvasGroup.alpha = Mathf.Lerp(1f, 0f, progresso);
-
                 yield return null;
             }
 
             _canvasGroup.alpha = 0f;
-
-            // Pequena garantia de que o texto anterior
-            // desapareceu antes do próximo começar.
-            _texto.text = "";
+            texto.text = "";
         }
-
-        // -----------------------------
-        // FIM DA INTRODUÇÃO
-        // -----------------------------
 
         if (introDirector != null)
         {
