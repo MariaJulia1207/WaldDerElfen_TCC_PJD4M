@@ -9,7 +9,6 @@ public class MenuUI : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject continueButton;
-    [SerializeField] private LevelLoader levelLoader;
 
     private void Start()
     {
@@ -42,8 +41,15 @@ public class MenuUI : MonoBehaviour
         continueButton.SetActive(hasSave);
     }
 
+    // =========================================================
+    // NOVO JOGO
+    // =========================================================
+
     public void OnNewGameClicked()
     {
+        // Reseta os dados de vida salvos para começar com a vida padrão no novo jogo
+        HealthSystem.ResetHealthData();
+
         if (TryUseLevelLoader(firstLevelScene))
         {
             return;
@@ -52,8 +58,15 @@ public class MenuUI : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.ForceSceneChange(firstLevelScene);
+            return;
         }
+
+        SceneManager.LoadScene(firstLevelScene);
     }
+
+    // =========================================================
+    // CONTINUAR / CARREGAR JOGO
+    // =========================================================
 
     public void OnContinueClicked()
     {
@@ -100,49 +113,53 @@ public class MenuUI : MonoBehaviour
         }
 
         SaveData data = SaveManager.Instance.LoadFromSlot(slot);
-        if (data != null && GameManager.Instance != null && !string.IsNullOrEmpty(data.sceneName))
+        if (data != null && !string.IsNullOrEmpty(data.sceneName))
         {
             if (TryUseLevelLoader(data.sceneName))
             {
                 return;
             }
 
-            GameManager.Instance.ForceSceneChange(data.sceneName);
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.ForceSceneChange(data.sceneName);
+            }
         }
     }
 
     public void OnLoadGameClicked()
     {
+        if (TryUseLevelLoader(saveSlotScene))
+        {
+            return;
+        }
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.RequestSceneChange(saveSlotScene);
         }
     }
 
+    // =========================================================
+    // SAIR
+    // =========================================================
+
     public void OnQuitClicked()
     {
         Debug.Log("MenuUI: Quit requested.");
 
-        LevelLoader loader = ResolveLevelLoader();
-        if (loader != null)
+        if (LevelLoader.Instance != null)
         {
-            loader.TransitionQuit();
+            LevelLoader.Instance.TransitionQuit();
             return;
         }
 
         Application.Quit();
     }
 
-    private LevelLoader ResolveLevelLoader()
-    {
-        if (levelLoader != null)
-        {
-            return levelLoader;
-        }
-
-        levelLoader = FindAnyObjectByType<LevelLoader>(FindObjectsInactive.Include);
-        return levelLoader;
-    }
+    // =========================================================
+    // TRANSIÇÃO VIA LEVEL LOADER
+    // =========================================================
 
     private bool TryUseLevelLoader(string sceneName)
     {
@@ -157,15 +174,9 @@ public class MenuUI : MonoBehaviour
             return false;
         }
 
-        if (sceneName == firstLevelScene || sceneName == saveSlotScene)
+        if (LevelLoader.Instance != null)
         {
-            LevelLoader loader = ResolveLevelLoader();
-            if (loader == null)
-            {
-                return false;
-            }
-
-            loader.Transition(sceneName);
+            LevelLoader.Instance.Transition(sceneName);
             return true;
         }
 

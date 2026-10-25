@@ -4,49 +4,59 @@ public class InteractButtonController : MonoBehaviour
 {
     [SerializeField]
     private GameObject buttonVisual;
-    public GameObject dialoguePanel;
 
     private void OnEnable()
     {
-        ObserverManager.Subscribe(
-            "ShowInteractButton",
-            ShowButton);
-
-        ObserverManager.Subscribe(
-            "HideInteractButton",
-            HideButton);
+        ObserverManager.Subscribe("ShowInteractButton", ShowButton);
+        ObserverManager.Subscribe("HideInteractButton", HideButton);
     }
 
     private void OnDisable()
     {
-        ObserverManager.Unsubscribe(
-            "ShowInteractButton",
-            ShowButton);
-
-        ObserverManager.Unsubscribe(
-            "HideInteractButton",
-            HideButton);
+        ObserverManager.Unsubscribe("ShowInteractButton", ShowButton);
+        ObserverManager.Unsubscribe("HideInteractButton", HideButton);
     }
 
     private void Start()
     {
-        buttonVisual.SetActive(false);
-        dialoguePanel.SetActive(false);
+        if (buttonVisual != null)
+        {
+            buttonVisual.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError($"[InteractButtonController] buttonVisual NÃO atribuído no Inspector de {gameObject.name}");
+        }
     }
 
     private void ShowButton()
     {
-        buttonVisual.SetActive(true);
+        Debug.Log("[InteractButtonController] Evento ShowInteractButton recebido.");
+        if (buttonVisual != null)
+        {
+            buttonVisual.SetActive(true);
+        }
     }
 
     private void HideButton()
     {
-        buttonVisual.SetActive(false);
+        Debug.Log("[InteractButtonController] Evento HideInteractButton recebido.");
+        if (buttonVisual != null)
+        {
+            buttonVisual.SetActive(false);
+        }
     }
 
     public void OnInteractPressed()
     {
-        InteractOM.Instance.Interact();
-        dialoguePanel.SetActive(true);
+        Debug.Log("[InteractButtonController] Botão de UI pressionado pelo jogador.");
+        if (InteractOM.Instance != null)
+        {
+            InteractOM.Instance.Interact();
+        }
+        else
+        {
+            Debug.LogError("[InteractButtonController] InteractOM.Instance é NULO!");
+        }
     }
 }

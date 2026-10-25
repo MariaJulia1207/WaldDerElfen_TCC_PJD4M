@@ -3,24 +3,37 @@ using UnityEngine.InputSystem;
 
 public class InteractOM : MonoBehaviour
 {
-    public static InteractOM Instance;
+    public static InteractOM Instance { get; private set; }
 
     private NPCInteractable currentNPC;
 
+    public NPCInteractable CurrentNPC => currentNPC;
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
         Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     private void Update()
     {
-        if (Keyboard.current != null &&
-            Keyboard.current.eKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
-            // Se o diálogo já estiver aberto,
-            // o DialogueManager será responsável pelo E.
+            // Ignora se o diálogo estiver aberto OU se acabou de fechar no frame atual
             if (DialogueManager.Instance != null &&
-                DialogueManager.Instance.IsDialogueOpen)
+               (DialogueManager.Instance.IsDialogueOpen || DialogueManager.Instance.JustClosedThisFrame))
             {
                 return;
             }
@@ -32,16 +45,12 @@ public class InteractOM : MonoBehaviour
     public void SetCurrentNPC(NPCInteractable npc)
     {
         currentNPC = npc;
-
-        Debug.Log("Enviando evento ShowInteractButton");
-
         ObserverManager.Notify("ShowInteractButton");
     }
 
     public void ClearCurrentNPC()
     {
         currentNPC = null;
-
         ObserverManager.Notify("HideInteractButton");
     }
 

@@ -53,19 +53,15 @@ public class LifeHUD : MonoBehaviour
 
         if (playerObject == null)
         {
-            Debug.LogWarning("LifeHUD: Player não encontrado.");
             return;
         }
 
         healthSystem = playerObject.GetComponent<HealthSystem>();
 
-        if (healthSystem == null)
+        if (healthSystem != null)
         {
-            Debug.LogWarning("LifeHUD: Player não possui HealthSystem.");
-            return;
+            AtualizarHUD();
         }
-
-        AtualizarHUD();
     }
 
     private void AtualizarHUD()
@@ -73,10 +69,24 @@ public class LifeHUD : MonoBehaviour
         if (healthSystem == null)
             return;
 
-        // Se o jogador tiver mais vida máxima do que corações criados no HUD, instancia os novos prefabs
+        // Limpa referências destruídas de trocas de cena passadas
+        coracoes.RemoveAll(item => item == null);
+
+        // Se o HUD tiver menos corações que a vida máxima, cria os faltantes
         while (coracoes.Count < healthSystem.vidaMaxima)
         {
             AdicionarCoracaoPrefab();
+        }
+
+        // Se tiver mais corações que a vida máxima, remove o excesso
+        while (coracoes.Count > healthSystem.vidaMaxima)
+        {
+            int index = coracoes.Count - 1;
+            if (coracoes[index] != null)
+            {
+                Destroy(coracoes[index].gameObject);
+            }
+            coracoes.RemoveAt(index);
         }
 
         int vida = healthSystem.vida;
@@ -85,17 +95,11 @@ public class LifeHUD : MonoBehaviour
         {
             if (coracoes[i] == null) continue;
 
-            // Se o índice for menor que a vida atual, exibe o sprite cheio; senão, o vazio
             coracoes[i].sprite = (i < vida) ? cheio : vazio;
-
-            // Garante que o coração permaneça ativo/visível na tela (mesmo se vazio)
             coracoes[i].enabled = true;
         }
     }
 
-    /// <summary>
-    /// Instancia o prefab do coração no container da GUI e adiciona à lista do HUD.
-    /// </summary>
     public void AdicionarCoracaoPrefab()
     {
         if (coracaoPrefab == null)

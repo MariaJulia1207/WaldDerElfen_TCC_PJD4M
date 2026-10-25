@@ -1,4 +1,3 @@
-
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -7,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance;
+    public static DialogueManager Instance { get; private set; }
 
     [Header("UI")]
     [SerializeField] private GameObject dialoguePanel;
@@ -32,18 +31,37 @@ public class DialogueManager : MonoBehaviour
     private DialogueData currentDialogueData;
     private PlayerController playerController;
 
+    private int lastCloseFrame = -1;
+
+    /// <summary>
+    /// Retorna verdadeiro se o diálogo estiver aberto ou se acabou de ser fechado neste mesmo frame.
+    /// </summary>
+    public bool JustClosedThisFrame => lastCloseFrame == Time.frameCount;
+
     public bool IsDialogueOpen
     {
         get
         {
-            return dialoguePanel != null &&
-                   dialoguePanel.activeSelf;
+            return dialoguePanel != null && dialoguePanel.activeSelf;
         }
     }
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
         Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     private void Start()
@@ -51,12 +69,19 @@ public class DialogueManager : MonoBehaviour
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
 
-        GameObject player =
-            GameObject.FindGameObjectWithTag("Player");
+        FindPlayerController();
+    }
 
-        if (player != null)
-            playerController =
-                player.GetComponent<PlayerController>();
+    private void FindPlayerController()
+    {
+        if (playerController == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                playerController = player.GetComponent<PlayerController>();
+            }
+        }
     }
 
     private void Update()
@@ -70,14 +95,13 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current != null &&
-            Keyboard.current.eKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             NextLine();
         }
     }
 
-    public void StartDialogue(DialogueData dialogueData,NPCInteractable npc,bool alreadyCompleted)
+    public void StartDialogue(DialogueData dialogueData, NPCInteractable npc, bool alreadyCompleted)
     {
         if (dialogueData == null || npc == null)
             return;
@@ -88,8 +112,7 @@ public class DialogueManager : MonoBehaviour
         currentDialogueData = dialogueData;
         currentNPC = npc;
 
-        currentDialogueIsMain =
-            !(dialogueData.playOnlyOnce && alreadyCompleted);
+        currentDialogueIsMain = !(dialogueData.playOnlyOnce && alreadyCompleted);
 
         currentLines = currentDialogueIsMain
             ? dialogueData.mainDialogue
@@ -108,19 +131,19 @@ public class DialogueManager : MonoBehaviour
 
         ObserverManager.Notify("HideInteractButton");
 
+        FindPlayerController();
         if (playerController != null)
             playerController.DisableControls();
 
-        dialoguePanel.SetActive(true);
+        if (dialoguePanel != null)
+            dialoguePanel.SetActive(true);
 
         ShowLine();
     }
 
     private void ShowLine()
     {
-        if (currentLines == null ||
-            currentLineIndex < 0 ||
-            currentLineIndex >= currentLines.Length)
+        if (currentLines == null || currentLineIndex < 0 || currentLineIndex >= currentLines.Length)
         {
             EndDialogue();
             return;
@@ -135,8 +158,8 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        portraitImage.sprite = line.portrait;
-        speakerNameText.text = line.speakerName;
+        if (portraitImage != null) portraitImage.sprite = line.portrait;
+        if (speakerNameText != null) speakerNameText.text = line.speakerName;
         fullText = line.dialogueText ?? "";
 
         if (typingCoroutine != null)
@@ -148,21 +171,26 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator TypeText()
     {
         isTyping = true;
-        dialogueText.text = "";
+        if (dialogueText != null) dialogueText.text = "";
 
         DialogueLine line = currentLines[currentLineIndex];
 
-        foreach (char letter in fullText)
+        for (int i = 0; i < fullText.Length; i++)
         {
-            dialogueText.text += letter;
+            char letter = fullText[i];
 
-            if (!char.IsWhiteSpace(letter) &&
-                !char.IsPunctuation(letter))
+            if (dialogueText != null) dialogueText.text += letter;
+
+            if (!char.IsWhiteSpace(letter) && !char.IsPunctuation(letter))
             {
                 PlayVoiceSound(line);
             }
 
-            yield return new WaitForSeconds(letterDelay);
+            // Não espera no último caractere para liberar a entrada imediatamente
+            if (i < fullText.Length - 1)
+            {
+                yield return new WaitForSeconds(letterDelay);
+            }
         }
 
         isTyping = false;
@@ -174,8 +202,7 @@ public class DialogueManager : MonoBehaviour
         if (line == null || currentDialogueData == null)
             return;
 
-        if (string.IsNullOrWhiteSpace(
-            currentDialogueData.voiceSoundName))
+        if (string.IsNullOrWhiteSpace(currentDialogueData.voiceSoundName))
             return;
 
         SoundEffectManager.PlayVoiceForSpeaker(
@@ -198,15 +225,14 @@ public class DialogueManager : MonoBehaviour
                 typingCoroutine = null;
             }
 
-            dialogueText.text = fullText;
+            if (dialogueText != null) dialogueText.text = fullText;
             isTyping = false;
             return;
         }
 
         currentLineIndex++;
 
-        if (currentLines == null ||
-            currentLineIndex >= currentLines.Length)
+        if (currentLines == null || currentLineIndex >= currentLines.Length)
         {
             EndDialogue();
             return;
@@ -217,6 +243,9 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        // Marca o frame exato em que o diálogo fechou
+        lastCloseFrame = Time.frameCount;
+
         SoundEffectManager.StopVoice();
         SoundEffectManager.ResetVoicePitch();
 
@@ -228,31 +257,23 @@ public class DialogueManager : MonoBehaviour
 
         isTyping = false;
 
-        // Guarda as referências antes de limpar o estado.
         NPCInteractable npc = currentNPC;
         DialogueData data = currentDialogueData;
         bool terminouDialogoPrincipal = currentDialogueIsMain;
 
-        // Registra a conclusão do diálogo de uso único.
-        if (terminouDialogoPrincipal &&
-            data != null &&
-            data.playOnlyOnce &&
-            npc != null)
+        if (terminouDialogoPrincipal && data != null && data.playOnlyOnce && npc != null)
         {
             npc.CompleteDialogue();
         }
 
-        // As recompensas e o deslocamento só ocorrem
-        // depois do diálogo principal, nunca no resumo.
-        if (terminouDialogoPrincipal &&
-            data != null &&
-            npc != null)
+        if (terminouDialogoPrincipal && data != null && npc != null)
         {
             ExecutarAcoesPosDialogo(data, npc);
         }
 
-        dialoguePanel.SetActive(false);
+        if (dialoguePanel != null) dialoguePanel.SetActive(false);
 
+        FindPlayerController();
         if (playerController != null)
             playerController.EnableControls();
 
@@ -261,41 +282,37 @@ public class DialogueManager : MonoBehaviour
         currentLines = null;
         currentDialogueIsMain = false;
 
-        ObserverManager.Notify("ShowInteractButton");
+        if (InteractOM.Instance != null && InteractOM.Instance.CurrentNPC != null)
+        {
+            ObserverManager.Notify("ShowInteractButton");
+        }
     }
 
-    private void ExecutarAcoesPosDialogo(DialogueData data,NPCInteractable npc)
+    private void ExecutarAcoesPosDialogo(DialogueData data, NPCInteractable npc)
     {
-        // Move o NPC para a posição configurada.
+        if (data == null || npc == null) return;
+
         if (data.moverNpcAposDialogo)
         {
-            npc.transform.position =
-                new Vector3(
-                    data.posicaoDestinoNpc.x,
-                    data.posicaoDestinoNpc.y,
-                    npc.transform.position.z);
+            npc.transform.position = new Vector3(
+                data.posicaoDestinoNpc.x,
+                data.posicaoDestinoNpc.y,
+                npc.transform.position.z);
         }
 
-        // Cria o item entre o NPC e o jogador.
-        if (data.criarItemAposDialogo &&
-            data.prefabItemColetavel != null)
+        if (data.criarItemAposDialogo && data.prefabItemColetavel != null)
         {
             Vector2 posicaoNpc = npc.transform.position;
             Vector2 posicaoBase = posicaoNpc;
 
-            GameObject player =
-                GameObject.FindGameObjectWithTag("Player");
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
 
             if (player != null)
             {
-                posicaoBase = (
-                    posicaoNpc +
-                    (Vector2)player.transform.position
-                ) * 0.5f;
+                posicaoBase = (posicaoNpc + (Vector2)player.transform.position) * 0.5f;
             }
 
-            Vector2 posicaoItem =
-                posicaoBase + data.deslocamentoItem;
+            Vector2 posicaoItem = posicaoBase + data.deslocamentoItem;
 
             Instantiate(
                 data.prefabItemColetavel,

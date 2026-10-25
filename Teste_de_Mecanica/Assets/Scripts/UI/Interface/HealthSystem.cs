@@ -4,6 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
 {
+    // Armazena os valores globalmente entre trocas de cena
+    private static int vidaSalva = -1;
+    private static int vidaMaximaSalva = -1;
+
     [Header("Vida")]
     public bool isDead;
     public int vida;
@@ -14,8 +18,23 @@ public class HealthSystem : MonoBehaviour
 
     private PlayerController player;
     private Color corOriginal;
-
     private Coroutine flashCoroutine;
+
+    private void Awake()
+    {
+        // Se existir vida salva de uma cena anterior, restaura
+        if (vidaSalva > 0)
+        {
+            vida = vidaSalva;
+            vidaMaxima = vidaMaximaSalva > 0 ? vidaMaximaSalva : vidaMaxima;
+        }
+        else
+        {
+            // Primeira inicialização do jogo
+            vidaSalva = vida;
+            vidaMaximaSalva = vidaMaxima;
+        }
+    }
 
     private void Start()
     {
@@ -30,6 +49,15 @@ public class HealthSystem : MonoBehaviour
         {
             corOriginal = sprite.color;
         }
+    }
+
+    /// <summary>
+    /// Reseta os dados salvos globalmente para um novo jogo do zero.
+    /// </summary>
+    public static void ResetHealthData()
+    {
+        vidaSalva = -1;
+        vidaMaximaSalva = -1;
     }
 
     private void EnsurePlayerVisible()
@@ -51,10 +79,7 @@ public class HealthSystem : MonoBehaviour
         SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
         foreach (SpriteRenderer renderer in renderers)
         {
-            if (renderer == null)
-            {
-                continue;
-            }
+            if (renderer == null) continue;
 
             renderer.enabled = true;
 
@@ -75,6 +100,8 @@ public class HealthSystem : MonoBehaviour
     public void ResetToFullHealth()
     {
         vida = vidaMaxima;
+        vidaSalva = vida;
+        vidaMaximaSalva = vidaMaxima;
         isDead = false;
 
         EnsurePlayerVisible();
@@ -115,21 +142,21 @@ public class HealthSystem : MonoBehaviour
 
     public void ReceberDano(int dano)
     {
-        // Se já estiver morto, não recebe mais dano
         if (isDead || dano <= 0)
             return;
 
         vida -= dano;
 
-        // Evita vida negativa
         if (vida < 0)
         {
             vida = 0;
         }
 
+        // Atualiza a vida salva
+        vidaSalva = vida;
+
         SoundEffectManager.Play("Damage");
 
-        // Flash vermelho
         if (vida > 0)
         {
             flashCoroutine = StartCoroutine(FlashVermelho());
@@ -147,6 +174,18 @@ public class HealthSystem : MonoBehaviour
         {
             vida = vidaMaxima;
         }
+
+        // Atualiza a vida salva
+        vidaSalva = vida;
+    }
+
+    public void AumentarVidaMaxima(int quantidade)
+    {
+        vidaMaxima += quantidade;
+        vida += quantidade;
+
+        vidaMaximaSalva = vidaMaxima;
+        vidaSalva = vida;
     }
 
     // =========================================================
@@ -162,7 +201,6 @@ public class HealthSystem : MonoBehaviour
 
         yield return new WaitForSeconds(0.15f);
 
-        // Só restaura se o jogador ainda estiver vivo
         if (!isDead)
         {
             sprite.color = corOriginal;
@@ -179,35 +217,28 @@ public class HealthSystem : MonoBehaviour
         {
             isDead = true;
 
-            // Cancela qualquer flash que ainda esteja acontecendo
             if (flashCoroutine != null)
             {
                 StopCoroutine(flashCoroutine);
                 flashCoroutine = null;
             }
 
-            // IMPORTANTE:
-            // Remove imediatamente o vermelho antes da animação Death
             if (sprite != null)
             {
                 sprite.color = corOriginal;
             }
 
-            // Para o PlayerController
             if (player != null)
             {
                 player.enabled = false;
             }
 
-            // Para o Rigidbody
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-
             if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
             }
 
-            // Inicia animação de morte
             if (player != null && player.Anim != null)
             {
                 player.Anim.SetBool("IsDead", true);
@@ -236,12 +267,14 @@ public class HealthSystem : MonoBehaviour
             return;
         }
 
-        Debug.LogWarning("HealthSystem: GameOverCanvas local não foi encontrado na cena. Verifique o LevelBootstrap e o prefab do canvas.");
+        Debug.LogWarning("HealthSystem: GameOverCanvas local não foi encontrado na cena.");
     }
 
     public void RestaurarParaCheckpoint()
     {
         vida = vidaMaxima;
+        vidaSalva = vida;
+        vidaMaximaSalva = vidaMaxima;
         isDead = false;
 
         EnsurePlayerVisible();
@@ -278,10 +311,7 @@ public class HealthSystem : MonoBehaviour
         SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
         foreach (SpriteRenderer renderer in renderers)
         {
-            if (renderer == null)
-            {
-                continue;
-            }
+            if (renderer == null) continue;
 
             if (string.Equals(renderer.name, "Circle", System.StringComparison.OrdinalIgnoreCase))
             {

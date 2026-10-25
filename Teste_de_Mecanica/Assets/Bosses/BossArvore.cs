@@ -88,7 +88,7 @@ public class BossArvore : MonoBehaviour, IBoss
     [SerializeField] private float duracaoInvocacaoDificil = 5f;
 
     [Header("Duração Ataque dos Braços")]
-    [SerializeField] private float duracaoAtaqueBraco;
+    [SerializeField] private float duracaoAtaqueBraco = 1.5f;
 
     [Header("Hitboxes dos Braços")]
     [SerializeField] private BossHitboxBraco hitboxBracoEsquerdo;
@@ -121,7 +121,7 @@ public class BossArvore : MonoBehaviour, IBoss
     private Coroutine rotinaAtaque;
 
     // =========================================================
-    // AWAKE
+    // AWAKE & START
     // =========================================================
 
     private void Awake()
@@ -135,10 +135,6 @@ public class BossArvore : MonoBehaviour, IBoss
             feedbackDano = GetComponent<ControladorFeedBackDano>();
     }
 
-    // =========================================================
-    // START
-    // =========================================================
-
     private void Start()
     {
         if (animator == null)
@@ -147,18 +143,12 @@ public class BossArvore : MonoBehaviour, IBoss
             return;
         }
 
-        animator.SetBool("IsInvocando", false);
-        animator.SetBool("IsAtacandoEsquerdo", false);
-        animator.SetBool("IsAtacandoDireito", false);
-        animator.SetBool("IsDead", false);
-
-        animator.Play("Idle", 0, 0f);
-
+        ResetarAnimacoes();
         Debug.Log("BossArvore: iniciado em Idle.");
     }
 
     // =========================================================
-    // IBOSS
+    // IBOSS IMPLEMENTATION
     // =========================================================
 
     public void IniciarBoss()
@@ -166,7 +156,14 @@ public class BossArvore : MonoBehaviour, IBoss
         if (morreu || combateIniciado)
             return;
 
-        if (aguardandoDialogoInicial || dialogoInicialConcluido)
+        // Se o diálogo inicial já foi concluído anteriormente, entra direto em combate
+        if (dialogoInicialConcluido)
+        {
+            IniciarCombate();
+            return;
+        }
+
+        if (aguardandoDialogoInicial)
             return;
 
         if (dialogoInicial == null)
@@ -195,14 +192,58 @@ public class BossArvore : MonoBehaviour, IBoss
         if (morreu || combateIniciado)
             return;
 
-        if (dialogoInicialConcluido)
-            return;
-
         aguardandoDialogoInicial = false;
         dialogoInicialConcluido = true;
 
         Debug.Log("BossArvore: diálogo inicial concluído.");
         IniciarCombate();
+    }
+
+    public void ResetarBoss()
+    {
+        StopAllCoroutines();
+        rotinaCombate = null;
+        rotinaAtaque = null;
+
+        vida = vidaMaxima;
+        estadoAtual = EstadoBoss.Parado;
+        combateIniciado = false;
+        atacando = false;
+        morreu = false;
+        morteConcluida = false;
+        aguardandoDialogoInicial = false;
+        ultimoAtaque = TipoAtaque.Nenhum;
+
+        if (papoula != null)
+        {
+            papoula.gameObject.SetActive(true);
+        }
+
+        if (hitboxBracoEsquerdo != null)
+        {
+            hitboxBracoEsquerdo.ResetarHitbox();
+        }
+
+        if (hitboxBracoDireito != null)
+        {
+            hitboxBracoDireito.ResetarHitbox();
+        }
+
+        ResetarAnimacoes();
+
+        Debug.Log("BossArvore: resetado para o estado inicial.");
+    }
+
+    private void ResetarAnimacoes()
+    {
+        if (animator != null)
+        {
+            animator.SetBool("IsInvocando", false);
+            animator.SetBool("IsAtacandoEsquerdo", false);
+            animator.SetBool("IsAtacandoDireito", false);
+            animator.SetBool("IsDead", false);
+            animator.Play("Idle", 0, 0f);
+        }
     }
 
     public void IniciarCombate()
@@ -235,8 +276,6 @@ public class BossArvore : MonoBehaviour, IBoss
         while (!morreu)
         {
             float intervalo = ObterIntervaloAtaque();
-            Debug.Log("BossArvore: esperando " + intervalo + " segundos.");
-
             yield return new WaitForSeconds(intervalo);
 
             if (morreu)
@@ -263,8 +302,7 @@ public class BossArvore : MonoBehaviour, IBoss
         if (morreu || atacando)
             return;
 
-        List<TipoAtaque> ataquesDisponiveis = new List<TipoAtaque>();
-        ataquesDisponiveis.Add(TipoAtaque.Raizes);
+        List<TipoAtaque> ataquesDisponiveis = new List<TipoAtaque> { TipoAtaque.Raizes };
 
         if (ultimoAtaque != TipoAtaque.BracoEsquerdo)
         {
@@ -562,16 +600,14 @@ public class BossArvore : MonoBehaviour, IBoss
             animator.Play("Morrendo", 0, 0f);
         }
 
-        Debug.Log("BossArvore: morrendo (animação iniciada)...");
+        Debug.Log("BossArvore: morrendo...");
         StartCoroutine(SequenciaMorte());
     }
 
     private IEnumerator SequenciaMorte()
     {
-        // 1. Aguarda a duração da animação de morte antes das partículas
         yield return new WaitForSeconds(tempoAteParticulas);
 
-        // 2. Instancia e toca o efeito de partículas de morte
         if (particulasMorte != null)
         {
             ParticleSystem efeito = Instantiate(
@@ -584,27 +620,17 @@ public class BossArvore : MonoBehaviour, IBoss
             Destroy(efeito.gameObject, tempoDoEfeitoMorte);
         }
 
-        // 3. Aguarda a duração do efeito de partículas
         yield return new WaitForSeconds(tempoDoEfeitoMorte);
 
-        // 4. Instancia a Árvore Curada no mesmo local APÓS a morte estar completa
         Vector3 posicao = transform.position;
         Quaternion rotacao = transform.rotation;
 
         if (arvoreCuradaNPC != null)
         {
             Instantiate(arvoreCuradaNPC, posicao, rotacao);
-            Debug.Log("BossArvore: árvore curada apareceu como NPC após o término da morte.");
-        }
-        else
-        {
-            Debug.LogWarning("BossArvore: prefab da árvore curada não foi atribuído no Inspector.", this);
         }
 
-        // 5. Marca a morte como totalmente concluída
         morteConcluida = true;
-
-        // 6. Destrói o GameObject do Boss
         Destroy(gameObject);
     }
 

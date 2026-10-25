@@ -55,9 +55,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5426123038301893725}
   - component: {fileID: 3887627966616684244}
-  - component: {fileID: 2277910370958013381}
   - component: {fileID: 2343274092193601740}
   - component: {fileID: 504958898164189855}
+  - component: {fileID: 6481594956607341490}
   m_Layer: 0
   m_Name: PrefabArbustoVermelho
   m_TagString: Untagged
@@ -141,20 +141,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &2277910370958013381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7735622470887029002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68ea5fa2e258c4f448961304e202af15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Obstaculo
-  vida: 5
-  feedbackDano: {fileID: 5134772877117532087}
 --- !u!58 &2343274092193601740
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -218,3 +204,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6481594956607341490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7735622470887029002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a7126f4857ffd4aa4b64fa03b973cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
+  vidaMaxima: 5
+  feedbackDano: {fileID: 5134772877117532087}
+  lootTable:
+  - itemPrefab: {fileID: 0}
+    dropChance: 75
+  - itemPrefab: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
+    dropChance: 25

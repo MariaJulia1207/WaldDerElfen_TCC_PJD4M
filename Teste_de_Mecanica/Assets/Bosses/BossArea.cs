@@ -89,32 +89,42 @@ public class BossArena : MonoBehaviour
     public void ApplySaveState(bool defeated)
     {
         combateFinalizado = defeated;
-        combateIniciado = defeated || combateIniciado;
-
-        // Ao carregar um save onde o boss já foi derrotado, esconde o objeto imediatamente
-        if (bossObjeto != null)
-        {
-            bossObjeto.SetActive(!defeated);
-        }
 
         if (defeated)
         {
+            combateIniciado = true;
+
+            if (bossObjeto != null)
+                bossObjeto.SetActive(false);
+
             if (aberturaEntrada != null)
                 aberturaEntrada.SetActive(false);
 
             if (aberturaSaida != null)
                 aberturaSaida.SetActive(false);
 
-            // Garante a presença do NPC ao carregar o Save
             GarantirNPCNaCena();
         }
-        else if (combateIniciado)
+        else
         {
+            // Se o boss NÃO foi derrotado (ex: jogador morreu e voltou)
+            combateIniciado = false;
+
+            if (bossObjeto != null)
+                bossObjeto.SetActive(true);
+
+            // Mantém as passagens abertas até o jogador entrar na arena novamente
             if (aberturaEntrada != null)
-                aberturaEntrada.SetActive(true);
+                aberturaEntrada.SetActive(false);
 
             if (aberturaSaida != null)
-                aberturaSaida.SetActive(true);
+                aberturaSaida.SetActive(false);
+
+            // Reseta o estado interno do boss
+            if (boss != null)
+            {
+                boss.ResetarBoss();
+            }
         }
     }
 
@@ -125,14 +135,12 @@ public class BossArena : MonoBehaviour
 
         combateFinalizado = true;
 
-        // Abre as passagens da arena
         if (aberturaEntrada != null)
             aberturaEntrada.SetActive(false);
 
         if (aberturaSaida != null)
             aberturaSaida.SetActive(false);
 
-        // Garante a criação do NPC quando o boss morre durante a partida
         GarantirNPCNaCena();
 
         Debug.Log("Boss Arena: Boss derrotado! Arena aberta e NPC garantido.");
@@ -146,14 +154,12 @@ public class BossArena : MonoBehaviour
             return;
         }
 
-        // Caso 1: O GameObject é um objeto que já está colocado na hierarquia da cena (desativado)
         if (arvoreCuradaNPC.scene.IsValid())
         {
             arvoreCuradaNPC.SetActive(true);
             return;
         }
 
-        // Caso 2: O GameObject é um Prefab e precisa ser instanciado
         if (npcInstanciado == null)
         {
             Vector3 posicao = pontoSpawnNPC != null ? pontoSpawnNPC.position :
