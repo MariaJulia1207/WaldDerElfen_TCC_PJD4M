@@ -8,6 +8,9 @@ public class EnemyTakeDamage : MonoBehaviour
     [Header("Feedback")]
     [SerializeField] private ControladorFeedBackDano feedbackDano;
 
+    [Header("Som de dano")]
+    [SerializeField] private string soundEffectName = "Damage";
+
     [Header("Loot")]
     public LootItem[] lootTable;
 
@@ -20,9 +23,17 @@ public class EnemyTakeDamage : MonoBehaviour
 
     public void ReceberDano(int dano)
     {
+        if (dano <= 0)
+            return;
+
         vida -= dano;
 
         Debug.Log("Inimigo recebeu " + dano + " de dano. Vida restante: " + vida);
+
+        if (!string.IsNullOrWhiteSpace(soundEffectName))
+        {
+            SoundEffectManager.Play(soundEffectName);
+        }
 
         if (feedbackDano != null)
         {

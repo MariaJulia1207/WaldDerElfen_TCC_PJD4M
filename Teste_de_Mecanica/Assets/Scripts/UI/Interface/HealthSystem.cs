@@ -60,6 +60,8 @@ public class HealthSystem : MonoBehaviour
         vidaMaximaSalva = -1;
     }
 
+    private const float CircleAlpha = 75f / 255f;
+
     private void EnsurePlayerVisible()
     {
         if (sprite == null)
@@ -86,7 +88,7 @@ public class HealthSystem : MonoBehaviour
             if (string.Equals(renderer.name, "Circle", System.StringComparison.OrdinalIgnoreCase))
             {
                 Color c = renderer.color;
-                c.a = 0.75f;
+                c.a = CircleAlpha;
                 renderer.color = c;
                 continue;
             }
@@ -316,7 +318,7 @@ public class HealthSystem : MonoBehaviour
             if (string.Equals(renderer.name, "Circle", System.StringComparison.OrdinalIgnoreCase))
             {
                 Color c = renderer.color;
-                c.a = 0.75f;
+                c.a = CircleAlpha;
                 renderer.color = c;
             }
         }

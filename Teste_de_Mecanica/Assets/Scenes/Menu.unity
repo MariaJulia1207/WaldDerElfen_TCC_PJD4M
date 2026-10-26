@@ -1368,7 +1368,6 @@ MonoBehaviour:
   settingsPanel: {fileID: 624238254}
   cutsceneScene: Cutscene_EraUmaVez
   gameplayScene: Level1
-  levelLoader: {fileID: 2121823027}
 --- !u!114 &661357202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1471,7 +1470,6 @@ MonoBehaviour:
   firstLevelScene: Cutscene_EraUmaVez
   saveSlotScene: Menu
   continueButton: {fileID: 1095548012}
-  levelLoader: {fileID: 2121823027}
 --- !u!1 &782736777
 GameObject:
   m_ObjectHideFlags: 0
@@ -10593,7 +10591,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 105}
-  m_SizeDelta: {x: 500, y: 200}
+  m_SizeDelta: {x: 1000, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2112863438
 MonoBehaviour:
@@ -10617,8 +10615,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Wald der Elfen
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9e86ad64c4b9e374eae98359700eb67c, type: 2}
-  m_sharedMaterial: {fileID: -4183377125211036086, guid: 9e86ad64c4b9e374eae98359700eb67c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0cb6a73f7e2aa7b44bc07451144ef828, type: 2}
+  m_sharedMaterial: {fileID: -4045529897807530566, guid: 0cb6a73f7e2aa7b44bc07451144ef828, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10642,8 +10640,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10695,17 +10693,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2112863436}
   m_CullTransparentMesh: 1
---- !u!114 &2121823027 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7707875350806418972, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
-  m_PrefabInstance: {fileID: 9159322108948404746}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3827418f15298504b9a2b626f9cac195, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
 --- !u!1001 &9159322108948404746
 PrefabInstance:
   m_ObjectHideFlags: 0

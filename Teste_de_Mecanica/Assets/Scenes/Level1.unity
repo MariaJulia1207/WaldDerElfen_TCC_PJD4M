@@ -1740,6 +1740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Obstaculo
   vida: 3
   feedbackDano: {fileID: 796008654}
+  soundEffectName: Damage
 --- !u!60 &71568589
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -9913,6 +9914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 1385349166}
+  soundEffectName: BushHit
 --- !u!212 &231666784
 SpriteRenderer:
   serializedVersion: 3
@@ -11596,6 +11598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -12248,6 +12251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -14009,7 +14013,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000043986084, y: -0.000000014558155, z: 6.403562e-16, w: 1}
-  m_LocalPosition: {x: 10.314129, y: 15, z: -10}
+  m_LocalPosition: {x: 10.308874, y: 15, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14554,6 +14558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -14804,6 +14809,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -15115,6 +15121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -15499,6 +15506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -16329,6 +16337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 1124217741}
+  soundEffectName: Damage
 --- !u!212 &589381254
 SpriteRenderer:
   serializedVersion: 3
@@ -16947,6 +16956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -18298,6 +18308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 830529873}
+  soundEffectName: Damage
 --- !u!212 &694569940
 SpriteRenderer:
   serializedVersion: 3
@@ -19031,6 +19042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 1207337761}
+  soundEffectName: BushHit
 --- !u!212 &741442313
 SpriteRenderer:
   serializedVersion: 3
@@ -20383,6 +20395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -32850,6 +32863,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 757963037}
+  soundEffectName: BushHit
 --- !u!212 &948849454
 SpriteRenderer:
   serializedVersion: 3
@@ -38569,6 +38583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -43653,6 +43668,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -51663,6 +51679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -63310,6 +63327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -63463,6 +63481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -71405,6 +71424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -72247,6 +72267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -74017,6 +74038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 1847405944}
+  soundEffectName: Damage
 --- !u!212 &1486959464
 SpriteRenderer:
   serializedVersion: 3
@@ -76665,6 +76687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -86632,6 +86655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -87006,6 +87030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -88761,6 +88786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 187594977}
+  soundEffectName: Damage
 --- !u!212 &1966689702
 SpriteRenderer:
   serializedVersion: 3
@@ -89272,6 +89298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 617664784}
+  soundEffectName: Damage
 --- !u!212 &1975244001
 SpriteRenderer:
   serializedVersion: 3
@@ -89620,6 +89647,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   vida: 3
   feedbackDano: {fileID: 1266810760}
+  soundEffectName: Damage
 --- !u!212 &1986904679
 SpriteRenderer:
   serializedVersion: 3
@@ -90307,6 +90335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -91700,6 +91729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 0}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 1048887198}
     dropChance: 25
@@ -128438,6 +128468,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 831903269}
     m_Modifications:
+    - target: {fileID: 256427069467137247, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 256427069467137247, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.5
+      objectReference: {fileID: 0}
     - target: {fileID: 400803835732411712, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
       propertyPath: m_Name
       value: Wisp
@@ -128446,10 +128484,34 @@ PrefabInstance:
       propertyPath: lootTable.Array.data[1].itemPrefab
       value: 
       objectReference: {fileID: 1101899545}
+    - target: {fileID: 1960052023219305403, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1960052023219305403, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 3023169918938123586, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
       propertyPath: particulaDano
       value: 
       objectReference: {fileID: 1243457539}
+    - target: {fileID: 4419506153014397946, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419506153014397946, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354286962592374030, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354286962592374030, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8767345645057951661, guid: c1fe6a2441687a94080e33d4e5806589, type: 3}
       propertyPath: m_LocalPosition.x
       value: 76.75
