@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 4e4edfc3b79e20c49a2577b892fdd6a3
+guid: 14cd3e6e1c949c8468076f778ff6cebd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3756426078573141677
-    second: Tileset_CavePassagens (1)_0
+      213: 8431858089188133080
+    second: Tileset_CavePassagens_0
   - first:
-      213: -2093140268222600496
-    second: Tileset_CavePassagens (1)_1
+      213: 6219230831090078179
+    second: Tileset_CavePassagens_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -87,85 +87,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: VisionOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: tvOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -181,7 +103,117 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_0
+      name: Tileset_CavePassagens_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d8009a124af30570800000000000000
+      internalID: 8431858089188133080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tileset_CavePassagens_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e1184f6d752f4650800000000000000
+      internalID: 6219230831090078179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tileset_CavePassagens_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a220474421d74f54cabfc86893201603
+      internalID: 238337557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tileset_CavePassagens_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3e327edb58ac214a984782733ac6f19
+      internalID: -1915844368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tileset_CavePassagens_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e97e873f7cbb8f44b9272b0f5bf031e
+      internalID: -420882642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tileset_CavePassagens_5
       rect:
         serializedVersion: 2
         x: 0
@@ -194,16 +226,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 35162a9426e7edbc0800000000000000
-      internalID: -3756426078573141677
+      spriteID: 96d7c29a5b02f46468ef2be1d3f84ea4
+      internalID: -1087076333
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_1
+      name: Tileset_CavePassagens_6
       rect:
         serializedVersion: 2
         x: 32
@@ -216,16 +248,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 0daa687140ca3f2e0800000000000000
-      internalID: -2093140268222600496
+      spriteID: 95e861c66cfe8654abc36d5efc445ffa
+      internalID: 62151542
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_2
+      name: Tileset_CavePassagens_7
       rect:
         serializedVersion: 2
         x: 64
@@ -240,14 +272,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3128897e9a3cac34b87a2c7e38b16065
-      internalID: -1611036822
+      spriteID: 589f2a5743ec52c4fa9fbc2efb6a12be
+      internalID: -1369340423
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_3
+      name: Tileset_CavePassagens_8
       rect:
         serializedVersion: 2
         x: 96
@@ -262,14 +294,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2c95017a4e23474298d924cca5bb5fe
-      internalID: 117481787
+      spriteID: 5088d8559f82aa040a8758a9240ddbd1
+      internalID: -182124710
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_4
+      name: Tileset_CavePassagens_9
       rect:
         serializedVersion: 2
         x: 128
@@ -284,14 +316,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5a92b3a58e940e941af610be920d9676
-      internalID: -874035347
+      spriteID: 153112bb2adb532419cd83bae4eebf7d
+      internalID: 48568564
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_5
+      name: Tileset_CavePassagens_10
       rect:
         serializedVersion: 2
         x: 192
@@ -306,14 +338,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6bb27b59323928044a16569fb47fa923
-      internalID: 1068405874
+      spriteID: b56bc19d9c2eb8049b313f971f851134
+      internalID: 995765834
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_6
+      name: Tileset_CavePassagens_11
       rect:
         serializedVersion: 2
         x: 224
@@ -328,14 +360,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a929ee95b87c999439fd9d90084a913f
-      internalID: 284845598
+      spriteID: db0f571bab0a2674ea69b0ca414d694b
+      internalID: 1453897153
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_7
+      name: Tileset_CavePassagens_12
       rect:
         serializedVersion: 2
         x: 0
@@ -350,14 +382,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69d6c0fa60371b3488c75c49cddc6111
-      internalID: 1424466604
+      spriteID: a54df5c9add863848ab191bad234723d
+      internalID: 2021288237
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_8
+      name: Tileset_CavePassagens_13
       rect:
         serializedVersion: 2
         x: 32
@@ -372,14 +404,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e74d7e347815e184f96a8c2fcedd7d94
-      internalID: -477478618
+      spriteID: ba379851eb0564c4e929141604c23dc8
+      internalID: -828478041
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_9
+      name: Tileset_CavePassagens_14
       rect:
         serializedVersion: 2
         x: 64
@@ -394,14 +426,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 78a01cd05202a2d4d9f6f3a9c8d15d73
-      internalID: -1583944781
+      spriteID: 4a7e746755b462241a1295ac207fb442
+      internalID: -1108356802
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_10
+      name: Tileset_CavePassagens_15
       rect:
         serializedVersion: 2
         x: 96
@@ -416,14 +448,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89f9cd804aec6a140a4f15a5693e90fe
-      internalID: -787268406
+      spriteID: 459d90295ec5879459c70da4709d96b1
+      internalID: 1992733663
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_11
+      name: Tileset_CavePassagens_16
       rect:
         serializedVersion: 2
         x: 128
@@ -438,14 +470,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4dd93d83e6498084a99dc7c67c5df517
-      internalID: 1955804703
+      spriteID: e5fc77c68dd8d474e9540c318185ebc7
+      internalID: -95470816
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_12
+      name: Tileset_CavePassagens_17
       rect:
         serializedVersion: 2
         x: 192
@@ -460,14 +492,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af9b2c17c54049f4491d038a9598bfe3
-      internalID: 1424514243
+      spriteID: e83e71c5e53c90f4d909f26b069744f7
+      internalID: -1299702223
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_13
+      name: Tileset_CavePassagens_18
       rect:
         serializedVersion: 2
         x: 224
@@ -482,14 +514,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8beda63303447c942ac4f30e990bd72c
-      internalID: 1975962235
+      spriteID: cdb1c3e2d68ff3a47b2552d1f628aeba
+      internalID: 1746269
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_14
+      name: Tileset_CavePassagens_19
       rect:
         serializedVersion: 2
         x: 0
@@ -504,14 +536,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8bc65322d10a71d4799db5b6138175b1
-      internalID: -1186413137
+      spriteID: 31de828e6cdb4f940880b771cfd6d2fc
+      internalID: -276250459
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_15
+      name: Tileset_CavePassagens_20
       rect:
         serializedVersion: 2
         x: 32
@@ -526,14 +558,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4759642576c357459e2860aea5dffda
-      internalID: -427394140
+      spriteID: bd2027a88d11f9840a7ca7d7e57fc2d9
+      internalID: 990973345
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_16
+      name: Tileset_CavePassagens_21
       rect:
         serializedVersion: 2
         x: 64
@@ -548,14 +580,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 956b9a60c7efd214097ab2b38b725322
-      internalID: 1517076361
+      spriteID: 560563d2c1843104f8463f12f5aae7f0
+      internalID: 1895107521
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_17
+      name: Tileset_CavePassagens_22
       rect:
         serializedVersion: 2
         x: 96
@@ -570,14 +602,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 711aeef29229b824db93e3db260b75f0
-      internalID: -1243726311
+      spriteID: da95cb586946c8646a711d34dc548cb7
+      internalID: -1954337860
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset_CavePassagens (1)_18
+      name: Tileset_CavePassagens_23
       rect:
         serializedVersion: 2
         x: 128
@@ -592,8 +624,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e51fc52ab83ddd4197ab80f75187017
-      internalID: 1503529932
+      spriteID: 14ec7847beab0dd46894793a9f73a4d0
+      internalID: -1978961999
       vertices: []
       indices: 
       edges: []
@@ -602,7 +634,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bad00e57a6f2cf64fa0ca074c516ab52
+    spriteID: 67be07fee11c229499b007e28ef98656
     internalID: 0
     vertices: []
     indices: 
@@ -614,25 +646,30 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Tileset_CavePassagens (1)_0: -3756426078573141677
-      Tileset_CavePassagens (1)_1: -2093140268222600496
-      Tileset_CavePassagens (1)_10: -787268406
-      Tileset_CavePassagens (1)_11: 1955804703
-      Tileset_CavePassagens (1)_12: 1424514243
-      Tileset_CavePassagens (1)_13: 1975962235
-      Tileset_CavePassagens (1)_14: -1186413137
-      Tileset_CavePassagens (1)_15: -427394140
-      Tileset_CavePassagens (1)_16: 1517076361
-      Tileset_CavePassagens (1)_17: -1243726311
-      Tileset_CavePassagens (1)_18: 1503529932
-      Tileset_CavePassagens (1)_2: -1611036822
-      Tileset_CavePassagens (1)_3: 117481787
-      Tileset_CavePassagens (1)_4: -874035347
-      Tileset_CavePassagens (1)_5: 1068405874
-      Tileset_CavePassagens (1)_6: 284845598
-      Tileset_CavePassagens (1)_7: 1424466604
-      Tileset_CavePassagens (1)_8: -477478618
-      Tileset_CavePassagens (1)_9: -1583944781
+      Tileset_CavePassagens_0: 8431858089188133080
+      Tileset_CavePassagens_1: 6219230831090078179
+      Tileset_CavePassagens_10: 995765834
+      Tileset_CavePassagens_11: 1453897153
+      Tileset_CavePassagens_12: 2021288237
+      Tileset_CavePassagens_13: -828478041
+      Tileset_CavePassagens_14: -1108356802
+      Tileset_CavePassagens_15: 1992733663
+      Tileset_CavePassagens_16: -95470816
+      Tileset_CavePassagens_17: -1299702223
+      Tileset_CavePassagens_18: 1746269
+      Tileset_CavePassagens_19: -276250459
+      Tileset_CavePassagens_2: 238337557
+      Tileset_CavePassagens_20: 990973345
+      Tileset_CavePassagens_21: 1895107521
+      Tileset_CavePassagens_22: -1954337860
+      Tileset_CavePassagens_23: -1978961999
+      Tileset_CavePassagens_3: -1915844368
+      Tileset_CavePassagens_4: -420882642
+      Tileset_CavePassagens_5: -1087076333
+      Tileset_CavePassagens_6: 62151542
+      Tileset_CavePassagens_7: -1369340423
+      Tileset_CavePassagens_8: -182124710
+      Tileset_CavePassagens_9: 48568564
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
