@@ -17,6 +17,21 @@ public class BossArena : MonoBehaviour
     [Tooltip("Ponto onde o NPC vai surgir (opcional, usa a posição do Boss se ficar vazio).")]
     [SerializeField] private Transform pontoSpawnNPC;
 
+    [Header("Trilha Sonora")]
+    [Tooltip("Nome da música do Boss cadastrada na MusicLibrary (opcional se usar AudioClip direto).")]
+    [SerializeField] private string bossMusicName;
+    [Tooltip("AudioClip direto da música do Boss (tem prioridade se preenchido).")]
+    [SerializeField] private AudioClip bossMusicClip;
+
+    [Space(5)]
+    [Tooltip("Nome da música de fundo para retornar após vencer a luta (opcional).")]
+    [SerializeField] private string areaMusicName;
+    [Tooltip("AudioClip da área para retornar após vencer a luta (opcional).")]
+    [SerializeField] private AudioClip areaMusicClip;
+
+    [Tooltip("Tempo em segundos para a transição suave entre faixas.")]
+    [SerializeField] private float musicFadeDuration = 1.5f;
+
     [Header("Objeto de Teste - Opcional")]
     [SerializeField] private GameObject objetoTeste;
 
@@ -83,7 +98,10 @@ public class BossArena : MonoBehaviour
         if (boss != null)
             boss.IniciarBoss();
 
-        Debug.Log("Boss Arena: Combate iniciado!");
+        // Dispara a música de Boss com crossfade
+        TocarMusicaBoss();
+
+        Debug.Log("Boss Arena: Combate iniciado com trilha sonora!");
     }
 
     public void ApplySaveState(bool defeated)
@@ -107,20 +125,17 @@ public class BossArena : MonoBehaviour
         }
         else
         {
-            // Se o boss NÃO foi derrotado (ex: jogador morreu e voltou)
             combateIniciado = false;
 
             if (bossObjeto != null)
                 bossObjeto.SetActive(true);
 
-            // Mantém as passagens abertas até o jogador entrar na arena novamente
             if (aberturaEntrada != null)
                 aberturaEntrada.SetActive(false);
 
             if (aberturaSaida != null)
                 aberturaSaida.SetActive(false);
 
-            // Reseta o estado interno do boss
             if (boss != null)
             {
                 boss.ResetarBoss();
@@ -143,7 +158,10 @@ public class BossArena : MonoBehaviour
 
         GarantirNPCNaCena();
 
-        Debug.Log("Boss Arena: Boss derrotado! Arena aberta e NPC garantido.");
+        // Retorna para a música ambiente da área
+        TocarMusicaArea();
+
+        Debug.Log("Boss Arena: Boss derrotado! Trilha sonora retornou ao normal.");
     }
 
     public void GarantirNPCNaCena()
@@ -167,6 +185,34 @@ public class BossArena : MonoBehaviour
             Quaternion rotacao = pontoSpawnNPC != null ? pontoSpawnNPC.rotation : Quaternion.identity;
 
             npcInstanciado = Instantiate(arvoreCuradaNPC, posicao, rotacao);
+        }
+    }
+
+    // =========================================================
+    // GERENCIAMENTO DE MÚSICA
+    // =========================================================
+
+    private void TocarMusicaBoss()
+    {
+        if (bossMusicClip != null)
+        {
+            BackgroundMusic.CrossfadeTo(bossMusicClip, musicFadeDuration);
+        }
+        else if (!string.IsNullOrWhiteSpace(bossMusicName))
+        {
+            BackgroundMusic.CrossfadeTo(bossMusicName, musicFadeDuration);
+        }
+    }
+
+    private void TocarMusicaArea()
+    {
+        if (areaMusicClip != null)
+        {
+            BackgroundMusic.CrossfadeTo(areaMusicClip, musicFadeDuration);
+        }
+        else if (!string.IsNullOrWhiteSpace(areaMusicName))
+        {
+            BackgroundMusic.CrossfadeTo(areaMusicName, musicFadeDuration);
         }
     }
 }

@@ -17,17 +17,87 @@ MonoBehaviour:
   mainDialogue:
   - speakerName: "M\xE3e Aveleira"
     portrait: {fileID: 0}
-    dialogueText: q
+    dialogueText: "Obrigada, minha crian\xE7a. Tua coragem e perseveran\xE7a libertaram-me
+      do horr\xEDvel feiti\xE7o do Rei dos Duendes. Eu lhe agrade\xE7o. "
     voicePitchMin: 0.6
     voicePitchMax: 0.9
   - speakerName: Rose
     portrait: {fileID: 0}
-    dialogueText: q
+    dialogueText: "M\xE3e Aveleira, por favor. A senhora que \xE9 t\xE3o s\xE1bia,
+      diga-me o que aconteceu. Ajude-me a lembrar meu passado, lembrar de minha irm\xE3."
     voicePitchMin: 0.9
     voicePitchMax: 1.2
   - speakerName: "M\xE3e Aveleira"
     portrait: {fileID: 0}
-    dialogueText: q
+    dialogueText: "Ah, parece que foi ontem\u2026 Durante muito tempo os duendes
+      tentaram transpor as fronteiras da Floresta Negra, mas, dessa vez, eles estavam
+      mais fortes, mais sedentos por vidas inocentes. "
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: "Liderados por seu rei, Alberich, eles invadiram a aldeia, destru\xEDram
+      as casas, levaram as donzelas mais belas e enfeiti\xE7aram os que sobraram. "
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Mas por que eles te enfeiti\xE7aram?"
+    voicePitchMin: 0.9
+    voicePitchMax: 1.2
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: "Eu sou a guardi\xE3 da Floresta Negra. Alberich assegurou que
+      eu n\xE3o deixaria ningu\xE9m se aproximar de seus dom\xEDnios. "
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "E minha irm\xE3? O que aconteceu com ela\u2026 quem era ela?"
+    voicePitchMin: 0.9
+    voicePitchMax: 1.2
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: "Pobre crian\xE7a. Tamb\xE9m fostes v\xEDtima da crueldade de Alberich.
+      Tua irm\xE3 g\xEAmea, Blanche, foi capturada por eles. Eles tentaram lev\xE1-la
+      tamb\xE9m, mas teu noivo, o pr\xEDncipe Valemon, a protegeu e escondeu-te dos
+      duendes."
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "\u201CBlanche\u201D... agora eu me lembro. O nome da minha irm\xE3.
+      Preciso encontr\xE1-la."
+    voicePitchMin: 0.9
+    voicePitchMax: 1.2
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: "Tuas palavras t\xEAm poder, mas precisar\xE1s de mais que coragem
+      para derrotar Alberich."
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: "O \xFAnico ser capaz de levar-te ao covil do Rei dos Duendes \xE9
+      Gudrun, a Bruxa dos P\xE1ssaros. Ela \xE9 sua serva mais leal e cruel. Precisas
+      ter coragem para enfrent\xE1-la."
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Eu terei, M\xE3e Aveleira. Em nome de minha irm\xE3, eu prometo
+      trazer todos aqueles que o Rei dos Duendes levou de volta."
+    voicePitchMin: 0.9
+    voicePitchMax: 1.2
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: "Leva contigo esta flor. Nem mesmo os feiti\xE7o que selam as portas
+      de Gudrun poder\xE3o imped\xED-la de atravess\xE1-las. "
+    voicePitchMin: 0.6
+    voicePitchMax: 0.9
+  - speakerName: "M\xE3e Aveleira"
+    portrait: {fileID: 0}
+    dialogueText: "Agora v\xE1, crian\xE7a! V\xE1 e liberte aqueles a quem tu amas."
     voicePitchMin: 0.6
     voicePitchMax: 0.9
   summaryDialogue:
@@ -41,4 +111,4 @@ MonoBehaviour:
   posicaoDestinoNpc: {x: 0, y: 0}
   criarItemAposDialogo: 1
   prefabItemColetavel: {fileID: 4343022150469795601, guid: 135c498e02d307946b862f9c42843aff, type: 3}
-  deslocamentoItem: {x: 0, y: -2}
+  deslocamentoItem: {x: 0, y: -1}
