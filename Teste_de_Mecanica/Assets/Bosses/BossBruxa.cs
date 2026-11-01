@@ -457,6 +457,16 @@ public class BossBruxa : MonoBehaviour, IBoss
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        ProcessarColisao(collision);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        ProcessarColisao(collision);
+    }
+
+    private void ProcessarColisao(Collision2D collision)
+    {
         if (estadoAtual != EstadoAtual.Perseguindo)
             return;
 
@@ -467,17 +477,32 @@ public class BossBruxa : MonoBehaviour, IBoss
             return;
         }
 
-        if (paredesArena == null || paredesArena.Count == 0)
-            return;
-
-        foreach (ContactPoint2D contato in collision.contacts)
+        if (EhParede(collision))
         {
-            if (paredesArena.Contains(contato.collider))
+            IniciarKnockbackParede();
+        }
+    }
+
+    private bool EhParede(Collision2D collision)
+    {
+        // Checa se o colisor principal atingido está na lista de paredes
+        if (paredesArena != null && paredesArena.Count > 0)
+        {
+            if (paredesArena.Contains(collision.collider))
+                return true;
+
+            foreach (ContactPoint2D contato in collision.contacts)
             {
-                IniciarKnockbackParede();
-                return;
+                if (paredesArena.Contains(contato.collider))
+                    return true;
             }
         }
+
+        // Fallback de segurança caso a parede tenha a Tag "Parede"
+        if (collision.gameObject.CompareTag("Parede"))
+            return true;
+
+        return false;
     }
 
     private void PararAposAtingirJogador()
