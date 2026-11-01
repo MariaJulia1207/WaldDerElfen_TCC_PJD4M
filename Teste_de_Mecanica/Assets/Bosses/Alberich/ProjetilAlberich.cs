@@ -1,0 +1,122 @@
+﻿using UnityEngine;
+
+public class ProjetilAlberich : MonoBehaviour
+{
+    [Header("Configuração de Dano")]
+    [SerializeField] private int danoNoJogador = 1;
+    [SerializeField] private int danoNoBoss = 5;
+    [SerializeField] private float tempoVidaMaximo = 5f;
+
+    [Header("Efeitos")]
+    [SerializeField] private ParticleSystem particulaImpacto;
+
+    private Rigidbody2D rb;
+    private ProjetilPool poolOrigem;
+    private bool foiRefletido;
+    private bool podeSerRefletido = true;
+    private float timerVida;
+    private float velocidadeAtual;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void ConfigurarPool(ProjetilPool pool)
+    {
+        poolOrigem = pool;
+    }
+
+    public void Disparar(Vector2 direcao, float velocidade, bool refletivel = true)
+    {
+        foiRefletido = false;
+        podeSerRefletido = refletivel;
+        velocidadeAtual = velocidade;
+        timerVida = tempoVidaMaximo;
+        gameObject.SetActive(true);
+
+        if (rb != null)
+        {
+            rb.linearVelocity = direcao.normalized * velocidadeAtual;
+        }
+    }
+
+    private void Update()
+    {
+        timerVida -= Time.deltaTime;
+        if (timerVida <= 0f)
+        {
+            DevolverOuDesativar();
+        }
+    }
+
+    public bool PodeSerRefletido() => podeSerRefletido && !foiRefletido;
+
+    public void Refletir(Vector2 novaDirecao)
+    {
+        if (!PodeSerRefletido())
+            return;
+
+        foiRefletido = true;
+
+        if (rb != null)
+        {
+            // Aumenta ligeiramente a velocidade quando o jogador rebate
+            rb.linearVelocity = novaDirecao.normalized * (velocidadeAtual * 1.3f);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Impacto com Obstáculos ou Paredes
+        if (other.CompareTag("Parede") || other.CompareTag("Obstaculo"))
+        {
+            GerarEfeitoEImpacto();
+            return;
+        }
+
+        // Se NÃO foi refletido, atinge o Jogador
+        if (!foiRefletido && other.CompareTag("Player"))
+        {
+            other.SendMessage("ReceberDano", danoNoJogador, SendMessageOptions.DontRequireReceiver);
+            GerarEfeitoEImpacto();
+            return;
+        }
+
+        // Se FOI refletido pelo jogador, atinge o Boss Alberich
+        if (foiRefletido)
+        {
+            BossAlberich boss = other.GetComponentInParent<BossAlberich>();
+            if (boss != null)
+            {
+                boss.ReceberDanoFeiticoRefletido(danoNoBoss);
+                GerarEfeitoEImpacto();
+            }
+        }
+    }
+
+    private void GerarEfeitoEImpacto()
+    {
+        if (particulaImpacto != null)
+        {
+            ParticleSystem efeito = Instantiate(particulaImpacto, transform.position, Quaternion.identity);
+            efeito.Play();
+            Destroy(efeito.gameObject, efeito.main.duration);
+        }
+
+        DevolverOuDesativar();
+    }
+
+    private void DevolverOuDesativar()
+    {
+        Projetil componenteProjetil = GetComponent<Projetil>();
+        if (poolOrigem != null && componenteProjetil != null)
+        {
+            poolOrigem.Devolver(componenteProjetil);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+    }
+}

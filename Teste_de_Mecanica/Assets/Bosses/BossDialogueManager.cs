@@ -10,33 +10,22 @@ public class BossDialogueManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject dialoguePanel;
-
     [SerializeField] private Image portraitImage;
-
     [SerializeField] private TMP_Text speakerNameText;
-
     [SerializeField] private TMP_Text dialogueText;
 
     [Header("Typewriter")]
     [SerializeField] private float letterDelay = 0.03f;
 
     private DialogueLine[] currentLines;
-
     private int currentLineIndex;
-
     private Coroutine typingCoroutine;
-
     private bool isTyping;
-
     private bool ignoreNextInput;
-
     private string fullText;
 
-    private BossBruxa bossBruxaAtual;
-    private BossArvore bossArvoreAtual;
-
+    private IBoss currentBoss;
     private DialogueData currentDialogueData;
-
 
     // =========================================================
     // PROPRIEDADE
@@ -46,25 +35,18 @@ public class BossDialogueManager : MonoBehaviour
     {
         get
         {
-            return dialoguePanel != null &&
-                   dialoguePanel.activeSelf;
+            return dialoguePanel != null && dialoguePanel.activeSelf;
         }
     }
 
-
     // =========================================================
-    // AWAKE
+    // AWAKE & START
     // =========================================================
 
     private void Awake()
     {
         Instance = this;
     }
-
-
-    // =========================================================
-    // START
-    // =========================================================
 
     private void Start()
     {
@@ -73,7 +55,6 @@ public class BossDialogueManager : MonoBehaviour
             dialoguePanel.SetActive(false);
         }
     }
-
 
     // =========================================================
     // UPDATE
@@ -90,32 +71,19 @@ public class BossDialogueManager : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current != null &&
-            Keyboard.current.eKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             NextLine();
         }
     }
 
-
     // =========================================================
     // INICIAR DIÁLOGO
     // =========================================================
 
-
-    public void StartBossDialogue(DialogueData dialogueData,BossBruxa boss)
+    public void StartBossDialogue(DialogueData dialogueData, IBoss boss)
     {
-        bossBruxaAtual = boss;
-        bossArvoreAtual = null;
-
-        IniciarDialogo(dialogueData);
-    }
-
-    public void StartBossDialogue(DialogueData dialogueData,BossArvore boss)
-    {
-        bossArvoreAtual = boss;
-        bossBruxaAtual = null;
-
+        currentBoss = boss;
         IniciarDialogo(dialogueData);
     }
 
@@ -123,44 +91,28 @@ public class BossDialogueManager : MonoBehaviour
     {
         if (dialogueData == null)
         {
-            Debug.LogWarning(
-                "BossDialogueManager: DialogueData não foi definido."
-            );
-
+            Debug.LogWarning("BossDialogueManager: DialogueData não foi definido.");
             NotificarDialogoConcluido();
             return;
         }
 
         if (IsDialogueOpen)
         {
-            Debug.LogWarning(
-                "BossDialogueManager: já existe um diálogo aberto."
-            );
-
+            Debug.LogWarning("BossDialogueManager: já existe um diálogo aberto.");
             NotificarDialogoConcluido();
             return;
         }
 
-        if (dialogueData.mainDialogue == null ||
-            dialogueData.mainDialogue.Length == 0)
+        if (dialogueData.mainDialogue == null || dialogueData.mainDialogue.Length == 0)
         {
-            Debug.LogWarning(
-                "BossDialogueManager: o diálogo não possui linhas."
-            );
-
+            Debug.LogWarning("BossDialogueManager: o diálogo não possui linhas.");
             NotificarDialogoConcluido();
             return;
         }
 
-        if (dialoguePanel == null ||
-            portraitImage == null ||
-            speakerNameText == null ||
-            dialogueText == null)
+        if (dialoguePanel == null || portraitImage == null || speakerNameText == null || dialogueText == null)
         {
-            Debug.LogError(
-                "BossDialogueManager: referências da UI não atribuídas."
-            );
-
+            Debug.LogError("BossDialogueManager: referências da UI não atribuídas.");
             NotificarDialogoConcluido();
             return;
         }
@@ -168,41 +120,31 @@ public class BossDialogueManager : MonoBehaviour
         currentDialogueData = dialogueData;
         currentLines = dialogueData.mainDialogue;
         currentLineIndex = 0;
-
         ignoreNextInput = true;
 
         ObserverManager.Notify("HideInteractButton");
 
-        GameObject player =
-            GameObject.FindGameObjectWithTag("Player");
-
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
-            PlayerController controller =
-                player.GetComponent<PlayerController>();
-
+            PlayerController controller = player.GetComponent<PlayerController>();
             if (controller != null)
                 controller.DisableControls();
         }
 
         dialoguePanel.SetActive(true);
-
         ShowLine();
     }
 
     private void NotificarDialogoConcluido()
     {
-        BossBruxa bruxa = bossBruxaAtual;
-        BossArvore arvore = bossArvoreAtual;
+        IBoss boss = currentBoss;
+        currentBoss = null;
 
-        bossBruxaAtual = null;
-        bossArvoreAtual = null;
-
-        if (bruxa != null)
-            bruxa.ConcluirDialogoInicial();
-
-        if (arvore != null)
-            arvore.ConcluirDialogoInicial();
+        if (boss != null)
+        {
+            boss.ConcluirDialogoInicial();
+        }
     }
 
     // =========================================================
@@ -211,29 +153,23 @@ public class BossDialogueManager : MonoBehaviour
 
     private void ShowLine()
     {
-        if (currentLines == null ||
-            currentLines.Length == 0)
+        if (currentLines == null || currentLines.Length == 0)
         {
             EndDialogue();
             return;
         }
 
-        if (currentLineIndex < 0 ||
-            currentLineIndex >= currentLines.Length)
+        if (currentLineIndex < 0 || currentLineIndex >= currentLines.Length)
         {
             EndDialogue();
             return;
         }
 
-
-        DialogueLine line =
-            currentLines[currentLineIndex];
-
+        DialogueLine line = currentLines[currentLineIndex];
 
         if (line == null)
         {
             currentLineIndex++;
-
             if (currentLineIndex >= currentLines.Length)
             {
                 EndDialogue();
@@ -244,24 +180,9 @@ public class BossDialogueManager : MonoBehaviour
             return;
         }
 
-
-        // ---------------------------------------------------------
-        // UI
-        // ---------------------------------------------------------
-
-        portraitImage.sprite =
-            line.portrait;
-
-        speakerNameText.text =
-            line.speakerName;
-
-        fullText =
-            line.dialogueText;
-
-
-        // ---------------------------------------------------------
-        // CORROTINA ANTERIOR
-        // ---------------------------------------------------------
+        portraitImage.sprite = line.portrait;
+        speakerNameText.text = line.speakerName;
+        fullText = line.dialogueText;
 
         if (typingCoroutine != null)
         {
@@ -269,36 +190,25 @@ public class BossDialogueManager : MonoBehaviour
             typingCoroutine = null;
         }
 
-
-        // ---------------------------------------------------------
-        // TYPEWRITER
-        // ---------------------------------------------------------
-
-        typingCoroutine =
-            StartCoroutine(TypeText());
+        typingCoroutine = StartCoroutine(TypeText());
     }
 
-
     // =========================================================
-    // TYPEWRITER
+    // TYPEWRITER & VOZ
     // =========================================================
 
     private IEnumerator TypeText()
     {
         isTyping = true;
-
         dialogueText.text = "";
 
-        DialogueLine line =
-            currentLines[currentLineIndex];
-
+        DialogueLine line = currentLines[currentLineIndex];
 
         foreach (char letter in fullText)
         {
             dialogueText.text += letter;
 
-            if (!char.IsWhiteSpace(letter) &&
-                !char.IsPunctuation(letter))
+            if (!char.IsWhiteSpace(letter) && !char.IsPunctuation(letter))
             {
                 PlayVoiceSound(line);
             }
@@ -307,45 +217,33 @@ public class BossDialogueManager : MonoBehaviour
         }
 
         isTyping = false;
-
         typingCoroutine = null;
     }
-
-
-    // =========================================================
-    // VOZ
-    // =========================================================
-
 
     private void PlayVoiceSound(DialogueLine line)
     {
         if (line == null || currentDialogueData == null)
             return;
 
-        if (string.IsNullOrWhiteSpace(
-            currentDialogueData.voiceSoundName))
+        if (string.IsNullOrWhiteSpace(currentDialogueData.voiceSoundName))
             return;
 
         SoundEffectManager.PlayVoiceForSpeaker(
             currentDialogueData.voiceSoundName,
             line.speakerName,
             line.voicePitchMin,
-            line.voicePitchMax);
+            line.voicePitchMax
+        );
     }
 
     // =========================================================
-    // PRÓXIMA LINHA
+    // PRÓXIMA LINHA & FINALIZAR
     // =========================================================
 
     public void NextLine()
     {
         if (!IsDialogueOpen)
             return;
-
-
-        // ---------------------------------------------------------
-        // SE AINDA ESTÁ DIGITANDO
-        // ---------------------------------------------------------
 
         if (isTyping)
         {
@@ -356,35 +254,20 @@ public class BossDialogueManager : MonoBehaviour
             }
 
             dialogueText.text = fullText;
-
             isTyping = false;
-
             return;
         }
 
-
-        // ---------------------------------------------------------
-        // PRÓXIMA LINHA
-        // ---------------------------------------------------------
-
         currentLineIndex++;
 
-
-        if (currentLines == null ||
-            currentLineIndex >= currentLines.Length)
+        if (currentLines == null || currentLineIndex >= currentLines.Length)
         {
             EndDialogue();
             return;
         }
 
-
         ShowLine();
     }
-
-
-    // =========================================================
-    // FINALIZAR DIÁLOGO
-    // =========================================================
 
     private void EndDialogue()
     {
@@ -399,39 +282,20 @@ public class BossDialogueManager : MonoBehaviour
 
         isTyping = false;
 
-
-        // ---------------------------------------------------------
-        // FECHA PAINEL
-        // ---------------------------------------------------------
-
         if (dialoguePanel != null)
         {
             dialoguePanel.SetActive(false);
         }
 
-
-        // ---------------------------------------------------------
-        // DEVOLVE CONTROLE AO PLAYER
-        // ---------------------------------------------------------
-
-        GameObject player =
-            GameObject.FindGameObjectWithTag("Player");
-
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
-            PlayerController playerController =
-                player.GetComponent<PlayerController>();
-
+            PlayerController playerController = player.GetComponent<PlayerController>();
             if (playerController != null)
             {
                 playerController.EnableControls();
             }
         }
-
-
-        // ---------------------------------------------------------
-        // GUARDA O BOSS
-        // ---------------------------------------------------------
 
         NotificarDialogoConcluido();
     }

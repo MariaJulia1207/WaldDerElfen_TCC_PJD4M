@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class AttackHitbox : MonoBehaviour
@@ -10,17 +9,12 @@ public class AttackHitbox : MonoBehaviour
 
     private Collider2D meuCollider;
 
-    private readonly HashSet<Obstaculo> obstaculosAtingidos =
-        new HashSet<Obstaculo>();
-
-    private readonly HashSet<EnemyTakeDamage> inimigosAtingidos =
-        new HashSet<EnemyTakeDamage>();
-
-    private readonly HashSet<BossPapoula> papoulasAtingidas =
-        new HashSet<BossPapoula>();
-
-    private readonly HashSet<BossBruxa> bruxasAtingidas =
-        new HashSet<BossBruxa>();
+    private readonly HashSet<Obstaculo> obstaculosAtingidos = new HashSet<Obstaculo>();
+    private readonly HashSet<EnemyTakeDamage> inimigosAtingidos = new HashSet<EnemyTakeDamage>();
+    private readonly HashSet<BossPapoula> papoulasAtingidas = new HashSet<BossPapoula>();
+    private readonly HashSet<BossBruxa> bruxasAtingidas = new HashSet<BossBruxa>();
+    private readonly HashSet<BossAlberich> alberichsAtingidos = new HashSet<BossAlberich>();
+    private readonly HashSet<ProjetilAlberich> projeteisRebatidos = new HashSet<ProjetilAlberich>();
 
     private void Awake()
     {
@@ -33,11 +27,9 @@ public class AttackHitbox : MonoBehaviour
         inimigosAtingidos.Clear();
         papoulasAtingidas.Clear();
         bruxasAtingidas.Clear();
+        alberichsAtingidos.Clear();
+        projeteisRebatidos.Clear();
     }
-
-    // =========================================================
-    // VERIFICAÇÃO IMEDIATA
-    // =========================================================
 
     public void VerificarAcerto()
     {
@@ -45,14 +37,9 @@ public class AttackHitbox : MonoBehaviour
             return;
 
         ContactFilter2D filtro = ContactFilter2D.noFilter;
-
         Collider2D[] resultados = new Collider2D[20];
 
-        int quantidade = Physics2D.OverlapCollider(
-            meuCollider,
-            filtro,
-            resultados
-        );
+        int quantidade = Physics2D.OverlapCollider(meuCollider, filtro, resultados);
 
         for (int i = 0; i < quantidade; i++)
         {
@@ -63,77 +50,65 @@ public class AttackHitbox : MonoBehaviour
         }
     }
 
-    // =========================================================
-    // ACERTO POR TRIGGER
-    // =========================================================
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         CausarDano(other);
     }
 
-    // =========================================================
-    // CAUSAR DANO
-    // =========================================================
-
     private void CausarDano(Collider2D other)
     {
         // -----------------------------------------------------
+        // FEITIÇO DO ALBERICH (REBATIMENTO)
+        // -----------------------------------------------------
+        ProjetilAlberich feitico = other.GetComponentInParent<ProjetilAlberich>();
+        if (feitico != null && feitico.PodeSerRefletido())
+        {
+            if (!projeteisRebatidos.Contains(feitico))
+            {
+                projeteisRebatidos.Add(feitico);
+                Vector2 direcaoRebatida = (feitico.transform.position - transform.position).normalized;
+                feitico.Refletir(direcaoRebatida);
+            }
+            return;
+        }
+
+        // -----------------------------------------------------
         // OBSTÁCULO
         // -----------------------------------------------------
-
-        Obstaculo obstaculo =
-            other.GetComponentInParent<Obstaculo>();
-
+        Obstaculo obstaculo = other.GetComponentInParent<Obstaculo>();
         if (obstaculo != null)
         {
             if (obstaculosAtingidos.Contains(obstaculo))
                 return;
 
             obstaculosAtingidos.Add(obstaculo);
-
             obstaculo.ReceberDano(dano);
-
             return;
         }
 
         // -----------------------------------------------------
         // INIMIGO
         // -----------------------------------------------------
-
-        EnemyTakeDamage enemy =
-            other.GetComponentInParent<EnemyTakeDamage>();
-
+        EnemyTakeDamage enemy = other.GetComponentInParent<EnemyTakeDamage>();
         if (enemy != null)
         {
             if (inimigosAtingidos.Contains(enemy))
                 return;
 
             inimigosAtingidos.Add(enemy);
-
             enemy.ReceberDano(dano);
 
-            // Knockback no Goblin
-            EnemyGoblin goblin =
-                enemy.GetComponentInParent<EnemyGoblin>();
-
+            EnemyGoblin goblin = enemy.GetComponentInParent<EnemyGoblin>();
             if (goblin != null)
             {
-                Vector2 direcaoKnockback =
-                    (enemy.transform.position - transform.position).normalized;
-
+                Vector2 direcaoKnockback = (enemy.transform.position - transform.position).normalized;
                 goblin.ReceberKnockback(direcaoKnockback);
             }
 
-            // Knockback no Griffin
-            EnemyGriffin griffin =
-                enemy.GetComponentInParent<EnemyGriffin>();
-
+            EnemyGriffin griffin = enemy.GetComponentInParent<EnemyGriffin>();
             if (griffin != null)
             {
-                Vector2 direcaoKnockback =
-                    (enemy.transform.position - transform.position).normalized;
-
+                Vector2 direcaoKnockback = (enemy.transform.position - transform.position).normalized;
                 griffin.ReceberKnockback(direcaoKnockback);
             }
 
@@ -141,40 +116,44 @@ public class AttackHitbox : MonoBehaviour
         }
 
         // -----------------------------------------------------
-        // PAPOULA DO BOSS
+        // BOSS PAPOULA
         // -----------------------------------------------------
-
-        BossPapoula papoula =
-            other.GetComponentInParent<BossPapoula>();
-
+        BossPapoula papoula = other.GetComponentInParent<BossPapoula>();
         if (papoula != null)
         {
             if (papoulasAtingidas.Contains(papoula))
                 return;
 
             papoulasAtingidas.Add(papoula);
-
             papoula.ReceberDano(dano);
-
             return;
         }
 
         // -----------------------------------------------------
-        // BRUXA DO BOSS
+        // BOSS BRUXA
         // -----------------------------------------------------
-
-        BossBruxa bruxa =
-            other.GetComponentInParent<BossBruxa>();
-
+        BossBruxa bruxa = other.GetComponentInParent<BossBruxa>();
         if (bruxa != null)
         {
             if (bruxasAtingidas.Contains(bruxa))
                 return;
 
             bruxasAtingidas.Add(bruxa);
-
             bruxa.ReceberDano(dano);
+            return;
+        }
 
+        // -----------------------------------------------------
+        // BOSS ALBERICH
+        // -----------------------------------------------------
+        BossAlberich alberich = other.GetComponentInParent<BossAlberich>();
+        if (alberich != null)
+        {
+            if (alberichsAtingidos.Contains(alberich))
+                return;
+
+            alberichsAtingidos.Add(alberich);
+            alberich.ReceberDanoAtaqueDireto(dano);
             return;
         }
     }
