@@ -76,7 +76,7 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 1.25
+  m_PointLightInnerRadius: 1
   m_PointLightOuterRadius: 2.5
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
@@ -270,8 +270,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjetilAlberich
   danoNoJogador: 1
-  danoNoBoss: 5
+  danoNoBoss: 1
   tempoVidaMaximo: 5
+  offsetAnguloSprite: 90
   particulaImpacto: {fileID: 4275636200348693345, guid: 25aefe628aafd8043a839eb08ebd3b16, type: 3}
 --- !u!58 &-6735389304173536606
 CircleCollider2D:

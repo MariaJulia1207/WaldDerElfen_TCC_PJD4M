@@ -407,6 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 3
   feedbackDano: {fileID: 3317241486592382765}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
     dropChance: 50
@@ -591,8 +592,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c96d538f3d0c9b14083c3ec2fa865fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjetilPool
-  prefabProjetil: {fileID: 5856581962730845114, guid: f87a22529bec2e843a3b2417614b4641, type: 3}
-  quantidadeInicial: 12
+  listaProjeteis:
+  - id: FB_Red
+    prefabProjetil: {fileID: 2019339917247520451, guid: c62131504feb39e4884c2872757cdbd5, type: 3}
+    quantidadeInicial: 12
+  - id: FB_Purple
+    prefabProjetil: {fileID: 3585349037233727370, guid: 5fe3e58d8d30daa40aa71f39c44092fd, type: 3}
+    quantidadeInicial: 12
+  - id: FB_Green
+    prefabProjetil: {fileID: 5856581962730845114, guid: f87a22529bec2e843a3b2417614b4641, type: 3}
+    quantidadeInicial: 12
 --- !u!1 &7757278495743978517
 GameObject:
   m_ObjectHideFlags: 0

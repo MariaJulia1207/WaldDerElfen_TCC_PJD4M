@@ -167,6 +167,7 @@ MonoBehaviour:
   danoNoJogador: 1
   danoNoBoss: 2
   tempoVidaMaximo: 5
+  offsetAnguloSprite: 90
   particulaImpacto: {fileID: 7869163372216754120, guid: 6d749f77681912c47b0b10c5b2249c10, type: 3}
 --- !u!58 &-6293936330591967753
 CircleCollider2D:
@@ -320,7 +321,7 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 1.25
+  m_PointLightInnerRadius: 1
   m_PointLightOuterRadius: 2.5
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0

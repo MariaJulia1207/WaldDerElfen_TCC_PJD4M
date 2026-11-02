@@ -4,67 +4,133 @@ using UnityEngine;
 
 public class ProjetilPool : MonoBehaviour
 {
-    [Header("Pool")]
-    [SerializeField] private Projetil prefabProjetil;
-    [SerializeField] private int quantidadeInicial = 12;
+    [System.Serializable]
+    public struct ElementoPool
+    {
+        [Tooltip("Identificador único para buscar o projétil por texto (ex: 'FeiticoAlberich', 'FogoGoblin').")]
+        public string id;
+        public Projetil prefabProjetil;
+        public int quantidadeInicial;
+    }
 
-    private readonly Queue<Projetil> pool =
-        new Queue<Projetil>();
+    [Header("Configuração dos Projéteis")]
+    [SerializeField] private List<ElementoPool> listaProjeteis = new List<ElementoPool>();
 
-
-    // =========================================================
-    // INICIALIZAÇÃO
-    // =========================================================
+    private readonly Dictionary<string, Projetil> prefabsPorId = new Dictionary<string, Projetil>(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<Projetil, Queue<Projetil>> poolsPorPrefab = new Dictionary<Projetil, Queue<Projetil>>();
+    private readonly Dictionary<Projetil, Projetil> mapaInstanciaParaPrefab = new Dictionary<Projetil, Projetil>();
 
     private void Awake()
     {
-        for (int i = 0; i < quantidadeInicial; i++)
+        InicializarPools();
+    }
+
+    private void InicializarPools()
+    {
+        foreach (var elemento in listaProjeteis)
         {
-            CriarProjetil();
+            if (elemento.prefabProjetil == null)
+                continue;
+
+            // Registra busca por ID
+            if (!string.IsNullOrEmpty(elemento.id) && !prefabsPorId.ContainsKey(elemento.id))
+            {
+                prefabsPorId.Add(elemento.id, elemento.prefabProjetil);
+            }
+
+            int quantidade = elemento.quantidadeInicial > 0 ? elemento.quantidadeInicial : 5;
+            for (int i = 0; i < quantidade; i++)
+            {
+                CriarInstancia(elemento.prefabProjetil);
+            }
         }
     }
 
-
-    // =========================================================
-    // CRIAR
-    // =========================================================
-
-    private Projetil CriarProjetil()
+    private Projetil CriarInstancia(Projetil prefab)
     {
-        Projetil projetil =
-            Instantiate(prefabProjetil, transform);
+        Projetil novaInstancia = Instantiate(prefab, transform);
+        novaInstancia.ConfigurarPool(this);
+        novaInstancia.gameObject.SetActive(false);
 
-        projetil.ConfigurarPool(this);
+        if (!poolsPorPrefab.ContainsKey(prefab))
+        {
+            poolsPorPrefab[prefab] = new Queue<Projetil>();
+        }
 
-        projetil.gameObject.SetActive(false);
+        poolsPorPrefab[prefab].Enqueue(novaInstancia);
+        mapaInstanciaParaPrefab[novaInstancia] = prefab;
 
-        pool.Enqueue(projetil);
-
-        return projetil;
+        return novaInstancia;
     }
 
-
     // =========================================================
-    // PEGAR DO POOL
+    // PEGAR PROJÉTIL
     // =========================================================
 
+    /// <summary>
+    /// Sorteia e pega um projétil aleatório entre todos os cadastrados na lista.
+    /// </summary>
     public Projetil Pegar()
     {
-        if (pool.Count == 0)
+        if (listaProjeteis == null || listaProjeteis.Count == 0)
         {
-            CriarProjetil();
+            Debug.LogWarning("ProjetilPool: Nenhum projétil configurado na lista do Inspector.", this);
+            return null;
         }
 
-        Projetil projetil = pool.Dequeue();
+        int indiceAleatorio = UnityEngine.Random.Range(0, listaProjeteis.Count);
+        return Pegar(listaProjeteis[indiceAleatorio].prefabProjetil);
+    }
 
+    /// <summary>
+    /// Pega um projétil por seu índice na lista do Inspector (0, 1, 2...).
+    /// </summary>
+    public Projetil Pegar(int index)
+    {
+        if (listaProjeteis == null || index < 0 || index >= listaProjeteis.Count)
+        {
+            Debug.LogWarning($"ProjetilPool: Índice {index} fora do alcance da lista.", this);
+            return null;
+        }
+
+        return Pegar(listaProjeteis[index].prefabProjetil);
+    }
+
+    /// <summary>
+    /// Pega um projétil passando a referência direta do Prefab.
+    /// </summary>
+    public Projetil Pegar(Projetil prefab)
+    {
+        if (prefab == null)
+            return null;
+
+        if (!poolsPorPrefab.ContainsKey(prefab) || poolsPorPrefab[prefab].Count == 0)
+        {
+            CriarInstancia(prefab);
+        }
+
+        Projetil projetil = poolsPorPrefab[prefab].Dequeue();
         projetil.Ativar();
 
         return projetil;
     }
 
+    /// <summary>
+    /// Pega um projétil usando a chave de ID cadastrada no Inspector.
+    /// </summary>
+    public Projetil Pegar(string id)
+    {
+        if (prefabsPorId.TryGetValue(id, out Projetil prefab))
+        {
+            return Pegar(prefab);
+        }
+
+        Debug.LogWarning($"ProjetilPool: Nenhum projétil com ID '{id}' foi encontrado na pool.", this);
+        return null;
+    }
 
     // =========================================================
-    // DEVOLVER
+    // DEVOLVER PROJÉTIL
     // =========================================================
 
     public void Devolver(Projetil projetil)
@@ -74,6 +140,18 @@ public class ProjetilPool : MonoBehaviour
 
         projetil.gameObject.SetActive(false);
 
-        pool.Enqueue(projetil);
+        if (mapaInstanciaParaPrefab.TryGetValue(projetil, out Projetil prefabOrigem))
+        {
+            if (!poolsPorPrefab.ContainsKey(prefabOrigem))
+            {
+                poolsPorPrefab[prefabOrigem] = new Queue<Projetil>();
+            }
+
+            poolsPorPrefab[prefabOrigem].Enqueue(projetil);
+        }
+        else
+        {
+            Destroy(projetil.gameObject);
+        }
     }
 }

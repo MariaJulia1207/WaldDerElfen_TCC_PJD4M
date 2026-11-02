@@ -12344,7 +12344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &394903661
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16721,8 +16721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c96d538f3d0c9b14083c3ec2fa865fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjetilPool
-  prefabProjetil: {fileID: 3330429566187404375, guid: 34d5c0a182798654f9684f8b1ab7c0a3, type: 3}
-  quantidadeInicial: 12
+  listaProjeteis: []
 --- !u!4 &625845796
 Transform:
   m_ObjectHideFlags: 0

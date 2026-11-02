@@ -13,5 +13,21 @@ MonoBehaviour:
   m_Name: Alberich
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
   playOnlyOnce: 0
-  mainDialogue: []
+  voiceSoundName: DialogueVoice
+  mainDialogue:
+  - speakerName: Alberich, o Rei dos Duendes
+    portrait: {fileID: 0}
+    dialogueText: 
+    voicePitchMin: 0
+    voicePitchMax: 0
+  - speakerName: 
+    portrait: {fileID: 0}
+    dialogueText: 
+    voicePitchMin: 0
+    voicePitchMax: 0
   summaryDialogue: []
+  moverNpcAposDialogo: 0
+  posicaoDestinoNpc: {x: 0, y: 0}
+  criarItemAposDialogo: 0
+  prefabItemColetavel: {fileID: 0}
+  deslocamentoItem: {x: 0, y: 0.5}

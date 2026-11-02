@@ -27,7 +27,6 @@ public class BossAlberich : MonoBehaviour, IBoss
         public float tempoEntreAtaques = 2.5f;
         public float velocidadeFeitico = 6f;
         public int quantidadeFeiticosAgahnim = 3;
-        public float tempoVulneravelDesarmado = 4f;
     }
 
     [Header("Vida")]
@@ -47,10 +46,15 @@ public class BossAlberich : MonoBehaviour, IBoss
     [SerializeField] private Transform[] pontosTeleporte;
     [SerializeField] private ParticleSystem particulasTeleporte;
 
+    [Header("Pontos do Boss")]
+    [Tooltip("Ponto exato da mão do Alberich onde o cetro surge e para onde deve retornar.")]
+    [SerializeField] private Transform pontoMaoAlberich;
+    [Tooltip("Ponto de saída dos feitiços leves estilo Agahnim.")]
+    [SerializeField] private Transform pontoDisparoCetro;
+
     [Header("Ataques & Cetro")]
     [SerializeField] private ProjetilPool poolFeiticos;
-    [SerializeField] private Transform pontoDisparoCetro;
-    [SerializeField] private GameObject cetroIndependente; // Cetro voador (Ganon style)
+    [SerializeField] private CetroAlberich scriptCetroIndependente;
 
     [Header("Componentes")]
     [SerializeField] private Animator animator;
@@ -101,8 +105,9 @@ public class BossAlberich : MonoBehaviour, IBoss
     private void Start()
     {
         EncontrarJogador();
-        if (cetroIndependente != null)
-            cetroIndependente.SetActive(false);
+
+        if (scriptCetroIndependente != null)
+            scriptCetroIndependente.gameObject.SetActive(false);
 
         ResetarAnimacoes();
     }
@@ -158,8 +163,8 @@ public class BossAlberich : MonoBehaviour, IBoss
         combateIniciado = false;
         estadoAtual = EstadoBoss.Parado;
 
-        if (cetroIndependente != null)
-            cetroIndependente.SetActive(false);
+        if (scriptCetroIndependente != null)
+            scriptCetroIndependente.gameObject.SetActive(false);
 
         ResetarAnimacoes();
     }
@@ -185,12 +190,10 @@ public class BossAlberich : MonoBehaviour, IBoss
 
         while (!morreu)
         {
-            // 1. Teletransporta para uma nova posição
             yield return StartCoroutine(ExecutarTeletransporte());
 
             if (morreu) yield break;
 
-            // 2. Alterna aleatoriamente entre ataque Agahnim (Com Cetro) e Ganon (Lança Cetro)
             bool usarAtaqueAgahnim = Random.value > 0.4f;
 
             if (usarAtaqueAgahnim)
@@ -214,7 +217,6 @@ public class BossAlberich : MonoBehaviour, IBoss
     {
         estadoAtual = EstadoBoss.Teleportando;
 
-        // Partícula de saída
         TocarEfeitoTeleporte();
         yield return new WaitForSeconds(0.25f);
 
@@ -230,7 +232,6 @@ public class BossAlberich : MonoBehaviour, IBoss
             transform.position = pontosTeleporte[novoIndice].position;
         }
 
-        // Partícula de chegada
         TocarEfeitoTeleporte();
         yield return new WaitForSeconds(0.25f);
     }
@@ -246,7 +247,7 @@ public class BossAlberich : MonoBehaviour, IBoss
     }
 
     // =========================================================
-    // ATAQUE AGAHNIM (Lança Feitiço Rebatível)
+    // ATAQUE AGAHNIM (Lança Feitiços Rebatíveis)
     // =========================================================
 
     private IEnumerator AtaqueEstiloAgahnim()
@@ -288,36 +289,42 @@ public class BossAlberich : MonoBehaviour, IBoss
     }
 
     // =========================================================
-    // ATAQUE GANON (Gira o Cetro Desarmado & Vulnerabilidade)
+    // ATAQUE GANON (Gira o Cetro Desarmado & Retorno)
     // =========================================================
 
     private IEnumerator AtaqueEstiloGanon()
     {
         estadoAtual = EstadoBoss.InvocandoGanon;
         ResetarAnimacoes();
+
+        // 1. Ativa a animação "IsInvocandoGanon"
         animator.SetBool("IsInvocandoGanon", true);
 
-        // Ativa o Cetro voador independente
-        if (cetroIndependente != null)
+        bool ataqueConcluido = false;
+
+        // 2. Dispara a rotina do cetro passando o ponto da mão como origem/destino
+        if (scriptCetroIndependente != null)
         {
-            cetroIndependente.transform.position = transform.position + new Vector3(0, 1.2f, 0);
-            cetroIndependente.SetActive(true);
+            Transform pontoOrigem = pontoMaoAlberich != null ? pontoMaoAlberich : transform;
+            scriptCetroIndependente.IniciarAtaque(pontoOrigem, jogador, () =>
+            {
+                ataqueConcluido = true;
+            });
+        }
+        else
+        {
+            ataqueConcluido = true;
         }
 
-        yield return new WaitForSeconds(1.0f);
-
-        // O Alberich fica tonto/sem cetro vulnerável a ataques diretos do jogador
+        // 3. Enquanto o cetro está viajando, Alberich também fica suscetível a tomar dano por desarmamento
         estadoAtual = EstadoBoss.Vulneravel;
+
+        // 4. Aguarda o cetro completar TODO o percurso (Carga + Ida + Destino + Volta)
+        yield return new WaitUntil(() => ataqueConcluido);
+
+        // 5. Desativa a animação APENAS após o retorno completo do cetro
         animator.SetBool("IsInvocandoGanon", false);
-        animator.SetBool("IsVulnerable", true);
-
-        yield return new WaitForSeconds(ConfiguracaoAtual.tempoVulneravelDesarmado);
-
-        // Retorna o cetro
-        if (cetroIndependente != null)
-            cetroIndependente.SetActive(false);
-
-        animator.SetBool("IsVulnerable", false);
+        estadoAtual = EstadoBoss.Parado;
     }
 
     // =========================================================
@@ -328,7 +335,6 @@ public class BossAlberich : MonoBehaviour, IBoss
     {
         if (morreu) return;
 
-        // Ao ser atingido pelo próprio feitiço rebatido, o Boss toma dano pesado e fica atordoado
         AplicarDano(dano);
 
         if (!morreu)
@@ -342,7 +348,6 @@ public class BossAlberich : MonoBehaviour, IBoss
     {
         if (morreu) return;
 
-        // O Alberich só aceita dano direto de espada quando estiver VULNERÁVEL (Sem o cetro)
         if (estadoAtual == EstadoBoss.Vulneravel)
         {
             AplicarDano(dano);
@@ -371,8 +376,8 @@ public class BossAlberich : MonoBehaviour, IBoss
         ResetarAnimacoes();
         animator.SetBool("IsVulnerable", true);
 
-        if (cetroIndependente != null)
-            cetroIndependente.SetActive(false);
+        if (scriptCetroIndependente != null)
+            scriptCetroIndependente.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(2.5f);
 
@@ -401,8 +406,8 @@ public class BossAlberich : MonoBehaviour, IBoss
         if (rotinaCombate != null) StopCoroutine(rotinaCombate);
         if (rotinaEstadoAtual != null) StopCoroutine(rotinaEstadoAtual);
 
-        if (cetroIndependente != null)
-            cetroIndependente.SetActive(false);
+        if (scriptCetroIndependente != null)
+            scriptCetroIndependente.gameObject.SetActive(false);
 
         ResetarAnimacoes();
         animator.SetBool("IsDead", true);

@@ -7,6 +7,10 @@ public class ProjetilAlberich : MonoBehaviour
     [SerializeField] private int danoNoBoss = 5;
     [SerializeField] private float tempoVidaMaximo = 5f;
 
+    [Header("Ajuste de Rotação do Sprite")]
+    [Tooltip("0 se o sprite aponta para a DIREITA, 180 se aponta para a ESQUERDA, -90 se aponta para CIMA.")]
+    [SerializeField] private float offsetAnguloSprite = 180f;
+
     [Header("Efeitos")]
     [SerializeField] private ParticleSystem particulaImpacto;
 
@@ -39,6 +43,9 @@ public class ProjetilAlberich : MonoBehaviour
         {
             rb.linearVelocity = direcao.normalized * velocidadeAtual;
         }
+
+        // Atualiza a rotação do sprite no disparo
+        AtualizarRotacao(direcao);
     }
 
     private void Update()
@@ -48,6 +55,14 @@ public class ProjetilAlberich : MonoBehaviour
         {
             DevolverOuDesativar();
         }
+    }
+
+    private void AtualizarRotacao(Vector2 direcao)
+    {
+        if (direcao.sqrMagnitude < 0.001f) return;
+
+        float angulo = Mathf.Atan2(direcao.y, direcao.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angulo + offsetAnguloSprite);
     }
 
     public bool PodeSerRefletido() => podeSerRefletido && !foiRefletido;
@@ -61,9 +76,11 @@ public class ProjetilAlberich : MonoBehaviour
 
         if (rb != null)
         {
-            // Aumenta ligeiramente a velocidade quando o jogador rebate
             rb.linearVelocity = novaDirecao.normalized * (velocidadeAtual * 1.3f);
         }
+
+        // Atualiza a rotação para virar na direção do rebatimento
+        AtualizarRotacao(novaDirecao);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -99,9 +116,16 @@ public class ProjetilAlberich : MonoBehaviour
     {
         if (particulaImpacto != null)
         {
+            // Instancia as partículas no espaço do mundo
             ParticleSystem efeito = Instantiate(particulaImpacto, transform.position, Quaternion.identity);
+            efeito.gameObject.SetActive(true);
             efeito.Play();
-            Destroy(efeito.gameObject, efeito.main.duration);
+
+            // Calcula o tempo total necessário: Duração da emissão + Tempo de vida das partículas geradas
+            var mainModule = efeito.main;
+            float tempoDestruicao = mainModule.duration + mainModule.startLifetime.constantMax;
+
+            Destroy(efeito.gameObject, tempoDestruicao);
         }
 
         DevolverOuDesativar();

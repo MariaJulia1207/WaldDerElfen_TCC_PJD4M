@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &3447407518535778495
+--- !u!1001 &645053731037901683
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,20 +9,40 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 518138986905911848, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
-      propertyPath: prefabProjetil
+      propertyPath: listaProjeteis.Array.data[0].id
+      value: FB_Green
+      objectReference: {fileID: 0}
+    - target: {fileID: 518138986905911848, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
+      propertyPath: listaProjeteis.Array.data[1].id
+      value: FB_Purple
+      objectReference: {fileID: 0}
+    - target: {fileID: 518138986905911848, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
+      propertyPath: listaProjeteis.Array.data[2].id
+      value: FB_Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 518138986905911848, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
+      propertyPath: listaProjeteis.Array.data[0].prefabProjetil
+      value: 
+      objectReference: {fileID: 5856581962730845114, guid: f87a22529bec2e843a3b2417614b4641, type: 3}
+    - target: {fileID: 518138986905911848, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
+      propertyPath: listaProjeteis.Array.data[1].prefabProjetil
       value: 
       objectReference: {fileID: 3585349037233727370, guid: 5fe3e58d8d30daa40aa71f39c44092fd, type: 3}
+    - target: {fileID: 518138986905911848, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
+      propertyPath: listaProjeteis.Array.data[2].prefabProjetil
+      value: 
+      objectReference: {fileID: 2019339917247520451, guid: c62131504feb39e4884c2872757cdbd5, type: 3}
     - target: {fileID: 768804156615377619, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
       propertyPath: m_Name
-      value: Griffin_Red2 Variant
+      value: Griffin_Red 3 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 2812302017550605076, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5311818
+      value: -266.8703
       objectReference: {fileID: 0}
     - target: {fileID: 2812302017550605076, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -22.97293
+      value: -142.75734
       objectReference: {fileID: 0}
     - target: {fileID: 2812302017550605076, guid: ce9aa6c8c123c3045be1eee6d39a72d4, type: 3}
       propertyPath: m_LocalPosition.z
