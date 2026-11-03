@@ -221,7 +221,11 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 8aa4837d938b6b44fb8bfecc8adc0021, type: 3}
   - name: Checkpoint
     audioClips:
-    - {fileID: 8300000, guid: 129e055ca4bf19944a4cf54130aa080c, type: 3}
+    - {fileID: 8300000, guid: f6babaeec0d8bf44b81c89e6aaa39bdf, type: 3}
+    - {fileID: 8300000, guid: 5c4d7ab96d88b8d41966eea4fa3f2adc, type: 3}
+    - {fileID: 8300000, guid: c5eae3931d4578148b52845917872d81, type: 3}
+    - {fileID: 8300000, guid: 9e5e08d1df286ce46bac4e996c1e1cce, type: 3}
+    - {fileID: 8300000, guid: 7edfed771c9f5e9419dfd7e9a7113475, type: 3}
   - name: EnemySword
     audioClips:
     - {fileID: 0}
@@ -231,6 +235,14 @@ MonoBehaviour:
   - name: BushHit
     audioClips:
     - {fileID: 8300000, guid: af6d65ebf48e9ae44b112f896ae9c5a1, type: 3}
+  - name: EnemyDamage
+    audioClips:
+    - {fileID: 8300000, guid: 9e02a8cb0b041474aa6c6797ad53e36f, type: 3}
+  - name: CrystalBreak
+    audioClips:
+    - {fileID: 8300000, guid: eb5b289f6bbdde64f83d8fdb39cd8647, type: 3}
+    - {fileID: 8300000, guid: bdbdb5aac30c56847b54c506f0fa10f0, type: 3}
+    - {fileID: 8300000, guid: 8948d46e8e04b144897904c898708d28, type: 3}
 --- !u!4 &189218896
 Transform:
   m_ObjectHideFlags: 0
@@ -1258,8 +1270,8 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 17d379f643921a94cbd1179565da4477, type: 3}
   - name: Peaceful
     audioClip: {fileID: 8300000, guid: 7725e6952fd90f64e8e5b0fd0aa71b2e, type: 3}
-  - name: Adventure
-    audioClip: {fileID: 8300000, guid: d69472f7007faae45b80f094a3b978ed, type: 3}
+  - name: "Ravel - Bol\xE9ro"
+    audioClip: {fileID: 8300000, guid: 1a42ee1925b15544bbbadea591ab1e0b, type: 3}
   - name: Cave
     audioClip: {fileID: 8300000, guid: 3591a077c6ffebc4f80fca24897c91f9, type: 3}
   - name: SkodaLasky

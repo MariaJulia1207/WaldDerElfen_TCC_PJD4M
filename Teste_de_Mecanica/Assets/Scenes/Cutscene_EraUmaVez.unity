@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &74558771
 RectTransform:
   m_ObjectHideFlags: 0
@@ -169,6 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0195ef8a78a4e840bd5f2f6c46b5882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntroTextWriter
+  texto: {fileID: 0}
   paragrafos:
   - "Al\xE9m das sete colinas, al\xE9m das sete montanhas... "
   velocidadeDigitacao: 0.03
@@ -408,7 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e7566c2ec4eeb478f248957c7ca7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntroDirector
-  introTextWriter: {fileID: 74558772}
+  introTextWriter: {fileID: 931075038}
   levelLoader: {fileID: 1222031376}
 --- !u!4 &285070343
 Transform:
@@ -580,7 +581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &931075035
 RectTransform:
   m_ObjectHideFlags: 0
@@ -712,6 +713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0195ef8a78a4e840bd5f2f6c46b5882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntroTextWriter
+  texto: {fileID: 0}
   paragrafos:
   - "Al\xE9m das sete colinas, al\xE9m das sete montanhas...\nEm tempos de magia
     e mist\xE9rio, havia um lugar onde nenhuma viv'alma ousava se aproximar, um lugar
