@@ -1,74 +1,51 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Playables; // Necessário para controlar as Timelines
+using UnityEngine.Playables;
 
 public class EndingDirector : MonoBehaviour
 {
-    [Header("Referências de Sistema")]
-    [SerializeField] private EndingTextWriter textWriter; // Ou um TextWriter genérico
+    [Header("Referências Principais")]
+    [SerializeField] private EndingTextWriter endingTextWriter;
     [SerializeField] private LevelLoader levelLoader;
-    [SerializeField] private AudioSource musicalCutscene;
 
-    [Header("Cutscenes Animadas (Timeline)")]
-    [SerializeField] private PlayableDirector timelinePersonagens;
+    [Header("Áudio da Cutscene")]
+    [Tooltip("Nome exato da faixa cadastrada no MusicLibrary da cena Boot.")]
+    [SerializeField] private string nomeMusicaFinal = "EndingTheme";
 
-    [Header("Créditos & Navegação")]
+    [Header("Cutscenes Animadas (Timelines)")]
+    [Tooltip("Timelines na ordem exata dos parágrafos onde 'temCutsceneDepois' está marcado.")]
+    [SerializeField] private PlayableDirector[] timelinesCutscenes;
+
+    [Header("Créditos & Menu")]
     [SerializeField] private GameObject painelCreditos;
     [SerializeField] private string nomeCenaMenu = "MainMenu";
+
+    private bool _escritaConcluida = false;
+
+    private void Awake()
+    {
+        if (endingTextWriter == null)
+        {
+            endingTextWriter = FindAnyObjectByType<EndingTextWriter>();
+        }
+
+        if (endingTextWriter != null)
+        {
+            endingTextWriter.aoFinalizarTodosParagrafos.AddListener(OnFinalizarTodosParagrafos);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (endingTextWriter != null)
+        {
+            endingTextWriter.aoFinalizarTodosParagrafos.RemoveListener(OnFinalizarTodosParagrafos);
+        }
+    }
 
     private void Start()
     {
         StartCoroutine(ExecutarSequenciaFinal());
-    }
-
-    private IEnumerator ExecutarSequenciaFinal()
-    {
-        // 1. Aguarda a transição de entrada da cena terminar
-        yield return StartCoroutine(EsperarLoader());
-
-        // 2. Executa a digitação dos textos de encerramento
-        if (textWriter != null)
-        {
-            textWriter.IniciarEscritaFinal();
-            // Espera a corrotina do texto finalizar se você expor o estado dele
-        }
-
-        // 3. Reproduz a Timeline com os personagens
-        if (timelinePersonagens != null)
-        {
-            timelinePersonagens.Play();
-            // Aguarda a Timeline terminar de rodar
-            yield return new WaitUntil(() => timelinePersonagens.state != PlayState.Playing);
-        }
-
-        // 4. Ativa a rolagem de créditos
-        if (painelCreditos != null)
-        {
-            painelCreditos.SetActive(true);
-        }
-
-        // 5. Espera a música principal terminar
-        if (musicalCutscene != null)
-        {
-            yield return new WaitUntil(() => !musicalCutscene.isPlaying);
-        }
-
-        // 6. Deleta os dados do Save antes de sair
-        DeletarSaveDoJogador();
-
-        // 7. Retorna ao menu com o LevelLoader (com fade out automático)
-        LevelLoader loader = GetLevelLoader();
-        if (loader != null)
-        {
-            loader.Transition(nomeCenaMenu);
-        }
-    }
-
-    private void DeletarSaveDoJogador()
-    {
-        // Substitua pelo seu método real de Save (ex: SaveSystem.DeleteSaveData())
-        PlayerPrefs.DeleteAll(); 
-        Debug.Log("Dados de save deletados com sucesso.");
     }
 
     private LevelLoader GetLevelLoader()
@@ -76,52 +53,89 @@ public class EndingDirector : MonoBehaviour
         return levelLoader != null ? levelLoader : LevelLoader.Instance;
     }
 
-    private IEnumerator EsperarLoader()
+    private IEnumerator ExecutarSequenciaFinal()
     {
+        // 1. Aguarda o Fade In inicial da cena via LevelLoader
         LevelLoader loader = GetLevelLoader();
-
         if (loader != null)
         {
-            float timeout = 3f;
-            float timer = 0f;
+            yield return loader.WaitUntilTransparent();
+        }
 
-            while (!loader.IsFullyTransparent && timer < timeout)
-            {
-                timer += Time.deltaTime;
-                yield return null;
-            }
+        // 2. Dispara a música tema da cutscene (com loop = false)
+        if (!string.IsNullOrEmpty(nomeMusicaFinal))
+        {
+            BackgroundMusic.Play(nomeMusicaFinal, loop: false, fadeDuration: 1.0f);
+        }
+
+        // 3. Inicia a digitação dos textos
+        if (endingTextWriter != null)
+        {
+            endingTextWriter.IniciarEscritaFinal();
+        }
+        else
+        {
+            Debug.LogError("EndingDirector: EndingTextWriter não configurado!");
+            yield break;
+        }
+
+        // 4. Aguarda a escrita de todos os parágrafos e cutscenes intermediárias
+        yield return new WaitUntil(() => _escritaConcluida);
+
+        // 5. Exibe a rolagem dos créditos
+        if (painelCreditos != null)
+        {
+            painelCreditos.SetActive(true);
+        }
+
+        // 6. Aguarda a música terminar completamente
+        yield return StartCoroutine(BackgroundMusic.WaitUntilFinished());
+
+        // 7. Deleta o save do jogador
+        DeletarSaveDoJogador();
+
+        // 8. Tela fica preta (via LevelLoader) e retorna ao Menu Principal
+        if (loader != null)
+        {
+            loader.Transition(nomeCenaMenu);
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(nomeCenaMenu);
         }
     }
 
-    public string TocarCutsceneIntermediaria(int indiceCutscene)
+    public IEnumerator TocarCutsceneIntermediaria(int indice)
     {
-        // Aqui você pode implementar a lógica para tocar uma cutscene intermediária
-        // com base no índice fornecido. Por exemplo, você pode ter um array de
-        // PlayableDirectors ou clipes de áudio que correspondam a cada índice.
-
-        // Exemplo simples:
-        switch (indiceCutscene)
+        if (timelinesCutscenes == null || indice >= timelinesCutscenes.Length)
         {
-            case 0:
-                // Tocar primeira cutscene
-                if (timelinePersonagens != null)
-                {
-                    timelinePersonagens.Play();
-                    return "Cutscene 0 iniciada.";
-                }
-                break;
-            case 1:
-                // Tocar segunda cutscene
-                if (musicalCutscene != null)
-                {
-                    musicalCutscene.Play();
-                    return "Cutscene 1 iniciada.";
-                }
-                break;
-            default:
-                return "Índice de cutscene inválido.";
+            Debug.LogWarning($"EndingDirector: Timeline no índice {indice} não foi atribuída no array!");
+            yield break;
         }
 
-        return "Nenhuma cutscene foi iniciada.";
+        PlayableDirector timeline = timelinesCutscenes[indice];
+
+        if (timeline != null)
+        {
+            timeline.gameObject.SetActive(true);
+            timeline.Play();
+
+            yield return new WaitUntil(() => timeline.state != PlayState.Playing);
+
+            timeline.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnFinalizarTodosParagrafos()
+    {
+        _escritaConcluida = true;
+    }
+
+    private void DeletarSaveDoJogador()
+    {
+        // Insira o método do seu sistema de Save/Load
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+        Debug.Log("EndingDirector: Save deletado com sucesso.");
     }
 }

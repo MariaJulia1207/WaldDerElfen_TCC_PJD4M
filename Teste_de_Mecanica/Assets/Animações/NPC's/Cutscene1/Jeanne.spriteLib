@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteLibrarySourceAsset
+  m_Library:
+  - m_Name: Cursed
+    m_Hash: 216543843
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Normal
+      m_Hash: 640249298
+      m_Sprite: {fileID: 6972924740085359983, guid: a50fdfea705abe4489024da235bbec4a, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 6972924740085359983, guid: a50fdfea705abe4489024da235bbec4a, type: 3}
+    - m_Name: "Enfeiti\xE7ado"
+      m_Hash: 138599069
+      m_Sprite: {fileID: 1713852424119017063, guid: 26238c5e212141c45875caea52b52412, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1713852424119017063, guid: 26238c5e212141c45875caea52b52412, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
+  - m_Name: Claping
+    m_Hash: 930792359
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Frame0
+      m_Hash: 370646054
+      m_Sprite: {fileID: -6550754900426639439, guid: 456e49f21f2937046bf18093382cabf1, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -6550754900426639439, guid: 456e49f21f2937046bf18093382cabf1, type: 3}
+    - m_Name: Frame1
+      m_Hash: 554740912
+      m_Sprite: {fileID: -1758019598632532072, guid: 93ea70c01f25b5543a71eb6d79b4493f, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1758019598632532072, guid: 93ea70c01f25b5543a71eb6d79b4493f, type: 3}
+    - m_Name: Frame2
+      m_Hash: 941227274
+      m_Sprite: {fileID: 6254714418676066036, guid: b44d9d194a1c99d4db9643a2988df2ef, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 6254714418676066036, guid: b44d9d194a1c99d4db9643a2988df2ef, type: 3}
+    - m_Name: Frame3
+      m_Hash: 253676956
+      m_Sprite: {fileID: 8503456079864712593, guid: 81e174a651445b24184048d0ccc1c197, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 8503456079864712593, guid: 81e174a651445b24184048d0ccc1c197, type: 3}
+    - m_Name: Frame4
+      m_Hash: 293230655
+      m_Sprite: {fileID: 2131999364179919069, guid: 05d61945a51541e408bad32d16dbd652, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 2131999364179919069, guid: 05d61945a51541e408bad32d16dbd652, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 5
+  m_PrimaryLibraryGUID: 
+  m_ModificationHash: 639294036407707918
+  m_Version: 1

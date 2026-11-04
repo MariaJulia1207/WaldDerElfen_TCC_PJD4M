@@ -12,7 +12,7 @@ public class EndingTextWriter : MonoBehaviour
         [TextArea(3, 10)]
         public string texto;
 
-        [Tooltip("Se marcado, o sistema pausará os textos e chamará uma cutscene animada (Timeline) após este parágrafo.")]
+        [Tooltip("Se marcado, o sistema faz uma pausa nos textos e chama uma Timeline animada após este parágrafo.")]
         public bool temCutsceneDepois;
     }
 
@@ -31,11 +31,9 @@ public class EndingTextWriter : MonoBehaviour
     [SerializeField] private EndingDirector endingDirector;
 
     [Header("Eventos")]
-    [Tooltip("Disparado quando todos os parágrafos e cutscenes intermediárias forem concluídos.")]
     public UnityEvent aoFinalizarTodosParagrafos;
 
     private CanvasGroup _canvasGroup;
-    public bool EstaEscrevendo { get; private set; }
 
     private void Awake()
     {
@@ -46,13 +44,12 @@ public class EndingTextWriter : MonoBehaviour
 
         if (texto == null)
         {
-            Debug.LogError("EndingTextWriter: Nenhum componente TMP_Text foi atribuído ou encontrado!");
+            Debug.LogError("EndingTextWriter: Nenhum TMP_Text encontrado!");
             enabled = false;
             return;
         }
 
         _canvasGroup = texto.GetComponent<CanvasGroup>();
-
         if (_canvasGroup == null)
         {
             _canvasGroup = texto.gameObject.AddComponent<CanvasGroup>();
@@ -68,7 +65,7 @@ public class EndingTextWriter : MonoBehaviour
     {
         if (paragrafos == null || paragrafos.Length == 0)
         {
-            Debug.LogWarning("EndingTextWriter: O array de parágrafos está vazio!");
+            Debug.LogWarning("EndingTextWriter: Array de parágrafos está vazio!");
             aoFinalizarTodosParagrafos?.Invoke();
             return;
         }
@@ -79,9 +76,7 @@ public class EndingTextWriter : MonoBehaviour
 
     private IEnumerator ExecutarEscritaFinal()
     {
-        EstaEscrevendo = true;
         _canvasGroup.alpha = 1f;
-
         int indiceCutscene = 0;
 
         for (int i = 0; i < paragrafos.Length; i++)
@@ -91,7 +86,6 @@ public class EndingTextWriter : MonoBehaviour
             _canvasGroup.alpha = 1f;
             texto.text = "";
 
-            // 1. Efeito de Digitação
             foreach (char letra in paragrafoAtual.texto)
             {
                 texto.text += letra;
@@ -108,10 +102,8 @@ public class EndingTextWriter : MonoBehaviour
                 yield return new WaitForSeconds(velocidadeDigitacao);
             }
 
-            // 2. Tempo de leitura
             yield return new WaitForSeconds(tempoDepoisDaDigitacao);
 
-            // 3. Fade Out do Texto
             float tempo = 0f;
             while (tempo < tempoDesaparecimento)
             {
@@ -124,25 +116,16 @@ public class EndingTextWriter : MonoBehaviour
             _canvasGroup.alpha = 0f;
             texto.text = "";
 
-            // 4. Checagem da Cutscene Animada
             if (paragrafoAtual.temCutsceneDepois)
             {
                 if (endingDirector != null)
                 {
-                    // Pausa a execução do texto e aguarda a corrotina da cutscene no EndingDirector finalizar
                     yield return StartCoroutine(endingDirector.TocarCutsceneIntermediaria(indiceCutscene));
                     indiceCutscene++;
-                }
-                else
-                {
-                    Debug.LogWarning("EndingTextWriter: 'temCutsceneDepois' está ativo, mas o EndingDirector não foi atribuído!");
                 }
             }
         }
 
-        EstaEscrevendo = false;
-        
-        // Notifica o término de toda a sequência de texto/ cutscenes intermediárias
         aoFinalizarTodosParagrafos?.Invoke();
     }
 }

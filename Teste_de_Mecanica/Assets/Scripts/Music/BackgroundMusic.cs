@@ -22,6 +22,8 @@ public class BackgroundMusic : MonoBehaviour
     private AudioSource inactiveSource;
     private Coroutine crossfadeCoroutine;
 
+    public static bool IsPlaying => Instance != null && Instance.activeSource != null && Instance.activeSource.isPlaying;
+
     private void Awake()
     {
         if (Instance == null)
@@ -136,17 +138,17 @@ public class BackgroundMusic : MonoBehaviour
         }
     }
 
-    public static void Play(string musicName)
+    public static void Play(string musicName, bool loop = true, float fadeDuration = 1.5f)
     {
-        CrossfadeTo(musicName, 1.5f);
+        CrossfadeTo(musicName, fadeDuration, loop);
     }
 
-    public static void Play(AudioClip clip)
+    public static void Play(AudioClip clip, bool loop = true, float fadeDuration = 1.5f)
     {
-        CrossfadeTo(clip, 1.5f);
+        CrossfadeTo(clip, fadeDuration, loop);
     }
 
-    public static void CrossfadeTo(string musicName, float fadeDuration = 1.5f)
+    public static void CrossfadeTo(string musicName, float fadeDuration = 1.5f, bool loop = true)
     {
         if (Instance == null) return;
 
@@ -159,7 +161,7 @@ public class BackgroundMusic : MonoBehaviour
         AudioClip clip = Instance.musicLibrary.GetClip(musicName);
         if (clip != null)
         {
-            Instance.CrossfadeToInternal(clip, fadeDuration);
+            Instance.CrossfadeToInternal(clip, fadeDuration, loop);
         }
         else
         {
@@ -167,22 +169,21 @@ public class BackgroundMusic : MonoBehaviour
         }
     }
 
-    public static void CrossfadeTo(AudioClip clip, float fadeDuration = 1.5f)
+    public static void CrossfadeTo(AudioClip clip, float fadeDuration = 1.5f, bool loop = true)
     {
         if (Instance == null) return;
-        Instance.CrossfadeToInternal(clip, fadeDuration);
+        Instance.CrossfadeToInternal(clip, fadeDuration, loop);
     }
 
     public void PlayLoop(AudioClip clip)
     {
-        CrossfadeToInternal(clip, 0.5f);
+        CrossfadeToInternal(clip, 0.5f, true);
     }
 
-    private void CrossfadeToInternal(AudioClip newClip, float fadeDuration)
+    private void CrossfadeToInternal(AudioClip newClip, float fadeDuration, bool loop)
     {
         if (newClip == null) return;
 
-        // Se o novo clipe já estiver tocando na fonte ativa, não interrompe
         if (activeSource.clip == newClip && activeSource.isPlaying) return;
 
         if (crossfadeCoroutine != null)
@@ -190,12 +191,13 @@ public class BackgroundMusic : MonoBehaviour
             StopCoroutine(crossfadeCoroutine);
         }
 
-        crossfadeCoroutine = StartCoroutine(CrossfadeRoutine(newClip, fadeDuration));
+        crossfadeCoroutine = StartCoroutine(CrossfadeRoutine(newClip, fadeDuration, loop));
     }
 
-    private IEnumerator CrossfadeRoutine(AudioClip newClip, float fadeDuration)
+    private IEnumerator CrossfadeRoutine(AudioClip newClip, float fadeDuration, bool loop)
     {
         inactiveSource.clip = newClip;
+        inactiveSource.loop = loop;
         inactiveSource.volume = 0f;
         inactiveSource.Play();
 
@@ -219,12 +221,28 @@ public class BackgroundMusic : MonoBehaviour
         activeSource.volume = 0f;
         inactiveSource.volume = currentVolume;
 
-        // Alterna as fontes: a inativa torna-se a nova fonte ativa
         AudioSource temp = activeSource;
         activeSource = inactiveSource;
         inactiveSource = temp;
 
         crossfadeCoroutine = null;
+    }
+
+    public static IEnumerator WaitUntilFinished()
+    {
+        if (Instance == null) yield break;
+
+        // Aguarda transição do crossfade se estiver ocorrendo
+        while (Instance.crossfadeCoroutine != null)
+        {
+            yield return null;
+        }
+
+        // Aguarda até o AudioSource ativo terminar de tocar
+        while (Instance.activeSource != null && Instance.activeSource.isPlaying)
+        {
+            yield return null;
+        }
     }
 
     public void Stop(float fadeOutDuration = 1.0f)
