@@ -15,16 +15,17 @@ MonoBehaviour:
   playOnlyOnce: 0
   voiceSoundName: DialogueVoice
   mainDialogue:
-  - speakerName: 
+  - speakerName: Hansel
     portrait: {fileID: 0}
-    dialogueText: 
-    voicePitchMin: 0.1
-    voicePitchMax: 0.1
-  - speakerName: 
+    dialogueText: "J\xE1 faz dias desde que os duendes atacaram. E, ainda assim,
+      eles continuam rondando a Floresta Negra."
+    voicePitchMin: 1.4
+    voicePitchMax: 1.7
+  - speakerName: Gretel
     portrait: {fileID: 0}
-    dialogueText: 
-    voicePitchMin: 0.1
-    voicePitchMax: 0.1
+    dialogueText: "Quando ser\xE1 que esse tormento vai acabar?"
+    voicePitchMin: 1.6
+    voicePitchMax: 1.9
   summaryDialogue: []
   moverNpcAposDialogo: 0
   posicaoDestinoNpc: {x: 0, y: 0}
