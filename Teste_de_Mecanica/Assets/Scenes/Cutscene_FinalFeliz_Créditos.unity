@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 40134343}
   - component: {fileID: 40134342}
   m_Layer: 0
-  m_Name: Content7_0
+  m_Name: HappyEnding_Rose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -324,10 +324,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
-  m_CategoryHash: 3.5775585e-31
-  m_labelHash: 5.863673e-34
+  m_CategoryHash: 0.21051572
+  m_labelHash: 4.901765e-19
   m_SpriteKey: 0
-  m_SpriteHash: 642190066
+  m_SpriteHash: 863938621
 --- !u!212 &40134345
 SpriteRenderer:
   serializedVersion: 3
@@ -373,11 +373,11 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 731888949
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1507361683158358710, guid: a8203069e032216409609cbb360dfb06, type: 3}
+  m_Sprite: {fileID: 5451238481227736767, guid: e524b2e03b6d2a442991dfd3f8abfd05, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -397,7 +397,7 @@ Transform:
   m_GameObject: {fileID: 40134341}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
+  m_LocalPosition: {x: -2, y: -0.47, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -741,15 +741,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5591982250199588869, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
       propertyPath: m_SortingLayer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5591982250199588869, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 5591982250199588869, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
       propertyPath: m_SortingLayerID
-      value: 0
+      value: 731888949
       objectReference: {fileID: 0}
     - target: {fileID: 6450996610170395174, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
       propertyPath: m_Name
@@ -2055,17 +2055,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210541427}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 872312170}
+  m_Father: {fileID: 237195639}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -2, y: -2}
+  m_SizeDelta: {x: 396, y: 209}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &210541429
 MonoBehaviour:
@@ -2105,6 +2105,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210541427}
   m_CullTransparentMesh: 1
+--- !u!1 &237195638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 237195639}
+  m_Layer: 5
+  m_Name: Moldura
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &237195639
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237195638}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 210541428}
+  - {fileID: 477905531}
+  - {fileID: 1159577637}
+  m_Father: {fileID: 595089480}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &291519965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2577,12 +2615,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350960964}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 872312170}
+  m_Father: {fileID: 595089480}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2602,6 +2640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EndingTextWriter
   texto: {fileID: 350960967}
+  molduraCanvasGroup: {fileID: 595089481}
   paragrafos:
   - texto: "Enfim reunidas, as irm\xE3s se abra\xE7aram at\xE9 seus cora\xE7\xF5es
       finalmente esquecerem toda a dor e saudade que haviam sentido ap\xF3s tanto
@@ -2617,15 +2656,15 @@ MonoBehaviour:
     temCutsceneDepois: 1
   - texto: "Por mais que a sensa\xE7\xE3o de liberdade enfim tomasse conta de todos,
       a vontade de rever aqueles que ficaram para tr\xE1s era imensa. Guiados por
-      Rose e Blanche os j\xE1 n\xE3o mais prisioneiros rumaram para as fronteiras
+      Rose e Blanche os j\xE1 n\xE3o mais prisioneiros seguiram caminho para as fronteiras
       da Floresta Negra."
     temCutsceneDepois: 0
   - texto: "Reunido no cemit\xE9rio sob a sombra acolhedora da M\xE3e Aveleira, o
       povo do vilarejo esperava ansioso pelo retorno dos seus entes queridos. "
     temCutsceneDepois: 1
   - texto: "Irm\xE3os h\xE1 muito separados. Amores h\xE1 muito perdidos. Amizades
-      h\xE1 muito destro\xE7adas. Nunca houveram tantos , beijos, l\xE1grimas quanto
-      naquele dia."
+      h\xE1 muito destro\xE7adas. Nunca houveram tantos abra\xE7os, beijos e l\xE1grimas
+      quanto naquele dia."
     temCutsceneDepois: 0
   - texto: "Finalmente reunidos com suas amadas noivas, os pr\xEDncipes Valemon e
       Frantz estavam t\xE3o felizes que decidiram n\xE3o perder mais tempo: naquele
@@ -2633,21 +2672,21 @@ MonoBehaviour:
       dos Duendes, mas tamb\xE9m o casamento das irm\xE3s Rose e Blanche."
     temCutsceneDepois: 0
   - texto: "\"Viva a princesa Rose e o pr\xEDncipe Valemon!\" gritavam os jovens.
-      \"Viva a princesa Blanche e o pr\xEDncipe Frantz!\" gritavam os velhos.\nAssim
-      a celebra\xE7\xE3o se estendeu noite adentro: numa can\xE7\xE3o que come\xE7ava
+      \"Viva a princesa Blanche e o pr\xEDncipe Frantz!\" gritavam os velhos.\nA
+      celebra\xE7\xE3o se estendeu noite adentro: numa can\xE7\xE3o que come\xE7ava
       com um \"ol\xE1\" e terminava em um \"adeus\"."
     temCutsceneDepois: 1
-  - texto: "Enfim reuinidas, as irm\xE3s Rose e Blanche perceberam que, por maior
+  - texto: "Enfim reuinidas, as irm\xE3s Rose e Blanche perceberam que, por maiores
       que fossem os perigos e o mal que tentasse separ\xE1-las, seu amor as manteria
       sempre unidas."
     temCutsceneDepois: 0
-  - texto: E todos viveram viveram felizes para sempre...
+  - texto: ... E todos viveram viveram felizes para sempre...
     temCutsceneDepois: 0
   - texto: '                             FIM'
     temCutsceneDepois: 0
   velocidadeDigitacao: 0.03
   tempoDepoisDaDigitacao: 3
-  tempoDesaparecimento: 1.5
+  tempoFadeMoldura: 1
   endingDirector: {fileID: 1056927270}
   aoFinalizarTodosParagrafos:
     m_PersistentCalls:
@@ -2907,7 +2946,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 920635040}
+    m_TransformParent: {fileID: 742673025}
     m_Modifications:
     - target: {fileID: 65438413577047116, guid: 8eaf2ddbe103e3b4c8429ac9b967ab75, type: 3}
       propertyPath: looping
@@ -3506,7 +3545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!114 &400692271
@@ -3666,7 +3705,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -6550754900426639439, guid: 456e49f21f2937046bf18093382cabf1, type: 3}
+  m_Sprite: {fileID: 8503456079864712593, guid: 81e174a651445b24184048d0ccc1c197, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3956,17 +3995,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 477905530}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 872312170}
+  m_Father: {fileID: 237195639}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -2, y: -2}
+  m_SizeDelta: {x: 396, y: 209}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &477905532
 MonoBehaviour:
@@ -4145,7 +4184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!114 &568230118
@@ -4276,6 +4315,56 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &595089479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 595089480}
+  - component: {fileID: 595089481}
+  m_Layer: 5
+  m_Name: Cutscene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &595089480
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595089479}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 237195639}
+  - {fileID: 350960965}
+  m_Father: {fileID: 872312170}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &595089481
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595089479}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &605594686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4760,7 +4849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!114 &647666626
@@ -4920,7 +5009,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1159850607757479413, guid: a78a2d8ef7ccfab45bbd707d140c97f1, type: 3}
+  m_Sprite: {fileID: 1602111530461556769, guid: c18fba2e48adb54439edf287d6edbdad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5092,6 +5181,39 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 908618070}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &742673024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 742673025}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &742673025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742673024}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 830260758}
+  - {fileID: 1310430574}
+  m_Father: {fileID: 920635040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &784033294
 GameObject:
@@ -5318,7 +5440,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 920635040}
+    m_TransformParent: {fileID: 742673025}
     m_Modifications:
     - target: {fileID: 65438413577047116, guid: 8eaf2ddbe103e3b4c8429ac9b967ab75, type: 3}
       propertyPath: looping
@@ -5989,11 +6111,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 210541428}
-  - {fileID: 477905531}
-  - {fileID: 1159577637}
+  - {fileID: 595089480}
   - {fileID: 123254298}
-  - {fileID: 350960965}
   - {fileID: 812379494}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6086,7 +6205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!212 &897942684
@@ -6270,7 +6389,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 2861286205477376111, guid: eb1def40cc26d834c87cd000b31c83b7, type: 3}
+  m_Sprite: {fileID: -4561134739407816933, guid: cb5343481d38a7d4c9b77a00174165e6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6583,6 +6702,10 @@ PlayableDirector:
     value: {fileID: 948453775}
   - key: {fileID: -2460545936795301769, guid: b7bd32a3ef4a68840bd8909581a0e59e, type: 2}
     value: {fileID: 84154583}
+  - key: {fileID: -2510680936149807373, guid: b7bd32a3ef4a68840bd8909581a0e59e, type: 2}
+    value: {fileID: 948453775}
+  - key: {fileID: -3532534235230200085, guid: b7bd32a3ef4a68840bd8909581a0e59e, type: 2}
+    value: {fileID: 742673024}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &920635040
@@ -6608,8 +6731,7 @@ Transform:
   - {fileID: 1617466724}
   - {fileID: 40134346}
   - {fileID: 1890288433}
-  - {fileID: 830260758}
-  - {fileID: 1310430574}
+  - {fileID: 742673025}
   - {fileID: 131340702}
   - {fileID: 906532543}
   - {fileID: 680923033}
@@ -6701,7 +6823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!212 &947043597
@@ -6885,7 +7007,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7647038599316034101, guid: caf793d678d34364ab5624153a221633, type: 3}
+  m_Sprite: {fileID: 5430730946315641662, guid: 8465f3d46ca485a4cabbb2d42556b2c5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6904,7 +7026,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 948453774}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.62, y: -7.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7133,7 +7255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!114 &972879666
@@ -7369,17 +7491,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159577636}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 872312170}
+  m_Father: {fileID: 237195639}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -2, y: -2}
+  m_SizeDelta: {x: 396, y: 209}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1159577638
 MonoBehaviour:
@@ -7474,7 +7596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 1.935158e-10
-  m_labelHash: 1.2246955e-25
+  m_labelHash: 7.8296e-30
   m_SpriteKey: 0
   m_SpriteHash: 71998328
 --- !u!114 &1185249340
@@ -7540,7 +7662,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8129869697983085721, guid: 9e9b2f3c3a2773f40a0b6e454a481514, type: 3}
+  m_Sprite: {fileID: -8776321760908444302, guid: d7dd1c34239bc774f8e3bc00a5c68210, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -8684,7 +8806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!114 &1487176023
@@ -8831,7 +8953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!114 &1523071019
@@ -8937,7 +9059,7 @@ MonoBehaviour:
   m_CategoryHash: 6.486452e-22
   m_labelHash: 1.2246955e-25
   m_SpriteKey: 0
-  m_SpriteHash: 20190616
+  m_SpriteHash: 89449755
 --- !u!114 &1537324721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9001,7 +9123,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -354796710891388118, guid: df774aefe320474409a280b46196e15c, type: 3}
+  m_Sprite: {fileID: -5535477541493380031, guid: 99c0849ac243347429073b61c510dcc8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9274,7 +9396,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 3722878604694493522, guid: f6b8f26b56a16cf4c84b1e5e2d5936ae, type: 3}
+  m_Sprite: {fileID: -5224036552434126658, guid: efdf3fb3df21e014fba69999cb75a202, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9408,7 +9530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 3.5775585e-31
-  m_labelHash: 0
+  m_labelHash: 5.863673e-34
   m_SpriteKey: 0
   m_SpriteHash: 642190066
 --- !u!114 &1617889966
@@ -9631,7 +9753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
   m_CategoryHash: 1.3596651e-21
-  m_labelHash: 1.2246955e-25
+  m_labelHash: 0.000036713704
   m_SpriteKey: 0
   m_SpriteHash: 863861358
 --- !u!114 &1656999906
@@ -9697,7 +9819,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 9150268169486017560, guid: f909ebe59034b444d80c81f562a8e24d, type: 3}
+  m_Sprite: {fileID: -7039844097299520048, guid: d57c5a9221e03b44e90d201136d72a2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10136,7 +10258,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1632708151700599345, guid: 36c5b61ffffb02541aaf187ddc47599b, type: 3}
+  m_Sprite: {fileID: -7592789777473228833, guid: 58a7d01424c16e847bded795412f10c7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10617,7 +10739,7 @@ GameObject:
   - component: {fileID: 1890288430}
   - component: {fileID: 1890288429}
   m_Layer: 0
-  m_Name: Content8_0
+  m_Name: HappyEnding_Blanche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10671,10 +10793,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteResolver
-  m_CategoryHash: 3.5775585e-31
-  m_labelHash: 5.863673e-34
+  m_CategoryHash: 0.21051572
+  m_labelHash: 4.901765e-19
   m_SpriteKey: 0
-  m_SpriteHash: 642190066
+  m_SpriteHash: 863938621
 --- !u!212 &1890288432
 SpriteRenderer:
   serializedVersion: 3
@@ -10720,11 +10842,11 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 731888949
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5328054568821296463, guid: e7c6906a5189a5c44b73de70b2cd62a0, type: 3}
+  m_Sprite: {fileID: 1367904062340774770, guid: 85e728384ae8853429d109ae26d3a3fd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10744,7 +10866,7 @@ Transform:
   m_GameObject: {fileID: 1890288428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: -0.47, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

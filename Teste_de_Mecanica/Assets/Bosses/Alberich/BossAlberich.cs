@@ -46,10 +46,6 @@ public class BossAlberich : MonoBehaviour, IBoss
 
     [Header("Teletransporte")]
     [SerializeField] private Transform[] pontosTeleporte;
-    [Tooltip("Duração da animação de enrolar na capa e sumir.")]
-    [SerializeField] private float tempoAnimacaoTeleporting = 0.5f;
-    [Tooltip("Duração da animação de aparecer e se desenrolar da capa.")]
-    [SerializeField] private float tempoAnimacaoTeleported = 0.5f;
 
     [Header("Pontos do Boss")]
     [Tooltip("Ponto exato da mão do Alberich onde o cetro surge e para onde deve retornar.")]
@@ -82,6 +78,7 @@ public class BossAlberich : MonoBehaviour, IBoss
     private int ultimoIndiceTeleporte = -1;
     private bool combateIniciado;
     private bool morreu;
+    private bool aguardandoFimTeleporte;
 
     private ConfiguracaoFase ConfiguracaoAtual
     {
@@ -166,6 +163,7 @@ public class BossAlberich : MonoBehaviour, IBoss
         vidaAtual = vidaMaxima;
         morreu = false;
         combateIniciado = false;
+        aguardandoFimTeleporte = false;
         estadoAtual = EstadoBoss.Parado;
 
         if (scriptCetroIndependente != null)
@@ -215,29 +213,91 @@ public class BossAlberich : MonoBehaviour, IBoss
     }
 
     // =========================================================
-    // TELETRANSPORTE POR ANIMAÇÃO
+    // TELETRANSPORTE POR ANIMATION EVENTS (PROTEGIDO CONTRA DUPLO MOVIMENTO)
     // =========================================================
+
+    private bool jaMoveuNesteTeleporte;
 
     private IEnumerator ExecutarTeletransporte()
     {
         estadoAtual = EstadoBoss.Teleportando;
         ResetarAnimacoes();
 
-        // 1. Toca animação "Teleporting" (enrola na capa e desaparece)
-        if (animator != null)
+        aguardandoFimTeleporte = true;
+        jaMoveuNesteTeleporte = false; // Reseta a trava no início do teletransporte
+
+        if (animator != null && animator.gameObject.activeInHierarchy)
         {
-            animator.SetBool("IsTeleporting", true);
             animator.Play("Teleporting", 0, 0f);
+            animator.Update(0f);
         }
-
-        yield return new WaitForSeconds(tempoAnimacaoTeleporting);
-
-        if (animator != null)
+        else
         {
-            animator.SetBool("IsTeleporting", false);
+            MoverParaNovoPonto();
+            aguardandoFimTeleporte = false;
         }
 
-        // 2. Transfere a posição para o novo ponto
+        // Timeout estendido para 3.0s para não estourar enquanto a animação Teleported ainda roda
+        float timeoutSeguranca = 3.0f;
+
+        while (aguardandoFimTeleporte && timeoutSeguranca > 0f)
+        {
+            timeoutSeguranca -= Time.deltaTime;
+            yield return null;
+        }
+
+        // Fallback de segurança: só move se AINDA NÃO tiver movido durante a animação
+        if (aguardandoFimTeleporte)
+        {
+            Debug.LogWarning("BossAlberich: Animation Event não disparou a tempo. Recuperando via Timeout.", this);
+            MoverParaNovoPonto();
+            OnAnimacaoTeleportedConcluida();
+        }
+
+        estadoAtual = EstadoBoss.Parado;
+    }
+
+    /// <summary>
+    /// Chamado pelo Animation Event no ÚLTIMO FRAME da animação 'Teleporting'.
+    /// </summary>
+    public void OnAnimacaoTeleportingConcluida()
+    {
+        // Garante a mudança de posição no exato frame em que o boss sumiu
+        MoverParaNovoPonto();
+
+        if (animator != null && animator.gameObject.activeInHierarchy)
+        {
+            animator.Play("Teleported", 0, 0f);
+            animator.Update(0f);
+        }
+        else
+        {
+            aguardandoFimTeleporte = false;
+        }
+    }
+
+    /// <summary>
+    /// Chamado pelo Animation Event no ÚLTIMO FRAME da animação 'Teleported'.
+    /// </summary>
+    public void OnAnimacaoTeleportedConcluida()
+    {
+        aguardandoFimTeleporte = false;
+        ResetarAnimacoes();
+
+        if (animator != null && animator.gameObject.activeInHierarchy)
+        {
+            animator.Play("Alberich_Idle", 0, 0f);
+        }
+    }
+
+    private void MoverParaNovoPonto()
+    {
+        // Trava de segurança: impede que a posição mude mais de uma vez no mesmo teletransporte
+        if (jaMoveuNesteTeleporte)
+            return;
+
+        jaMoveuNesteTeleporte = true;
+
         if (pontosTeleporte != null && pontosTeleporte.Length > 0)
         {
             int novoIndice = Random.Range(0, pontosTeleporte.Length);
@@ -248,20 +308,6 @@ public class BossAlberich : MonoBehaviour, IBoss
 
             ultimoIndiceTeleporte = novoIndice;
             transform.position = pontosTeleporte[novoIndice].position;
-        }
-
-        // 3. Toca animação "Teleported" (reparece e se desenrola da capa)
-        if (animator != null)
-        {
-            animator.SetBool("IsTeleported", true);
-            animator.Play("Teleported", 0, 0f);
-        }
-
-        yield return new WaitForSeconds(tempoAnimacaoTeleported);
-
-        if (animator != null)
-        {
-            animator.SetBool("IsTeleported", false);
         }
     }
 
@@ -308,7 +354,7 @@ public class BossAlberich : MonoBehaviour, IBoss
     }
 
     // =========================================================
-    // ATAQUE GANON (Cetros em Voo e Retorno)
+    // ATAQUE GANON (Cetro Voador e Vulnerabilidade)
     // =========================================================
 
     private IEnumerator AtaqueEstiloGanon()
@@ -453,8 +499,6 @@ public class BossAlberich : MonoBehaviour, IBoss
         animator.SetBool("IsInvocandoGanon", false);
         animator.SetBool("IsVulnerable", false);
         animator.SetBool("IsDead", false);
-        animator.SetBool("IsTeleporting", false);
-        animator.SetBool("IsTeleported", false);
     }
 
     private void EncontrarJogador()
