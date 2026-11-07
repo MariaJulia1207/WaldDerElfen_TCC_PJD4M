@@ -205,6 +205,9 @@ public class EnemyGoblin : MonoBehaviour
         AtualizarDirecaoParaJogador();
         anim.SetBool("IsMoving", false);
         anim.SetTrigger("Attack");
+
+        // Reproduz o som do ataque da espada
+        SoundEffectManager.Play("EnemySword");
     }
 
     private void AtualizarDirecaoParaJogador()

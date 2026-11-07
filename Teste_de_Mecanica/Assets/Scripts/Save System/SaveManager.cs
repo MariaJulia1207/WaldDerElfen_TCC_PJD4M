@@ -164,15 +164,9 @@ public class SaveManager : MonoBehaviour
            }
        }
 
-       if (data.collectedImportantItems == null)
-       {
-           data.collectedImportantItems = new List<string>();
-       }
-       else
-       {
-           data.collectedImportantItems = NormalizeIds(data.collectedImportantItems);
-       }
-   }
+        // Copia a lista em memória (currentCollectedCoins) para os dados que serão gravados no save
+        data.collectedImportantItems = NormalizeIds(currentCollectedCoins);
+    }
 
    public void SaveCurrentStateToSlot(int slot, SaveData data)
    {

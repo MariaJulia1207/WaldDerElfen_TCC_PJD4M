@@ -228,7 +228,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 7edfed771c9f5e9419dfd7e9a7113475, type: 3}
   - name: EnemySword
     audioClips:
-    - {fileID: 0}
+    - {fileID: 8300000, guid: 56dae527694667641bd3813a38e4c6a1, type: 3}
   - name: ButtonClick
     audioClips:
     - {fileID: 8300000, guid: 095f90e3dbe67064a90bb2527ad98c5f, type: 3}
@@ -243,6 +243,17 @@ MonoBehaviour:
     - {fileID: 8300000, guid: eb5b289f6bbdde64f83d8fdb39cd8647, type: 3}
     - {fileID: 8300000, guid: bdbdb5aac30c56847b54c506f0fa10f0, type: 3}
     - {fileID: 8300000, guid: 8948d46e8e04b144897904c898708d28, type: 3}
+  - name: WoodHit
+    audioClips:
+    - {fileID: 8300000, guid: b19685b030483174d9e0c90fb001c184, type: 3}
+    - {fileID: 8300000, guid: 8badfc2f41b49884ca0c0ab1f9cbc210, type: 3}
+    - {fileID: 8300000, guid: f4801fbb1272e424c872b1fb5f5180ca, type: 3}
+  - name: StoneHit
+    audioClips:
+    - {fileID: 8300000, guid: d4517f8dbadda6e449b55479e9eeaab6, type: 3}
+  - name: ScepterLaunch
+    audioClips:
+    - {fileID: 8300000, guid: a5fcc121c5fd8f547b154848f8238e69, type: 3}
 --- !u!4 &189218896
 Transform:
   m_ObjectHideFlags: 0
@@ -1264,11 +1275,9 @@ MonoBehaviour:
   - name: Story
     audioClip: {fileID: 8300000, guid: 34bac2c14c2d256448118d8e2dec2e17, type: 3}
   - name: Village
-    audioClip: {fileID: 8300000, guid: 9a2f2373c72de7e4487a8b3251c37431, type: 3}
+    audioClip: {fileID: 8300000, guid: 16abc09a58ca43544b25621cbc792ec9, type: 3}
   - name: Road
     audioClip: {fileID: 8300000, guid: ed15494bac5ca9346999cf6f58d55c4e, type: 3}
-  - name: Boat
-    audioClip: {fileID: 8300000, guid: 17d379f643921a94cbd1179565da4477, type: 3}
   - name: Peaceful
     audioClip: {fileID: 8300000, guid: 7725e6952fd90f64e8e5b0fd0aa71b2e, type: 3}
   - name: "Ravel - Bol\xE9ro"

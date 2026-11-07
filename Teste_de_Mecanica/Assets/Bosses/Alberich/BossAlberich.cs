@@ -27,6 +27,8 @@ public class BossAlberich : MonoBehaviour, IBoss
         public float tempoEntreAtaques = 2.5f;
         public float velocidadeFeitico = 6f;
         public int quantidadeFeiticosAgahnim = 3;
+        [Tooltip("Intervalo de tempo entre o lançamento de cada feitiço individual.")]
+        public float intervaloEntreFeiticos = 1.2f;
     }
 
     [Header("Vida")]
@@ -44,7 +46,10 @@ public class BossAlberich : MonoBehaviour, IBoss
 
     [Header("Teletransporte")]
     [SerializeField] private Transform[] pontosTeleporte;
-    [SerializeField] private ParticleSystem particulasTeleporte;
+    [Tooltip("Duração da animação de enrolar na capa e sumir.")]
+    [SerializeField] private float tempoAnimacaoTeleporting = 0.5f;
+    [Tooltip("Duração da animação de aparecer e se desenrolar da capa.")]
+    [SerializeField] private float tempoAnimacaoTeleported = 0.5f;
 
     [Header("Pontos do Boss")]
     [Tooltip("Ponto exato da mão do Alberich onde o cetro surge e para onde deve retornar.")]
@@ -210,16 +215,29 @@ public class BossAlberich : MonoBehaviour, IBoss
     }
 
     // =========================================================
-    // TELETRANSPORTE
+    // TELETRANSPORTE POR ANIMAÇÃO
     // =========================================================
 
     private IEnumerator ExecutarTeletransporte()
     {
         estadoAtual = EstadoBoss.Teleportando;
+        ResetarAnimacoes();
 
-        TocarEfeitoTeleporte();
-        yield return new WaitForSeconds(0.25f);
+        // 1. Toca animação "Teleporting" (enrola na capa e desaparece)
+        if (animator != null)
+        {
+            animator.SetBool("IsTeleporting", true);
+            animator.Play("Teleporting", 0, 0f);
+        }
 
+        yield return new WaitForSeconds(tempoAnimacaoTeleporting);
+
+        if (animator != null)
+        {
+            animator.SetBool("IsTeleporting", false);
+        }
+
+        // 2. Transfere a posição para o novo ponto
         if (pontosTeleporte != null && pontosTeleporte.Length > 0)
         {
             int novoIndice = Random.Range(0, pontosTeleporte.Length);
@@ -232,22 +250,23 @@ public class BossAlberich : MonoBehaviour, IBoss
             transform.position = pontosTeleporte[novoIndice].position;
         }
 
-        TocarEfeitoTeleporte();
-        yield return new WaitForSeconds(0.25f);
-    }
-
-    private void TocarEfeitoTeleporte()
-    {
-        if (particulasTeleporte != null)
+        // 3. Toca animação "Teleported" (reparece e se desenrola da capa)
+        if (animator != null)
         {
-            ParticleSystem ps = Instantiate(particulasTeleporte, transform.position, Quaternion.identity);
-            ps.Play();
-            Destroy(ps.gameObject, ps.main.duration);
+            animator.SetBool("IsTeleported", true);
+            animator.Play("Teleported", 0, 0f);
+        }
+
+        yield return new WaitForSeconds(tempoAnimacaoTeleported);
+
+        if (animator != null)
+        {
+            animator.SetBool("IsTeleported", false);
         }
     }
 
     // =========================================================
-    // ATAQUE AGAHNIM (Lança Feitiços Rebatíveis)
+    // ATAQUE AGAHNIM (Com intervalo entre disparos)
     // =========================================================
 
     private IEnumerator AtaqueEstiloAgahnim()
@@ -256,7 +275,7 @@ public class BossAlberich : MonoBehaviour, IBoss
         ResetarAnimacoes();
         animator.SetBool("IsInvocandoAgahnim", true);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
 
         int tiros = ConfiguracaoAtual.quantidadeFeiticosAgahnim;
         for (int i = 0; i < tiros; i++)
@@ -264,7 +283,7 @@ public class BossAlberich : MonoBehaviour, IBoss
             if (morreu || estadoAtual == EstadoBoss.Vulneravel) yield break;
 
             DispararFeiticoRebativel();
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(ConfiguracaoAtual.intervaloEntreFeiticos);
         }
 
         animator.SetBool("IsInvocandoAgahnim", false);
@@ -289,20 +308,17 @@ public class BossAlberich : MonoBehaviour, IBoss
     }
 
     // =========================================================
-    // ATAQUE GANON (Gira o Cetro Desarmado & Retorno)
+    // ATAQUE GANON (Cetros em Voo e Retorno)
     // =========================================================
 
     private IEnumerator AtaqueEstiloGanon()
     {
         estadoAtual = EstadoBoss.InvocandoGanon;
         ResetarAnimacoes();
-
-        // 1. Ativa a animação "IsInvocandoGanon"
         animator.SetBool("IsInvocandoGanon", true);
 
         bool ataqueConcluido = false;
 
-        // 2. Dispara a rotina do cetro passando o ponto da mão como origem/destino
         if (scriptCetroIndependente != null)
         {
             Transform pontoOrigem = pontoMaoAlberich != null ? pontoMaoAlberich : transform;
@@ -316,19 +332,17 @@ public class BossAlberich : MonoBehaviour, IBoss
             ataqueConcluido = true;
         }
 
-        // 3. Enquanto o cetro está viajando, Alberich também fica suscetível a tomar dano por desarmamento
         estadoAtual = EstadoBoss.Vulneravel;
 
-        // 4. Aguarda o cetro completar TODO o percurso (Carga + Ida + Destino + Volta)
+        // Mantém a animação IsInvocandoGanon até o cetro voltar por completo
         yield return new WaitUntil(() => ataqueConcluido);
 
-        // 5. Desativa a animação APENAS após o retorno completo do cetro
         animator.SetBool("IsInvocandoGanon", false);
         estadoAtual = EstadoBoss.Parado;
     }
 
     // =========================================================
-    // RECEBER DANO & VULNERABILIDADE
+    // DANO E MORTE
     // =========================================================
 
     public void ReceberDanoFeiticoRefletido(int dano)
@@ -392,10 +406,6 @@ public class BossAlberich : MonoBehaviour, IBoss
         else faseAtual = FaseDificuldade.Facil;
     }
 
-    // =========================================================
-    // SEQUÊNCIA DE MORTE
-    // =========================================================
-
     private void Morrer()
     {
         if (morreu) return;
@@ -436,10 +446,6 @@ public class BossAlberich : MonoBehaviour, IBoss
         Destroy(gameObject);
     }
 
-    // =========================================================
-    // UTILITÁRIOS
-    // =========================================================
-
     private void ResetarAnimacoes()
     {
         if (animator == null) return;
@@ -447,6 +453,8 @@ public class BossAlberich : MonoBehaviour, IBoss
         animator.SetBool("IsInvocandoGanon", false);
         animator.SetBool("IsVulnerable", false);
         animator.SetBool("IsDead", false);
+        animator.SetBool("IsTeleporting", false);
+        animator.SetBool("IsTeleported", false);
     }
 
     private void EncontrarJogador()
