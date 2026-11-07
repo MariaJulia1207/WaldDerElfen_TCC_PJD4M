@@ -2,12 +2,13 @@
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] private string saveId;
+    [SerializeField] private string saveId = "Porta_1";
     [SerializeField] private GameObject areaEntranceObject;
+
+    public string DoorId => saveId;
 
     private void Start()
     {
-        // Se a porta já foi aberta neste save, ativa a entrada da área e remove a porta fechada
         if (!string.IsNullOrEmpty(saveId) && SaveManager.Instance != null)
         {
             if (SaveManager.Instance.IsCoinCollected(saveId))
@@ -19,7 +20,6 @@ public class Door : MonoBehaviour
 
     public void OpenDoor()
     {
-        // Marca a porta como aberta no SaveManager
         if (!string.IsNullOrEmpty(saveId) && SaveManager.Instance != null)
         {
             SaveManager.Instance.MarkCoinCollected(saveId);

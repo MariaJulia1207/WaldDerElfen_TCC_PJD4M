@@ -646,13 +646,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 3
   feedbackDano: {fileID: 3023169918938123586}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 0}
-    dropChance: 35
+    dropChance: 30
   - itemPrefab: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
-    dropChance: 50
+    dropChance: 60
   - itemPrefab: {fileID: 3206599800795972859, guid: 4c14dba75329d8f4ebabd3d90dc8afe9, type: 3}
-    dropChance: 15
+    dropChance: 10
 --- !u!114 &221339685750801403
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -64,7 +64,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f6a0e72dc537da447afc0014d13de596, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerDamage
   heart: {fileID: 0}
+  knockbackForce: 5
 --- !u!50 &6359308410282078484
 Rigidbody2D:
   serializedVersion: 5
@@ -152,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Obstaculo
   vida: 3
   feedbackDano: {fileID: 5362692155217056422}
+  soundEffectName: Damage
 --- !u!95 &4362894947255277442
 Animator:
   serializedVersion: 7

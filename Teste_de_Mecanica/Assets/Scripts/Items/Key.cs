@@ -2,15 +2,14 @@
 
 public class Key : MonoBehaviour, IItem
 {
-    [SerializeField] private string saveId;
-    [SerializeField] private Door targetDoor;
+    [SerializeField] private string keyId = "Chave_Porta_1";
+    [SerializeField] private string targetDoorId = "Porta_1";
 
     private void Start()
     {
-        // Se a chave já foi coletada neste save, destrói o objeto ao carregar a cena
-        if (!string.IsNullOrEmpty(saveId) && SaveManager.Instance != null)
+        if (!string.IsNullOrEmpty(keyId) && SaveManager.Instance != null)
         {
-            if (SaveManager.Instance.IsCoinCollected(saveId))
+            if (SaveManager.Instance.IsCoinCollected(keyId))
             {
                 Destroy(gameObject);
             }
@@ -19,17 +18,25 @@ public class Key : MonoBehaviour, IItem
 
     public void Collect()
     {
-        // Registra a chave como coletada no SaveManager
-        if (!string.IsNullOrEmpty(saveId) && SaveManager.Instance != null)
+        if (!string.IsNullOrEmpty(keyId) && SaveManager.Instance != null)
         {
-            SaveManager.Instance.MarkCoinCollected(saveId);
+            SaveManager.Instance.MarkCoinCollected(keyId);
         }
 
-        if (targetDoor != null)
+        // Procura a porta correspondente na cena pelo ID
+        if (!string.IsNullOrEmpty(targetDoorId))
         {
-            targetDoor.OpenDoor();
+            Door[] doors = FindObjectsByType<Door>(FindObjectsSortMode.None);
+            foreach (Door door in doors)
+            {
+                if (door.DoorId == targetDoorId)
+                {
+                    door.OpenDoor();
+                    break;
+                }
+            }
         }
-        SoundEffectManager.Play("HeartCollect");
+
         Destroy(gameObject);
     }
 }

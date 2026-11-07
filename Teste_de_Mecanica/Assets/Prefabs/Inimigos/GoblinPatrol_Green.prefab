@@ -206,7 +206,7 @@ PrefabInstance:
       objectReference: {fileID: 2528634918564405434}
     - target: {fileID: 97809013553464725, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
       propertyPath: lootTable.Array.data[0].dropChance
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 97809013553464725, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
       propertyPath: lootTable.Array.data[0].itemPrefab
@@ -214,7 +214,7 @@ PrefabInstance:
       objectReference: {fileID: 3206599800795972859, guid: 4c14dba75329d8f4ebabd3d90dc8afe9, type: 3}
     - target: {fileID: 97809013553464725, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
       propertyPath: lootTable.Array.data[1].dropChance
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 97809013553464725, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
       propertyPath: lootTable.Array.data[1].itemPrefab
@@ -222,7 +222,7 @@ PrefabInstance:
       objectReference: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
     - target: {fileID: 97809013553464725, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
       propertyPath: lootTable.Array.data[2].dropChance
-      value: 35
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 97809013553464725, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
       propertyPath: lootTable.Array.data[2].itemPrefab

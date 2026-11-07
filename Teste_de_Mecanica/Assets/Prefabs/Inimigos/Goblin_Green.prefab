@@ -345,7 +345,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f6a0e72dc537da447afc0014d13de596, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -393,6 +393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
   vidaMaxima: 5
   feedbackDano: {fileID: 4642053284596718837}
+  soundEffectName: Damage
   lootTable:
   - itemPrefab: {fileID: 4191010881764617171, guid: 4f718bcd7621c7f41b63989078f20ec7, type: 3}
     dropChance: 50
