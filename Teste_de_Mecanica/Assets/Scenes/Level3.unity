@@ -275,6 +275,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
       value: Barril (12)
@@ -10259,6 +10267,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
       value: Barril (8)
@@ -10419,6 +10435,14 @@ PrefabInstance:
     - target: {fileID: 1637699784642734149, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
@@ -11809,101 +11833,6 @@ Transform:
   - {fileID: 1137847744}
   m_Father: {fileID: 7140089}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &488648406
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 488648407}
-  - component: {fileID: 488648409}
-  - component: {fileID: 488648408}
-  m_Layer: 0
-  m_Name: Zone_Cave3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &488648407
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 488648406}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31.59489, y: -8.95788, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1475142702}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &488648408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 488648406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f0cc1824e5421042aea4bba77dffcb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AdaptiveMusicZone
-  playerTag: Player
-  musicName: Cave
-  testAudioClip: {fileID: 0}
-  fadeDuration: 2
---- !u!61 &488648409
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 488648406}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 102.5, y: 44}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 100, y: 40}
-  m_EdgeRadius: 0
 --- !u!1001 &497670715
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12013,6 +11942,14 @@ PrefabInstance:
     - target: {fileID: 1637699784642734149, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
@@ -13134,6 +13071,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
       value: Barril (9)
@@ -13225,6 +13170,14 @@ PrefabInstance:
     - target: {fileID: 1637699784642734149, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
@@ -13747,101 +13700,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!1 &633543160
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 633543161}
-  - component: {fileID: 633543163}
-  - component: {fileID: 633543162}
-  m_Layer: 0
-  m_Name: Zone_Cave2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &633543161
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633543160}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31.59489, y: -8.95788, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1475142702}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &633543162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633543160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f0cc1824e5421042aea4bba77dffcb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AdaptiveMusicZone
-  playerTag: Player
-  musicName: Boat
-  testAudioClip: {fileID: 0}
-  fadeDuration: 2
---- !u!61 &633543163
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633543160}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 20, y: 10}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 65, y: 45}
-  m_EdgeRadius: 0
 --- !u!1001 &644620966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15015,6 +14873,14 @@ PrefabInstance:
     - target: {fileID: 1637699784642734149, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
@@ -18031,6 +17897,14 @@ PrefabInstance:
     - target: {fileID: 1637699784642734149, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
@@ -22737,6 +22611,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
       value: Barril (7)
@@ -25428,6 +25310,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
       value: Barril (1)
@@ -26160,8 +26050,6 @@ Transform:
   m_Children:
   - {fileID: 1316549879}
   - {fileID: 2122689160}
-  - {fileID: 633543161}
-  - {fileID: 488648407}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1479579535
@@ -28772,6 +28660,10 @@ PrefabInstance:
       propertyPath: saveId
       value: "NPC_FrantzP\xE1ssaro"
       objectReference: {fileID: 0}
+    - target: {fileID: 6464774039892184541, guid: 963659a0d81119b49a1561bae6637037, type: 3}
+      propertyPath: dialogueData
+      value: 
+      objectReference: {fileID: 11400000, guid: 16d93165e8f053442b748941fe02470b, type: 2}
     - target: {fileID: 6676230429905747829, guid: 963659a0d81119b49a1561bae6637037, type: 3}
       propertyPath: m_Controller
       value: 
@@ -46014,6 +45906,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
       value: Barril (5)
@@ -46965,6 +46865,14 @@ PrefabInstance:
     - target: {fileID: 1637699784642734149, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
@@ -101940,6 +101848,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name
       value: Barril (10)
@@ -102362,7 +102278,7 @@ Transform:
   m_GameObject: {fileID: 2122689159}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31.59489, y: -8.95788, z: 0}
+  m_LocalPosition: {x: -20, y: 72, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -102418,7 +102334,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 75, y: 4}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -102428,7 +102344,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 45, y: 40}
+  m_Size: {x: 200, y: 200}
   m_EdgeRadius: 0
 --- !u!1 &2122810826
 GameObject:
@@ -104356,6 +104272,14 @@ PrefabInstance:
     - target: {fileID: 1637699784642734149, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[0].dropChance
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813426975359195011, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
+      propertyPath: lootTable.Array.data[1].dropChance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8463032000516469825, guid: d8666eaf7faf8344685873e69c1aca99, type: 3}
       propertyPath: m_Name

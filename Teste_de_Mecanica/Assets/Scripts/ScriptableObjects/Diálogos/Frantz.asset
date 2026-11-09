@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab20dd5b0d1341848ad08d21d2348ee9, type: 3}
+  m_Name: Frantz
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  playOnlyOnce: 1
+  voiceSoundName: DialogueVoice
+  mainDialogue:
+  - speakerName: Frantz
+    portrait: {fileID: 0}
+    dialogueText: "Quem... quem vem l\xE1?"
+    voicePitchMin: 1.5
+    voicePitchMax: 1.8
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Calma. Eu sou amiga. Vim libertar todos voc\xEAs."
+    voicePitchMin: 0.9
+    voicePitchMax: 1.2
+  - speakerName: Frantz
+    portrait: {fileID: 0}
+    dialogueText: "Mas... voc\xEA \xE9... eu... eu n\xE3o acredito! Rose, voc\xEA
+      est\xE1 viva!"
+    voicePitchMin: 1.5
+    voicePitchMax: 1.8
+  - speakerName: Frantz
+    portrait: {fileID: 0}
+    dialogueText: "Ah! Ent\xE3o talvez n\xE3o se lembre de mim. Sou o pr\xEDncipe
+      Frantz, irm\xE3o do pr\xEDncipe Valemon, e noivo da sua irm\xE3 Blanche."
+    voicePitchMin: 1.5
+    voicePitchMax: 1.8
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Noivo da minha irm\xE3? Ent\xE3o, voc\xEA veio aqui para salv\xE1-la,
+      mas..."
+    voicePitchMin: 0.9
+    voicePitchMax: 1.2
+  - speakerName: Frantz
+    portrait: {fileID: 0}
+    dialogueText: "Aquela maldita bruxa! Depois que o Rei dos Duendes atacou o vilarejo,
+      eu achei que voc\xEA e meu irm\xE3o tivessem sido capturados ou mortos pelos
+      duendes. Eu jurei que n\xE3o deixaria eles levarem minha amada noiva tamb\xE9m."
+    voicePitchMin: 1.5
+    voicePitchMax: 1.8
+  - speakerName: Frantz
+    portrait: {fileID: 0}
+    dialogueText: "Mas Gudrun capturou a mim e aos meus soldados e transformou-nos
+      em p\xE1ssaros por ordens do Rei dos Duendes."
+    voicePitchMin: 1.5
+    voicePitchMax: 1.8
+  - speakerName: Rose
+    portrait: {fileID: 0}
+    dialogueText: "Bem, j\xE1 est\xE1 na hora dessa bruxa pagar pelo que fez. Eu
+      vou enfrent\xE1-la e faz\xEA-la abrir a passagem para o covil dos duendes.
+      Eu prometo trazer Blanche de volta para n\xF3s."
+    voicePitchMin: 0.9
+    voicePitchMax: 1.2
+  - speakerName: Frantz
+    portrait: {fileID: 0}
+    dialogueText: "Ah, Rose... suas palavras me d\xE3o esperan\xE7a. N\xE3o direi
+      que n\xE3o v\xE1, pois sei o quanto voc\xEA ama sua irm\xE3. Desejo-lhe toda
+      a sorte que eu n\xE3o tive."
+    voicePitchMin: 1.5
+    voicePitchMax: 1.8
+  - speakerName: Frantz
+    portrait: {fileID: 0}
+    dialogueText: "S\xF3 lhe pe\xE7o que tenha cuidado. Gudrun jamais poupa aqueles
+      que ousam enfrent\xE1-la."
+    voicePitchMin: 1.5
+    voicePitchMax: 1.8
+  summaryDialogue:
+  - speakerName: Frantz
+    portrait: {fileID: 0}
+    dialogueText: "Cuidado. Gudrun jamais poupa aqueles que ousam enfrent\xE1-la."
+    voicePitchMin: 1.5
+    voicePitchMax: 1.8
+  moverNpcAposDialogo: 0
+  posicaoDestinoNpc: {x: 0, y: 0}
+  criarItemAposDialogo: 0
+  prefabItemColetavel: {fileID: 0}
+  deslocamentoItem: {x: 0, y: 0.5}
