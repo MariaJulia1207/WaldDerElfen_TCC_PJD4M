@@ -11,11 +11,12 @@ public class BossArena : MonoBehaviour
     [SerializeField] private string saveId;
     private IBoss boss;
 
-    [Header("Objeto/NPC Pós-Derrota (Ex: Grupo de Cristais)")]
-    [Tooltip("Pode ser o Prefab do Grupo de Cristais ou o NPC já na cena.")]
+    [Header("Objetos Pós-Derrota (Previamente colocados na Cena)")]
+    [Tooltip("Objeto dos Cristais pré-posicionado na cena (deve começar desativado no Inspector).")]
+    [SerializeField] private GameObject cristaisObjeto;
+
+    [Tooltip("Objeto da Árvore Curada ou outro NPC pré-posicionado na cena (opcional).")]
     [SerializeField] private GameObject arvoreCuradaNPC;
-    [Tooltip("Ponto onde os Cristais/NPC vão surgir no centro da arena.")]
-    [SerializeField] private Transform pontoSpawnNPC;
 
     [Header("Trilha Sonora")]
     [SerializeField] private string bossMusicName;
@@ -32,7 +33,6 @@ public class BossArena : MonoBehaviour
 
     private bool combateIniciado = false;
     private bool combateFinalizado = false;
-    private GameObject npcInstanciado;
 
     public string SaveId => string.IsNullOrEmpty(saveId) ? gameObject.name : saveId;
     public bool IsDefeated => combateFinalizado;
@@ -112,7 +112,7 @@ public class BossArena : MonoBehaviour
             if (aberturaSaida != null)
                 aberturaSaida.SetActive(false);
 
-            GarantirNPCNaCena();
+            AtivarObjetosPosDerrota();
         }
         else
         {
@@ -126,6 +126,9 @@ public class BossArena : MonoBehaviour
 
             if (aberturaSaida != null)
                 aberturaSaida.SetActive(false);
+
+            // Se o jogo recarregar e a luta não estiver vencida, garante que os cristais fiquem ocultos
+            DesativarObjetosPosDerrota();
 
             if (boss != null)
             {
@@ -147,32 +150,35 @@ public class BossArena : MonoBehaviour
         if (aberturaSaida != null)
             aberturaSaida.SetActive(false);
 
-        GarantirNPCNaCena();
+        AtivarObjetosPosDerrota();
         TocarMusicaArea();
 
-        Debug.Log("Boss Arena: Boss derrotado!");
+        Debug.Log("Boss Arena: Boss derrotado! Cristais ativados na cena.");
     }
 
-    public void GarantirNPCNaCena()
+    public void AtivarObjetosPosDerrota()
     {
-        if (arvoreCuradaNPC == null)
+        if (cristaisObjeto != null)
         {
-            Debug.LogWarning("BossArena: Referência 'arvoreCuradaNPC' (Cristais/NPC) não atribuída.", this);
-            return;
+            cristaisObjeto.SetActive(true);
         }
 
-        if (arvoreCuradaNPC.scene.IsValid())
+        if (arvoreCuradaNPC != null)
         {
             arvoreCuradaNPC.SetActive(true);
-            return;
+        }
+    }
+
+    private void DesativarObjetosPosDerrota()
+    {
+        if (cristaisObjeto != null)
+        {
+            cristaisObjeto.SetActive(false);
         }
 
-        if (npcInstanciado == null)
+        if (arvoreCuradaNPC != null)
         {
-            Vector3 posicao = pontoSpawnNPC != null ? pontoSpawnNPC.position : transform.position;
-            Quaternion rotacao = pontoSpawnNPC != null ? pontoSpawnNPC.rotation : Quaternion.identity;
-
-            npcInstanciado = Instantiate(arvoreCuradaNPC, posicao, rotacao);
+            arvoreCuradaNPC.SetActive(false);
         }
     }
 
