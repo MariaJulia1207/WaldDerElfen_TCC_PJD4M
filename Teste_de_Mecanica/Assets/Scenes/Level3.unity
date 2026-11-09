@@ -29212,7 +29212,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 18, y: 18}
+  m_Size: {x: 15, y: 15}
   m_EdgeRadius: 0
 --- !u!114 &1581270812
 MonoBehaviour:
@@ -29232,11 +29232,11 @@ MonoBehaviour:
   saveId: Bruxa Gudrun
   arvoreCuradaNPC: {fileID: 2308292596749691346, guid: 9f59207c1478ef044bc4c9e190b47b9c, type: 3}
   pontoSpawnNPC: {fileID: 2021731689}
-  bossMusicName: Skoda Lasky
-  bossMusicClip: {fileID: 8300000, guid: e99320a989865ea4a86f8e0f203f5409, type: 3}
+  bossMusicName: CrowChord
+  bossMusicClip: {fileID: 8300000, guid: c142f0ea9783d82448c93b563bf508b0, type: 3}
   areaMusicName: Cave
   areaMusicClip: {fileID: 8300000, guid: 3591a077c6ffebc4f80fca24897c91f9, type: 3}
-  musicFadeDuration: 1.5
+  musicFadeDuration: 2
   objetoTeste: {fileID: 1529003953}
 --- !u!4 &1581270813
 Transform:
