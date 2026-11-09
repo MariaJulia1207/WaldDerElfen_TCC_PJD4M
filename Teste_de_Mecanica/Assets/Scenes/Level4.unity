@@ -60843,7 +60843,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 11
+    OrthographicSize: 10.5
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -365858,8 +365858,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -18, y: -20}
-      - {x: -18, y: 20}
+    - - {x: -19, y: -20}
+      - {x: -19, y: 20}
       - {x: -128, y: 20}
       - {x: -145, y: 12}
       - {x: -213, y: 12}
@@ -365878,8 +365878,8 @@ PolygonCollider2D:
       - {x: 215, y: -5}
       - {x: 105, y: -5}
       - {x: 105, y: 20}
-      - {x: 18, y: 20}
-      - {x: 18, y: -20}
+      - {x: 19, y: 20}
+      - {x: 19, y: -20}
   m_UseDelaunayMesh: 1
 --- !u!4 &1379817508
 Transform:
@@ -366050,7 +366050,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 11
+  orthographic size: 10.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

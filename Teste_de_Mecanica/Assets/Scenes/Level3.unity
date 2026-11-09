@@ -3089,9 +3089,9 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 6, y: -15}
       - {x: -8, y: -15}
-      - {x: -19, y: -15}
-      - {x: -19, y: -13}
-      - {x: -19, y: 2}
+      - {x: -20, y: -15}
+      - {x: -20, y: -13}
+      - {x: -20, y: 2}
       - {x: -104, y: 2}
       - {x: -104, y: 147}
       - {x: 27, y: 147}
@@ -3108,9 +3108,9 @@ PolygonCollider2D:
       - {x: 70, y: 50}
       - {x: 70, y: 50}
       - {x: 70, y: 6}
-      - {x: 16.5, y: 6}
-      - {x: 16.5, y: -13}
-      - {x: 16.5, y: -15}
+      - {x: 17.5, y: 6}
+      - {x: 17.5, y: -13}
+      - {x: 17.5, y: -15}
   m_UseDelaunayMesh: 1
 --- !u!1001 &255859429
 PrefabInstance:
@@ -10745,7 +10745,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 11
+    OrthographicSize: 10.5
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -16818,7 +16818,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 11
+  orthographic size: 10.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
