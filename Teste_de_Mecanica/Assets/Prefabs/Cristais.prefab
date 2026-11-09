@@ -692,6 +692,37 @@ Transform:
   - {fileID: 1194215343786750248}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3694746890406506066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1693029219989238072}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1693029219989238072
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3694746890406506066}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 859532491371885102}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3745008271892088788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,7 +1147,7 @@ GameObject:
   - component: {fileID: 859532491371885102}
   - component: {fileID: 5622083396227965335}
   - component: {fileID: 3972425308864349901}
-  - component: {fileID: 7241635273740199784}
+  - component: {fileID: 3113324399882320799}
   m_Layer: 0
   m_Name: Crystal
   m_TagString: Untagged
@@ -1141,6 +1172,7 @@ Transform:
   - {fileID: 2106557127085884769}
   - {fileID: 3107682614168026489}
   - {fileID: 856573945303046317}
+  - {fileID: 1693029219989238072}
   m_Father: {fileID: 5702575978272255104}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &5622083396227965335
@@ -1226,7 +1258,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7241635273740199784
+--- !u!114 &3113324399882320799
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1235,15 +1267,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6896292271271507735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a7126f4857ffd4aa4b64fa03b973cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 0202ab018e1e43844ba7c7e5003b8e68, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyTakeDamage
+  m_EditorClassIdentifier: '::'
   vidaMaxima: 5
+  eOCristalCorreto: 1
+  princesaNPC: {fileID: 344766866646721357, guid: 69f9832474030e448a0ef466b57a4f46, type: 3}
+  pontoSpawnPrincesa: {fileID: 1693029219989238072}
   feedbackDano: {fileID: 7161236830883821393}
-  soundEffectName: CrystalBreak
-  lootTable:
-  - itemPrefab: {fileID: 344766866646721357, guid: 69f9832474030e448a0ef466b57a4f46, type: 3}
-    dropChance: 100
+  particulaDestruicao: {fileID: 2875861840526489103, guid: 2841777c05b90ee4f98ef1fbcc17aec0, type: 3}
+  somDano: CrystalBreak
+  somQuebra: CrystalBreak
 --- !u!1 &7945988456131174300
 GameObject:
   m_ObjectHideFlags: 0

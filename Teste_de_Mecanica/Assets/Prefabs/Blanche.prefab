@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4381390310694362021}
   - component: {fileID: 7522370863178553476}
   - component: {fileID: 7505129378612650451}
+  - component: {fileID: 7772400875600187324}
   m_Layer: 0
   m_Name: Blanche
   m_TagString: Untagged
@@ -112,6 +113,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 11400000, guid: fb6db931d83a0c849afa82a324888b69, type: 2}
   saveId: NPC_Blanche
+  onDialogueCompleted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7772400875600187324}
+        m_TargetAssemblyTypeName: PrincessSequenceController, Assembly-CSharp
+        m_MethodName: IniciarSequenciaAbraco
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!58 &4381390310694362021
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -182,6 +198,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7772400875600187324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344766866646721357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 488f02e4191c9e84b94e464409634bef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PrincessSequenceController
+  timelineAbraco: {fileID: 0}
+  nomeCenaCutsceneFinal: "Cutscene_FinalFeliz_Cr\xE9ditos"
 --- !u!1 &6448576690610252085
 GameObject:
   m_ObjectHideFlags: 0

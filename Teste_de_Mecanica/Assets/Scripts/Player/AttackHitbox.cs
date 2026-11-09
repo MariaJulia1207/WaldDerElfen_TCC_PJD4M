@@ -11,6 +11,7 @@ public class AttackHitbox : MonoBehaviour
 
     private readonly HashSet<Obstaculo> obstaculosAtingidos = new HashSet<Obstaculo>();
     private readonly HashSet<EnemyTakeDamage> inimigosAtingidos = new HashSet<EnemyTakeDamage>();
+    private readonly HashSet<CrystalTakeDamage> cristaisAtingidos = new HashSet<CrystalTakeDamage>();
     private readonly HashSet<BossPapoula> papoulasAtingidas = new HashSet<BossPapoula>();
     private readonly HashSet<BossBruxa> bruxasAtingidas = new HashSet<BossBruxa>();
     private readonly HashSet<BossAlberich> alberichsAtingidos = new HashSet<BossAlberich>();
@@ -25,6 +26,7 @@ public class AttackHitbox : MonoBehaviour
     {
         obstaculosAtingidos.Clear();
         inimigosAtingidos.Clear();
+        cristaisAtingidos.Clear();
         papoulasAtingidas.Clear();
         bruxasAtingidas.Clear();
         alberichsAtingidos.Clear();
@@ -69,6 +71,20 @@ public class AttackHitbox : MonoBehaviour
                 Vector2 direcaoRebatida = (feitico.transform.position - transform.position).normalized;
                 feitico.Refletir(direcaoRebatida);
             }
+            return;
+        }
+
+        // -----------------------------------------------------
+        // CRISTAL (PÓS-BOSS / PUZZLE)
+        // -----------------------------------------------------
+        CrystalTakeDamage cristal = other.GetComponentInParent<CrystalTakeDamage>();
+        if (cristal != null)
+        {
+            if (cristaisAtingidos.Contains(cristal))
+                return;
+
+            cristaisAtingidos.Add(cristal);
+            cristal.ReceberDano(dano);
             return;
         }
 

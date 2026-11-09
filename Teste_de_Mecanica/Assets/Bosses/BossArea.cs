@@ -11,25 +11,20 @@ public class BossArena : MonoBehaviour
     [SerializeField] private string saveId;
     private IBoss boss;
 
-    [Header("NPC Pós-Derrota")]
-    [Tooltip("Pode ser o Prefab do NPC ou um GameObject de NPC já colocado na hierarquia da cena.")]
+    [Header("Objeto/NPC Pós-Derrota (Ex: Grupo de Cristais)")]
+    [Tooltip("Pode ser o Prefab do Grupo de Cristais ou o NPC já na cena.")]
     [SerializeField] private GameObject arvoreCuradaNPC;
-    [Tooltip("Ponto onde o NPC vai surgir (opcional, usa a posição do Boss se ficar vazio).")]
+    [Tooltip("Ponto onde os Cristais/NPC vão surgir no centro da arena.")]
     [SerializeField] private Transform pontoSpawnNPC;
 
     [Header("Trilha Sonora")]
-    [Tooltip("Nome da música do Boss cadastrada na MusicLibrary (opcional se usar AudioClip direto).")]
     [SerializeField] private string bossMusicName;
-    [Tooltip("AudioClip direto da música do Boss (tem prioridade se preenchido).")]
     [SerializeField] private AudioClip bossMusicClip;
 
     [Space(5)]
-    [Tooltip("Nome da música de fundo para retornar após vencer a luta (opcional).")]
     [SerializeField] private string areaMusicName;
-    [Tooltip("AudioClip da área para retornar após vencer a luta (opcional).")]
     [SerializeField] private AudioClip areaMusicClip;
 
-    [Tooltip("Tempo em segundos para a transição suave entre faixas.")]
     [SerializeField] private float musicFadeDuration = 1.5f;
 
     [Header("Objeto de Teste - Opcional")]
@@ -52,21 +47,18 @@ public class BossArena : MonoBehaviour
     {
         if (combateIniciado && !combateFinalizado)
         {
-            // 1. Verificação via objeto de teste
             if (objetoTeste != null && objetoTeste == null)
             {
                 BossDerrotado();
                 return;
             }
 
-            // 2. Verificação se o GameObject do Boss foi destruído
             if (bossObjeto == null)
             {
                 BossDerrotado();
                 return;
             }
 
-            // 3. Verificação se o Boss morreu
             if (boss != null && boss.EstaMorto())
             {
                 BossDerrotado();
@@ -98,10 +90,9 @@ public class BossArena : MonoBehaviour
         if (boss != null)
             boss.IniciarBoss();
 
-        // Dispara a música de Boss com crossfade
         TocarMusicaBoss();
 
-        Debug.Log("Boss Arena: Combate iniciado com trilha sonora!");
+        Debug.Log("Boss Arena: Combate iniciado!");
     }
 
     public void ApplySaveState(bool defeated)
@@ -157,18 +148,16 @@ public class BossArena : MonoBehaviour
             aberturaSaida.SetActive(false);
 
         GarantirNPCNaCena();
-
-        // Retorna para a música ambiente da área
         TocarMusicaArea();
 
-        Debug.Log("Boss Arena: Boss derrotado! Trilha sonora retornou ao normal.");
+        Debug.Log("Boss Arena: Boss derrotado!");
     }
 
     public void GarantirNPCNaCena()
     {
         if (arvoreCuradaNPC == null)
         {
-            Debug.LogWarning("BossArena: Referência do 'arvoreCuradaNPC' não foi atribuída no Inspector.", this);
+            Debug.LogWarning("BossArena: Referência 'arvoreCuradaNPC' (Cristais/NPC) não atribuída.", this);
             return;
         }
 
@@ -180,17 +169,12 @@ public class BossArena : MonoBehaviour
 
         if (npcInstanciado == null)
         {
-            Vector3 posicao = pontoSpawnNPC != null ? pontoSpawnNPC.position :
-                             (bossObjeto != null ? bossObjeto.transform.position : transform.position);
+            Vector3 posicao = pontoSpawnNPC != null ? pontoSpawnNPC.position : transform.position;
             Quaternion rotacao = pontoSpawnNPC != null ? pontoSpawnNPC.rotation : Quaternion.identity;
 
             npcInstanciado = Instantiate(arvoreCuradaNPC, posicao, rotacao);
         }
     }
-
-    // =========================================================
-    // GERENCIAMENTO DE MÚSICA
-    // =========================================================
 
     private void TocarMusicaBoss()
     {

@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class NPCInteractable : MonoBehaviour
 {
-    [SerializeField]
-    private DialogueData dialogueData;
-    [SerializeField]
-    private string saveId;
+    [SerializeField] private DialogueData dialogueData;
+    [SerializeField] private string saveId;
+
+    [Header("Eventos ao Concluir Diálogo")]
+    [Tooltip("Ações disparadas no exato momento em que o diálogo finaliza.")]
+    public UnityEvent onDialogueCompleted;
 
     private bool dialogueCompleted;
 
@@ -40,6 +43,9 @@ public class NPCInteractable : MonoBehaviour
         dialogueCompleted = true;
         Debug.Log($"[NPCInteractable] Diálogo marcado como concluído para '{gameObject.name}'");
         MoverNpcSeNecessario();
+
+        // Dispara a sequência pós-diálogo (Timeline, Cutscene, etc.)
+        onDialogueCompleted?.Invoke();
     }
 
     public void ApplySaveState(bool completed)

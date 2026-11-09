@@ -48,9 +48,7 @@ public class BossAlberich : MonoBehaviour, IBoss
     [SerializeField] private Transform[] pontosTeleporte;
 
     [Header("Pontos do Boss")]
-    [Tooltip("Ponto exato da mão do Alberich onde o cetro surge e para onde deve retornar.")]
     [SerializeField] private Transform pontoMaoAlberich;
-    [Tooltip("Ponto de saída dos feitiços leves estilo Agahnim.")]
     [SerializeField] private Transform pontoDisparoCetro;
 
     [Header("Ataques & Cetro")]
@@ -70,7 +68,6 @@ public class BossAlberich : MonoBehaviour, IBoss
     [SerializeField] private ParticleSystem particulasMorte;
     [SerializeField] private float tempoAteParticulas = 1.5f;
     [SerializeField] private float tempoDoEfeitoMorte = 2f;
-    [SerializeField] private GameObject npcAposDerrota;
 
     private Transform jogador;
     private Coroutine rotinaCombate;
@@ -79,6 +76,7 @@ public class BossAlberich : MonoBehaviour, IBoss
     private bool combateIniciado;
     private bool morreu;
     private bool aguardandoFimTeleporte;
+    private bool jaMoveuNesteTeleporte;
 
     private ConfiguracaoFase ConfiguracaoAtual
     {
@@ -113,10 +111,6 @@ public class BossAlberich : MonoBehaviour, IBoss
 
         ResetarAnimacoes();
     }
-
-    // =========================================================
-    // IBOSS IMPLEMENTAÇÃO
-    // =========================================================
 
     public void IniciarBoss()
     {
@@ -172,10 +166,6 @@ public class BossAlberich : MonoBehaviour, IBoss
         ResetarAnimacoes();
     }
 
-    // =========================================================
-    // LÓGICA DE COMBATE
-    // =========================================================
-
     private void IniciarCombate()
     {
         combateIniciado = true;
@@ -212,19 +202,13 @@ public class BossAlberich : MonoBehaviour, IBoss
         }
     }
 
-    // =========================================================
-    // TELETRANSPORTE POR ANIMATION EVENTS (PROTEGIDO CONTRA DUPLO MOVIMENTO)
-    // =========================================================
-
-    private bool jaMoveuNesteTeleporte;
-
     private IEnumerator ExecutarTeletransporte()
     {
         estadoAtual = EstadoBoss.Teleportando;
         ResetarAnimacoes();
 
         aguardandoFimTeleporte = true;
-        jaMoveuNesteTeleporte = false; // Reseta a trava no início do teletransporte
+        jaMoveuNesteTeleporte = false;
 
         if (animator != null && animator.gameObject.activeInHierarchy)
         {
@@ -237,7 +221,6 @@ public class BossAlberich : MonoBehaviour, IBoss
             aguardandoFimTeleporte = false;
         }
 
-        // Timeout estendido para 3.0s para não estourar enquanto a animação Teleported ainda roda
         float timeoutSeguranca = 3.0f;
 
         while (aguardandoFimTeleporte && timeoutSeguranca > 0f)
@@ -246,7 +229,6 @@ public class BossAlberich : MonoBehaviour, IBoss
             yield return null;
         }
 
-        // Fallback de segurança: só move se AINDA NÃO tiver movido durante a animação
         if (aguardandoFimTeleporte)
         {
             Debug.LogWarning("BossAlberich: Animation Event não disparou a tempo. Recuperando via Timeout.", this);
@@ -257,12 +239,8 @@ public class BossAlberich : MonoBehaviour, IBoss
         estadoAtual = EstadoBoss.Parado;
     }
 
-    /// <summary>
-    /// Chamado pelo Animation Event no ÚLTIMO FRAME da animação 'Teleporting'.
-    /// </summary>
     public void OnAnimacaoTeleportingConcluida()
     {
-        // Garante a mudança de posição no exato frame em que o boss sumiu
         MoverParaNovoPonto();
 
         if (animator != null && animator.gameObject.activeInHierarchy)
@@ -276,9 +254,6 @@ public class BossAlberich : MonoBehaviour, IBoss
         }
     }
 
-    /// <summary>
-    /// Chamado pelo Animation Event no ÚLTIMO FRAME da animação 'Teleported'.
-    /// </summary>
     public void OnAnimacaoTeleportedConcluida()
     {
         aguardandoFimTeleporte = false;
@@ -292,7 +267,6 @@ public class BossAlberich : MonoBehaviour, IBoss
 
     private void MoverParaNovoPonto()
     {
-        // Trava de segurança: impede que a posição mude mais de uma vez no mesmo teletransporte
         if (jaMoveuNesteTeleporte)
             return;
 
@@ -310,10 +284,6 @@ public class BossAlberich : MonoBehaviour, IBoss
             transform.position = pontosTeleporte[novoIndice].position;
         }
     }
-
-    // =========================================================
-    // ATAQUE AGAHNIM (Com intervalo entre disparos)
-    // =========================================================
 
     private IEnumerator AtaqueEstiloAgahnim()
     {
@@ -353,10 +323,6 @@ public class BossAlberich : MonoBehaviour, IBoss
         }
     }
 
-    // =========================================================
-    // ATAQUE GANON (Cetro Voador e Vulnerabilidade)
-    // =========================================================
-
     private IEnumerator AtaqueEstiloGanon()
     {
         estadoAtual = EstadoBoss.InvocandoGanon;
@@ -380,16 +346,11 @@ public class BossAlberich : MonoBehaviour, IBoss
 
         estadoAtual = EstadoBoss.Vulneravel;
 
-        // Mantém a animação IsInvocandoGanon até o cetro voltar por completo
         yield return new WaitUntil(() => ataqueConcluido);
 
         animator.SetBool("IsInvocandoGanon", false);
         estadoAtual = EstadoBoss.Parado;
     }
-
-    // =========================================================
-    // DANO E MORTE
-    // =========================================================
 
     public void ReceberDanoFeiticoRefletido(int dano)
     {
@@ -484,11 +445,7 @@ public class BossAlberich : MonoBehaviour, IBoss
 
         yield return new WaitForSeconds(tempoDoEfeitoMorte);
 
-        if (npcAposDerrota != null)
-        {
-            Instantiate(npcAposDerrota, transform.position, transform.rotation);
-        }
-
+        // O spawn do NPC/Cristal é gerenciado centralizadamente pelo BossArena.
         Destroy(gameObject);
     }
 
@@ -507,4 +464,4 @@ public class BossAlberich : MonoBehaviour, IBoss
         GameObject p = GameObject.FindGameObjectWithTag("Player");
         if (p != null) jogador = p.transform;
     }
-}
+} 
