@@ -15214,8 +15214,8 @@ MonoBehaviour:
   aberturaSaida: {fileID: 0}
   bossObjeto: {fileID: 1518756267}
   saveId: Boss_Alberich_ReiDuendes
+  cristaisObjeto: {fileID: 0}
   arvoreCuradaNPC: {fileID: 0}
-  pontoSpawnNPC: {fileID: 0}
   bossMusicName: Skoda Lasky
   bossMusicClip: {fileID: 8300000, guid: e99320a989865ea4a86f8e0f203f5409, type: 3}
   areaMusicName: Cave
@@ -19800,9 +19800,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 627454215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 152.5, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1202073232
@@ -22413,9 +22413,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 627454215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 62.5, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1229162880
@@ -24455,9 +24455,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 627454215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 17.5, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1405269936
@@ -27769,7 +27769,6 @@ MonoBehaviour:
   particulasMorte: {fileID: 1818489461525776700, guid: 9aff09324ea158147847ed8df8f6fb37, type: 3}
   tempoAteParticulas: 1.5
   tempoDoEfeitoMorte: 2
-  npcAposDerrota: {fileID: 0}
 --- !u!1001 &1522421177
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29230,8 +29229,8 @@ MonoBehaviour:
   aberturaSaida: {fileID: 0}
   bossObjeto: {fileID: 1529003953}
   saveId: Bruxa Gudrun
+  cristaisObjeto: {fileID: 2308292596749691346, guid: 9f59207c1478ef044bc4c9e190b47b9c, type: 3}
   arvoreCuradaNPC: {fileID: 2308292596749691346, guid: 9f59207c1478ef044bc4c9e190b47b9c, type: 3}
-  pontoSpawnNPC: {fileID: 2021731689}
   bossMusicName: CrowChord
   bossMusicClip: {fileID: 8300000, guid: c142f0ea9783d82448c93b563bf508b0, type: 3}
   areaMusicName: Cave
@@ -45583,8 +45582,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823109095}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46738,9 +46737,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 627454215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.5, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1929190598
@@ -101173,9 +101172,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 627454215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 107.5, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2032907523
@@ -101626,6 +101625,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 11400000, guid: 002c159805405cc4c925b37e7b5cbbb3, type: 2}
   saveId: NPC_Jorinde
+  onDialogueCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!95 &2088995746
 Animator:
   serializedVersion: 7

@@ -3,76 +3,57 @@ using UnityEngine.Playables;
 
 public class PrincessSequenceController : MonoBehaviour
 {
-    [Header("Configurações da Timeline")]
-    [SerializeField] private PlayableDirector timelineAbraco;
-
-    [Header("Transição de Cena")]
-    [SerializeField] private string nomeCenaCutsceneFinal = "CutsceneFinal";
+    [Header("Configuração da Cutscene")]
+    [SerializeField] private PlayableDirector timelineDirector;
+    [SerializeField] private string nomeCenaFinal = "CutsceneFinal";
 
     private void OnEnable()
     {
-        if (timelineAbraco != null)
+        if (timelineDirector != null)
         {
-            // Escuta o evento nativo de término da Timeline
-            timelineAbraco.stopped += OnTimelineFinished;
+            // Inscreve a função no evento de fim da Timeline
+            timelineDirector.stopped += OnTimelineEnded;
         }
     }
 
     private void OnDisable()
     {
-        if (timelineAbraco != null)
+        if (timelineDirector != null)
         {
-            timelineAbraco.stopped -= OnTimelineFinished;
+            timelineDirector.stopped -= OnTimelineEnded;
         }
     }
 
     /// <summary>
-    /// Chamado pelo evento OnDialogueCompleted do NPCInteractable da Princesa.
+    /// Chamado ao terminar o diálogo da Princesa (via UnityEvent do NPCInteractable)
     /// </summary>
-    public void IniciarSequenciaAbraco()
+    public void ExecutarCutscene()
     {
-        // 1. Desativa os controles e movimentação do jogador
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
+        // Bloqueia a movimentação do jogador
+        PlayerController player = FindFirstObjectByType<PlayerController>();
+        if (player != null)
         {
-            PlayerController player = playerObj.GetComponent<PlayerController>();
-            if (player != null)
-            {
-                player.DisableControls();
-            }
+            player.DisableControls();
         }
 
-        // 2. Inicia a Timeline da animação do abraço
-        if (timelineAbraco != null)
+        if (timelineDirector != null)
         {
-            timelineAbraco.Play();
-        }
-        else
-        {
-            Debug.LogError("[PrincessSequenceController] PlayableDirector não foi atribuído no Inspector!", this);
-            // Fallback direto caso a Timeline não esteja configurada
-            CarregarCenaFinal();
+            timelineDirector.Play();
         }
     }
 
     /// <summary>
-    /// Disparado automaticamente assim que a Timeline conclui a reprodução.
+    /// Método disparado automaticamente no exato frame em que a Timeline chega ao fim
     /// </summary>
-    private void OnTimelineFinished(PlayableDirector director)
+    private void OnTimelineEnded(PlayableDirector director)
     {
-        CarregarCenaFinal();
-    }
-
-    private void CarregarCenaFinal()
-    {
-        // 3. Transiciona para a cena final usando o LevelLoader
         if (LevelLoader.Instance != null)
         {
-            LevelLoader.Instance.Transition(nomeCenaCutsceneFinal);
+            LevelLoader.Instance.Transition(nomeCenaFinal);
         }
         else
         {
-            Debug.LogError("[PrincessSequenceController] LevelLoader.Instance não foi encontrado na cena!", this);
+            Debug.LogError("[PrincessSequenceController] LevelLoader.Instance não foi encontrado na cena GUI!");
         }
     }
 }
