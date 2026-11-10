@@ -1923,7 +1923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AdaptiveMusicZone
   playerTag: Player
-  musicName: Boat
+  musicName: Cave
   testAudioClip: {fileID: 0}
   fadeDuration: 2
 --- !u!61 &73116058
@@ -12407,8 +12407,8 @@ MonoBehaviour:
   aberturaSaida: {fileID: 0}
   bossObjeto: {fileID: 753047254}
   saveId: Bruxa Gudrun
+  cristaisObjeto: {fileID: 0}
   arvoreCuradaNPC: {fileID: 0}
-  pontoSpawnNPC: {fileID: 0}
   bossMusicName: Skoda Lasky
   bossMusicClip: {fileID: 8300000, guid: e99320a989865ea4a86f8e0f203f5409, type: 3}
   areaMusicName: Cave
@@ -13939,7 +13939,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000043986084, y: -0.000000014558155, z: 6.403562e-16, w: 1}
-  m_LocalPosition: {x: 10.314129, y: 15, z: -10}
+  m_LocalPosition: {x: 10.293264, y: 15, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14827,6 +14827,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 0}
   saveId: 
+  onDialogueCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &547724731
 SpriteRenderer:
   serializedVersion: 3
@@ -32606,6 +32609,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 0}
   saveId: 
+  onDialogueCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &947770166
 SpriteRenderer:
   serializedVersion: 3
@@ -74495,7 +74501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AdaptiveMusicZone
   playerTag: Player
-  musicName: Dream
+  musicName: Cave
   testAudioClip: {fileID: 0}
   fadeDuration: 2
 --- !u!61 &1516939996
@@ -75360,6 +75366,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 11400000, guid: f8ff90fc244c93d4f81ac8f7f8da72ab, type: 2}
   saveId: NPC_Valemon
+  onDialogueCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &1550202089
 SpriteRenderer:
   serializedVersion: 3
@@ -78121,6 +78130,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 0}
   saveId: 
+  onDialogueCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &1661131929
 SpriteRenderer:
   serializedVersion: 3
@@ -86242,6 +86254,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteractable
   dialogueData: {fileID: 0}
   saveId: 
+  onDialogueCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &1849513477
 SpriteRenderer:
   serializedVersion: 3
@@ -91632,6 +91647,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCInteraction
   dialogueData: {fileID: 11400000, guid: 713293dfa71d42c488c9596143cbd567, type: 2}
   saveId: 
+  onDialogueCompleted:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &2064806600
 SpriteRenderer:
   serializedVersion: 3
