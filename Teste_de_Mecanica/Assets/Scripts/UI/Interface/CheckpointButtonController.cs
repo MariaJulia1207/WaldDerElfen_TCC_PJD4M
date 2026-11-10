@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CheckpointButtonController : MonoBehaviour
 {
@@ -28,6 +29,18 @@ public class CheckpointButtonController : MonoBehaviour
         if (checkpointButton != null)
         {
             checkpointButton.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        // Verifica o pressionamento da tecla E via Input System
+        if (checkpointButton != null && checkpointButton.activeSelf)
+        {
+            if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+            {
+                OnCheckpointPressed();
+            }
         }
     }
 
@@ -96,6 +109,9 @@ public class CheckpointButtonController : MonoBehaviour
             Debug.Log("CheckpointButtonController: cura já em andamento.");
             return;
         }
+
+        // Toca o efeito sonoro "Checkpoint" cadastrado no SoundEffectLibrary
+        SoundEffectManager.Play("Checkpoint");
 
         healRoutine = StartCoroutine(HealAllOneByOne());
     }
