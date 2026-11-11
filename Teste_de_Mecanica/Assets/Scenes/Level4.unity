@@ -66241,7 +66241,7 @@ Transform:
   - {fileID: 1590053261}
   - {fileID: 122105020}
   - {fileID: 1758079786}
-  m_Father: {fileID: 1166355726}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &691941734
 PrefabInstance:
@@ -71011,7 +71011,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1061244062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72505,7 +72505,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 689123302}
   - {fileID: 746628669}
   - {fileID: 1909488620}
   - {fileID: 1238997333}
@@ -74085,6 +74084,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8851636469930354116, guid: bf1856ef4f0111b499de08acddab7689, type: 3}
   m_PrefabInstance: {fileID: 1292045521}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1303194501
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6096061027932511983, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_Name
+      value: LevelLoader
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.58434
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 285.49197
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9192563050795699857, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7ef2c3f6cd58e694c9bcc3558e3a0d4d, type: 3}
 --- !u!1 &1309456438
 GameObject:
   m_ObjectHideFlags: 0
@@ -376813,6 +376869,7 @@ GameObject:
   - component: {fileID: 1355153305}
   - component: {fileID: 1355153307}
   - component: {fileID: 1355153306}
+  - component: {fileID: 1355153308}
   m_Layer: 0
   m_Name: Cutscene
   m_TagString: Untagged
@@ -376909,6 +376966,20 @@ PlayableDirector:
     value: {fileID: 1862074259}
   m_ExposedReferences:
     m_References: []
+--- !u!114 &1355153308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355153304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d9df746fbaa0349ad45765cf37da04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PrincessCutsceneTransition
+  nomeCenaCutsceneFinal: "Cutscene_FinalFeliz_Cr\xE9ditos"
+  timelinePrincesa: {fileID: 1355153307}
 --- !u!1 &1379817506
 GameObject:
   m_ObjectHideFlags: 0
@@ -395814,6 +395885,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 689123302}
   - {fileID: 1166355726}
   - {fileID: 1231818821}
   - {fileID: 1697076148}
@@ -395826,3 +395898,4 @@ SceneRoots:
   - {fileID: 1862074262}
   - {fileID: 1061244066}
   - {fileID: 459208589}
+  - {fileID: 1303194501}

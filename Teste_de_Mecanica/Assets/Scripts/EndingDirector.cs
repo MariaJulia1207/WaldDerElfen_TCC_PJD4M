@@ -32,17 +32,13 @@ public class EndingDirector : MonoBehaviour
     {
         if (endingTextWriter == null)
         {
-            endingTextWriter = FindAnyObjectByType<EndingTextWriter>();
+            // O argumento FindObjectsInactive.Include permite encontrar o componente mesmo se a UI estiver oculta
+            endingTextWriter = FindAnyObjectByType<EndingTextWriter>(FindObjectsInactive.Include);
         }
 
         if (endingTextWriter != null)
         {
             endingTextWriter.aoFinalizarTodosParagrafos.AddListener(OnFinalizarTodosParagrafos);
-        }
-
-        if (painelCreditos != null)
-        {
-            painelCreditos.SetActive(false);
         }
     }
 
@@ -66,14 +62,21 @@ public class EndingDirector : MonoBehaviour
 
     private IEnumerator ExecutarSequenciaFinal()
     {
-        // 1. Aguarda a transição de entrada (Fade In) do LevelLoader
+        // 1. Aguarda o LevelLoader com timeout de segurança (máximo 3 segundos)
         LevelLoader loader = GetLevelLoader();
         if (loader != null)
         {
-            yield return loader.WaitUntilTransparent();
+            float timeout = 3f;
+            float timer = 0f;
+
+            while (!loader.IsFullyTransparent && timer < timeout)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
         }
 
-        // 2. Dispara a música da cutscene final (sem loop)
+        // 2. Dispara a música da cutscene final
         if (tocarMusicaNoInicio && !string.IsNullOrEmpty(nomeMusicaFinal))
         {
             BackgroundMusic.Play(nomeMusicaFinal, loop: false, fadeDuration: 1.0f);
@@ -86,7 +89,7 @@ public class EndingDirector : MonoBehaviour
         }
         else
         {
-            Debug.LogError("EndingDirector: EndingTextWriter não foi encontrado ou atribuído!", this);
+            Debug.LogError("EndingDirector: EndingTextWriter não foi encontrado ou atribuído no Inspector!", this);
             yield break;
         }
 
