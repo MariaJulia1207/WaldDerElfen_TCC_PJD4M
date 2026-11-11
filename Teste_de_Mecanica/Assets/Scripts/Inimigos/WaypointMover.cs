@@ -10,6 +10,7 @@ public class WaypointMover : MonoBehaviour
 
     public bool IsWaiting => isWaiting;
     public bool IsPatrolActive => isPatrolActive;
+    public bool HasWaypoints => waypoints != null && waypoints.Length > 0;
     public Vector2 CurrentMoveDirection { get; private set; } = Vector2.down;
 
     private Transform[] waypoints;
@@ -34,7 +35,7 @@ public class WaypointMover : MonoBehaviour
 
     void Update()
     {
-        if (!isPatrolActive || isWaiting || waypoints == null || waypoints.Length == 0)
+        if (!isPatrolActive || isWaiting || !HasWaypoints)
             return;
 
         MoveToWaypoint();
@@ -48,7 +49,7 @@ public class WaypointMover : MonoBehaviour
 
     public void ResumePatrol()
     {
-        if (waypoints == null || waypoints.Length == 0)
+        if (!HasWaypoints)
             return;
 
         isPatrolActive = true;
@@ -58,7 +59,7 @@ public class WaypointMover : MonoBehaviour
 
     void MoveToWaypoint()
     {
-        if (waypoints == null || waypoints.Length == 0)
+        if (!HasWaypoints)
             return;
 
         Transform target = waypoints[currentWaypointIndex];
@@ -110,7 +111,7 @@ public class WaypointMover : MonoBehaviour
 
     private void AtualizarDirecaoMovimento()
     {
-        if (waypoints == null || waypoints.Length == 0)
+        if (!HasWaypoints)
             return;
 
         Transform target = waypoints[currentWaypointIndex];

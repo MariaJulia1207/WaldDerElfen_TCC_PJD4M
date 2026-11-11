@@ -64,54 +64,62 @@ public class EnemyGoblin : MonoBehaviour
             return;
         }
 
-        if (waypointMover != null)
+        float distancia = Vector2.Distance(transform.position, jogador.position);
+
+        // 1. Prioridade: Ataque
+        if (distancia <= distanciaAtaque)
         {
-            AtualizarAnimacaoPatrulha();
-
-            float distancia = Vector2.Distance(transform.position, jogador.position);
-
-            if (distancia <= distanciaDeteccao)
-            {
-                if (!perseguindoJogador)
-                {
-                    waypointMover.PausePatrol();
-                }
-
-                perseguindoJogador = true;
-                PerseguirJogador();
-                return;
-            }
-
             if (perseguindoJogador)
             {
                 perseguindoJogador = false;
-                waypointMover.ResumePatrol();
             }
 
-            return;
-        }
+            if (waypointMover != null)
+            {
+                waypointMover.PausePatrol();
+            }
 
-        float distanciaAtual = Vector2.Distance(transform.position, jogador.position);
-
-        if (distanciaAtual > distanciaDeteccao)
-        {
-            Parar();
-            return;
-        }
-
-        if (distanciaAtual <= distanciaAtaque)
-        {
             Parar();
 
             if (Time.time >= proximoAtaque)
             {
                 Atacar();
             }
-
             return;
         }
 
-        PerseguirJogador();
+        // 2. Perseguição ao Jogador
+        if (distancia <= distanciaDeteccao)
+        {
+            if (waypointMover != null && !perseguindoJogador)
+            {
+                waypointMover.PausePatrol();
+            }
+
+            perseguindoJogador = true;
+            PerseguirJogador();
+            return;
+        }
+
+        // 3. Se perdeu o jogador de vista, retoma a patrulha
+        if (perseguindoJogador)
+        {
+            perseguindoJogador = false;
+            if (waypointMover != null)
+            {
+                waypointMover.ResumePatrol();
+            }
+        }
+
+        // 4. Patrulha via Waypoint ou Parado
+        if (waypointMover != null && waypointMover.HasWaypoints)
+        {
+            AtualizarAnimacaoPatrulha();
+        }
+        else
+        {
+            Parar();
+        }
     }
 
     private void FixedUpdate()
@@ -125,7 +133,7 @@ public class EnemyGoblin : MonoBehaviour
             return;
         }
 
-        if (waypointMover != null)
+        if (waypointMover != null && waypointMover.HasWaypoints)
         {
             if (perseguindoJogador)
             {
@@ -135,7 +143,6 @@ public class EnemyGoblin : MonoBehaviour
             {
                 rb.linearVelocity = Vector2.zero;
             }
-
             return;
         }
 
@@ -144,7 +151,7 @@ public class EnemyGoblin : MonoBehaviour
 
     private void AtualizarAnimacaoPatrulha()
     {
-        if (waypointMover == null)
+        if (waypointMover == null || !waypointMover.HasWaypoints)
             return;
 
         if (waypointMover.IsWaiting)
@@ -169,17 +176,11 @@ public class EnemyGoblin : MonoBehaviour
 
         if (Mathf.Abs(diferenca.x) > Mathf.Abs(diferenca.y))
         {
-            if (diferenca.x > 0)
-                movimento = Vector2.right;
-            else
-                movimento = Vector2.left;
+            movimento = diferenca.x > 0 ? Vector2.right : Vector2.left;
         }
         else
         {
-            if (diferenca.y > 0)
-                movimento = Vector2.up;
-            else
-                movimento = Vector2.down;
+            movimento = diferenca.y > 0 ? Vector2.up : Vector2.down;
         }
 
         ultimaDirecao = movimento;
@@ -197,7 +198,6 @@ public class EnemyGoblin : MonoBehaviour
     private void Atacar()
     {
         atacando = true;
-
         movimento = Vector2.zero;
         rb.linearVelocity = Vector2.zero;
 
@@ -206,7 +206,6 @@ public class EnemyGoblin : MonoBehaviour
         anim.SetBool("IsMoving", false);
         anim.SetTrigger("Attack");
 
-        // Reproduz o som do ataque da espada
         SoundEffectManager.Play("EnemySword");
     }
 
@@ -216,17 +215,11 @@ public class EnemyGoblin : MonoBehaviour
 
         if (Mathf.Abs(diferenca.x) > Mathf.Abs(diferenca.y))
         {
-            if (diferenca.x > 0)
-                ultimaDirecao = Vector2.right;
-            else
-                ultimaDirecao = Vector2.left;
+            ultimaDirecao = diferenca.x > 0 ? Vector2.right : Vector2.left;
         }
         else
         {
-            if (diferenca.y > 0)
-                ultimaDirecao = Vector2.up;
-            else
-                ultimaDirecao = Vector2.down;
+            ultimaDirecao = diferenca.y > 0 ? Vector2.up : Vector2.down;
         }
 
         AtualizarDirecaoAnimacao(ultimaDirecao);
@@ -244,26 +237,10 @@ public class EnemyGoblin : MonoBehaviour
     {
         DesativarTodasHitboxes();
 
-        if (ultimaDirecao == Vector2.up)
-        {
-            if (attackUp != null)
-                attackUp.SetActive(true);
-        }
-        else if (ultimaDirecao == Vector2.down)
-        {
-            if (attackDown != null)
-                attackDown.SetActive(true);
-        }
-        else if (ultimaDirecao == Vector2.left)
-        {
-            if (attackLeft != null)
-                attackLeft.SetActive(true);
-        }
-        else if (ultimaDirecao == Vector2.right)
-        {
-            if (attackRight != null)
-                attackRight.SetActive(true);
-        }
+        if (ultimaDirecao == Vector2.up && attackUp != null) attackUp.SetActive(true);
+        else if (ultimaDirecao == Vector2.down && attackDown != null) attackDown.SetActive(true);
+        else if (ultimaDirecao == Vector2.left && attackLeft != null) attackLeft.SetActive(true);
+        else if (ultimaDirecao == Vector2.right && attackRight != null) attackRight.SetActive(true);
     }
 
     public void DesativarHitbox()
@@ -273,17 +250,10 @@ public class EnemyGoblin : MonoBehaviour
 
     private void DesativarTodasHitboxes()
     {
-        if (attackUp != null)
-            attackUp.SetActive(false);
-
-        if (attackDown != null)
-            attackDown.SetActive(false);
-
-        if (attackLeft != null)
-            attackLeft.SetActive(false);
-
-        if (attackRight != null)
-            attackRight.SetActive(false);
+        if (attackUp != null) attackUp.SetActive(false);
+        if (attackDown != null) attackDown.SetActive(false);
+        if (attackLeft != null) attackLeft.SetActive(false);
+        if (attackRight != null) attackRight.SetActive(false);
     }
 
     public void FinalizarAtaque()
@@ -294,8 +264,6 @@ public class EnemyGoblin : MonoBehaviour
 
     public void ReceberKnockback(Vector2 direcao)
     {
-        Debug.Log("KNOCKBACK RECEBIDO PELO GOBLIN");
-
         StopCoroutine(nameof(AplicarKnockback));
         StartCoroutine(AplicarKnockback(direcao));
     }
@@ -306,7 +274,6 @@ public class EnemyGoblin : MonoBehaviour
         atacando = false;
 
         DesativarTodasHitboxes();
-
         movimento = Vector2.zero;
 
         anim.SetBool("IsMoving", false);
@@ -316,7 +283,6 @@ public class EnemyGoblin : MonoBehaviour
         yield return new WaitForSeconds(duracaoKnockback);
 
         rb.linearVelocity = Vector2.zero;
-
         sofrendoKnockback = false;
     }
 
