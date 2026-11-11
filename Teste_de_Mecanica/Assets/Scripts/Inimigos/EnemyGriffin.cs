@@ -180,6 +180,9 @@ public class EnemyGriffin : MonoBehaviour
 
             Vector2 direcaoAtaque = (jogador.position - origem).normalized;
             projetil.Disparar(direcaoAtaque, velocidadeProjetil);
+
+            // Toca o efeito sonoro de lançamento
+            SoundEffectManager.Play("Launch");
         }
     }
 

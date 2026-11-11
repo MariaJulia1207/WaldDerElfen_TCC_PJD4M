@@ -202,8 +202,9 @@ MonoBehaviour:
   soundEffectGroups:
   - name: Typing
     audioClips:
-    - {fileID: 8300000, guid: ef544cf6bc03610468bb2a8203a5333b, type: 3}
-    - {fileID: 8300000, guid: c1634ccde956d3046ab4ee77f84928a8, type: 3}
+    - {fileID: 8300000, guid: 8600d8272a816cc40a51d65d3d8d9f3c, type: 3}
+    - {fileID: 8300000, guid: e2dbfce3a0a82cf418a82d0b17b4637f, type: 3}
+    - {fileID: 8300000, guid: b0132c4768c65a54ab1be8510d7c07c3, type: 3}
   - name: HeartCollect
     audioClips:
     - {fileID: 8300000, guid: ef544cf6bc03610468bb2a8203a5333b, type: 3}
@@ -254,6 +255,9 @@ MonoBehaviour:
   - name: ScepterLaunch
     audioClips:
     - {fileID: 8300000, guid: a5fcc121c5fd8f547b154848f8238e69, type: 3}
+  - name: Launch
+    audioClips:
+    - {fileID: 8300000, guid: 59a390f526f64ff449c04fc1837708ea, type: 3}
 --- !u!4 &189218896
 Transform:
   m_ObjectHideFlags: 0

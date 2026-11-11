@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: feedbackDano
       value: 
       objectReference: {fileID: 4739511938699120785}
+    - target: {fileID: 97809013553464725, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
+      propertyPath: soundEffectName
+      value: EnemyDamage
+      objectReference: {fileID: 0}
     - target: {fileID: 338495648148394209, guid: a1c5d92e0098bd444be77f60a425a6df, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

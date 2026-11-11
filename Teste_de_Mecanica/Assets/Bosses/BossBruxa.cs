@@ -656,6 +656,9 @@ public class BossBruxa : MonoBehaviour, IBoss
 
         vidaAtual -= dano;
 
+        // Toca o efeito sonoro de dano
+        SoundEffectManager.Play("EnemyDamage");
+
         if (feedbackDano != null)
         {
             feedbackDano.ExecutarFeedback();

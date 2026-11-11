@@ -553,6 +553,9 @@ public class BossArvore : MonoBehaviour, IBoss
         if (vida < 0)
             vida = 0;
 
+        // Toca o efeito sonoro de dano
+        SoundEffectManager.Play("EnemyDamage");
+
         if (feedbackDano != null)
         {
             feedbackDano.ExecutarFeedback();

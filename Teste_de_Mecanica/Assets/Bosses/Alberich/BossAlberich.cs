@@ -320,6 +320,9 @@ public class BossAlberich : MonoBehaviour, IBoss
 
             Vector2 direcao = (jogador.position - origem).normalized;
             feitico.Disparar(direcao, ConfiguracaoAtual.velocidadeFeitico, true);
+
+            // Toca o efeito sonoro do feitiço
+            SoundEffectManager.Play("Launch");
         }
     }
 
@@ -338,6 +341,9 @@ public class BossAlberich : MonoBehaviour, IBoss
             {
                 ataqueConcluido = true;
             });
+
+            // Toca o efeito sonoro de lançamento do cetro
+            SoundEffectManager.Play("ScepterLaunch");
         }
         else
         {
@@ -379,6 +385,9 @@ public class BossAlberich : MonoBehaviour, IBoss
     {
         vidaAtual -= dano;
         if (vidaAtual < 0) vidaAtual = 0;
+
+        // Toca o efeito sonoro de dano
+        SoundEffectManager.Play("EnemyDamage");
 
         if (feedbackDano != null)
             feedbackDano.ExecutarFeedback();
@@ -464,4 +473,4 @@ public class BossAlberich : MonoBehaviour, IBoss
         GameObject p = GameObject.FindGameObjectWithTag("Player");
         if (p != null) jogador = p.transform;
     }
-} 
+}
