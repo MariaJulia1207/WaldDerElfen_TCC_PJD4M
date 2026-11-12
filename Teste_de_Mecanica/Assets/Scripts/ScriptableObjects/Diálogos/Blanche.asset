@@ -24,14 +24,14 @@ MonoBehaviour:
     portrait: {fileID: 0}
     dialogueText: "... Rose... Rose! Minha irm\xE3 querida, achei que tivesse te
       perdido."
-    voicePitchMin: 1
-    voicePitchMax: 1.3
+    voicePitchMin: 0.95
+    voicePitchMax: 1.25
   - speakerName: Blanche
     portrait: {fileID: 0}
     dialogueText: "Mas... como? O Rei dos Duendes... onde ele est\xE1? O que ele
       fez com voc\xEA?"
-    voicePitchMin: 1
-    voicePitchMax: 1.3
+    voicePitchMin: 0.95
+    voicePitchMax: 1.25
   - speakerName: Rose
     portrait: {fileID: 0}
     dialogueText: "Ele se foi. Ele n\xE3o poder\xE1 fazer mal nenhum a mais ningu\xE9m."
@@ -47,8 +47,8 @@ MonoBehaviour:
     portrait: {fileID: 0}
     dialogueText: "N\xE3o consigo nem imaginar tudo o que voc\xEA deve ter passado...
       mas agora n\xE3o importa. Nada nem ningu\xE9m poder\xE1 nos separar agora."
-    voicePitchMin: 1
-    voicePitchMax: 1.3
+    voicePitchMin: 0.95
+    voicePitchMax: 1.25
   summaryDialogue: []
   moverNpcAposDialogo: 0
   posicaoDestinoNpc: {x: 1000, y: 1000}

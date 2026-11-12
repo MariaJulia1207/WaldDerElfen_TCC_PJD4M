@@ -108097,8 +108097,8 @@ MonoBehaviour:
   arvoreCuradaNPC: {fileID: 6450996610170395174, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
   bossMusicName: VoidChord
   bossMusicClip: {fileID: 8300000, guid: 664527837ec227243a6d8d0e87375027, type: 3}
-  areaMusicName: Dream
-  areaMusicClip: {fileID: 8300000, guid: 06476444811ce2a4390320f9b0fad233, type: 3}
+  areaMusicName: Sad
+  areaMusicClip: {fileID: 8300000, guid: 992237811854c964aa4765fe0f8663c6, type: 3}
   musicFadeDuration: 2
   objetoTeste: {fileID: 2025942770}
 --- !u!4 &999877443
@@ -111367,7 +111367,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 373.5, y: 55}
+  m_Offset: {x: 373.5, y: 65}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -111377,7 +111377,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 156, y: 88}
+  m_Size: {x: 156, y: 100}
   m_EdgeRadius: 0
 --- !u!114 &1082207825
 MonoBehaviour:
