@@ -615,6 +615,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveManager
   saveConfig: {fileID: 11400000, guid: c751dd7fc897e544e9ebaa5081602819, type: 2}
+  legacyProductNames:
+  - Teste_de_Mecanica
+  legacyCompanyName: 
+  useFixedSaveFolder: 1
+  fixedSaveFolderName: WaldDerElfen_Saves
 --- !u!114 &390048738
 MonoBehaviour:
   m_ObjectHideFlags: 0

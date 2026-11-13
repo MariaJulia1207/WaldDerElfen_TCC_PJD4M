@@ -8,528 +8,687 @@ using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
-   public const int AutoSaveSlot = 0;
-   public const int ManualSaveSlot = 1;
-   public const int FirstManualSlot = ManualSaveSlot;
-   public const int LastManualSlot = 1;
-   private const int SlotCount = 2;
+    public const int AutoSaveSlot = 0;
+    public const int ManualSaveSlot = 1;
+    public const int FirstManualSlot = ManualSaveSlot;
+    public const int LastManualSlot = 1;
+    private const int SlotCount = 2;
 
-   public static SaveManager Instance { get; private set; }
+    public static SaveManager Instance { get; private set; }
 
-   [SerializeField] private SaveConfig saveConfig;
+    [Header("Configuração Geral")]
+    [SerializeField] private SaveConfig saveConfig;
 
-   private readonly List<string> currentCollectedCoins = new List<string>();
-   public IReadOnlyCollection<string> CurrentCollectedCoins => currentCollectedCoins;
+    [Header("Compatibilidade com Mudança de Product Name")]
+    [Tooltip("Nomes antigos do Product Name usados em builds anteriores para migrar saves automaticamente.")]
+    [SerializeField] private string[] legacyProductNames = new[] { "WaldDerElfen" };
 
-   private void Awake()
-   {
-       if (Instance != null && Instance != this)
-       {
-           Destroy(gameObject);
-           return;
-       }
+    [Tooltip("Preencha apenas se o Company Name também tiver sido alterado.")]
+    [SerializeField] private string legacyCompanyName = string.Empty;
 
-       Instance = this;
-       DontDestroyOnLoad(gameObject);
-   }
+    [Tooltip("Opcional: usa um nome de pasta fixo dentro de LocalLow/CompanyName, independente de futuras mudanças de Product Name.")]
+    [SerializeField] private bool useFixedSaveFolder = false;
+    [SerializeField] private string fixedSaveFolderName = "WaldDerElfen_Saves";
 
-   private void OnEnable()
-   {
-       SaveEventChannel.SaveRequested += HandleSaveRequested;
-       SaveEventChannel.LoadRequested += HandleLoadRequested;
-   }
+    private readonly List<string> currentCollectedCoins = new List<string>();
+    public IReadOnlyCollection<string> CurrentCollectedCoins => currentCollectedCoins;
 
-   private void OnDisable()
-   {
-       SaveEventChannel.SaveRequested -= HandleSaveRequested;
-       SaveEventChannel.LoadRequested -= HandleLoadRequested;
-   }
-
-   public SaveConfig SaveConfigAsset => saveConfig;
-
-   public string DefaultSceneName => saveConfig != null && !string.IsNullOrEmpty(saveConfig.firstLevelScene)
-       ? saveConfig.firstLevelScene
-       : "Level1";
-
-   public bool SlotExists(int slot)
-   {
-       return IsValidSlot(slot) && File.Exists(GetPath(slot));
-   }
-
-   public bool HasAutosave => SlotExists(AutoSaveSlot);
-   public bool HasManualSave => SlotExists(ManualSaveSlot);
-
-   public bool IsValidSlot(int slot)
-   {
-       return slot >= 0 && slot < SlotCount;
-   }
-
-   public SaveData BuildDefaultSave()
-   {
-       string currentScene = SceneManager.GetActiveScene().name;
-       SaveData data = new SaveData
-       {
-           sceneName = string.IsNullOrEmpty(currentScene) ? DefaultSceneName : currentScene,
-           checkpointSceneName = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointScene : string.Empty,
-           levelIndex = 0,
-           coins = 0,
-           playerHealth = 100,
-           playerPosition = Vector3.zero,
-           checkpointPosition = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointPosition : Vector3.zero,
-           checkpointReached = CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint,
-           interactedNPCs = new List<string>(),
-           collectedImportantItems = new List<string>(),
-           defeatedBosses = new List<string>()
-       };
-
-       CaptureCurrentWorldState(data);
-       return data;
-   }
-
-   public SaveData BuildCheckpointSave()
-   {
-       SaveData data = BuildDefaultSave();
-       data.checkpointReached = CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint;
-       data.checkpointSceneName = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointScene : string.Empty;
-       data.checkpointPosition = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointPosition : Vector3.zero;
-       data.sceneName = SceneManager.GetActiveScene().name;
-       return data;
-   }
-
-   public void CaptureCurrentWorldState(SaveData data)
-   {
-       if (data == null)
-       {
-           return;
-       }
-
-       GameObject player = GameObject.FindGameObjectWithTag("Player");
-       if (player != null)
-       {
-           data.playerPosition = player.transform.position;
-
-           HealthSystem health = player.GetComponent<HealthSystem>();
-           if (health != null)
-           {
-               data.playerHealth = health.vida;
-           }
-       }
-
-       if (CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint)
-       {
-           data.checkpointReached = true;
-           data.checkpointSceneName = CheckpointManager.Instance.LastCheckpointScene;
-           data.checkpointPosition = CheckpointManager.Instance.LastCheckpointPosition;
-       }
-       else
-       {
-           data.checkpointReached = false;
-           data.checkpointSceneName = string.Empty;
-           data.checkpointPosition = Vector3.zero;
-       }
-
-       if (data.interactedNPCs == null)
-       {
-           data.interactedNPCs = new List<string>();
-       }
-       else
-       {
-           data.interactedNPCs.Clear();
-       }
-
-       NPCInteractable[] npcs = FindObjectsByType<NPCInteractable>(FindObjectsSortMode.None);
-       foreach (NPCInteractable npc in npcs)
-       {
-           if (npc != null && npc.IsDialogueCompleted)
-           {
-               data.interactedNPCs.Add(npc.SaveId);
-           }
-       }
-
-       if (data.defeatedBosses == null)
-       {
-           data.defeatedBosses = new List<string>();
-       }
-       else
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
         {
-           data.defeatedBosses.Clear();
-       }
+            Destroy(gameObject);
+            return;
+        }
 
-       BossArena[] bossArenas = FindObjectsByType<BossArena>(FindObjectsSortMode.None);
-       foreach (BossArena bossArena in bossArenas)
-       {
-           if (bossArena != null && bossArena.IsDefeated)
-           {
-               data.defeatedBosses.Add(bossArena.SaveId);
-           }
-       }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
-        // Copia a lista em memória (currentCollectedCoins) para os dados que serão gravados no save
+        MigrateLegacySaves();
+    }
+
+    private void OnEnable()
+    {
+        SaveEventChannel.SaveRequested += HandleSaveRequested;
+        SaveEventChannel.LoadRequested += HandleLoadRequested;
+    }
+
+    private void OnDisable()
+    {
+        SaveEventChannel.SaveRequested -= HandleSaveRequested;
+        SaveEventChannel.LoadRequested -= HandleLoadRequested;
+    }
+
+    public SaveConfig SaveConfigAsset => saveConfig;
+
+    public string DefaultSceneName => saveConfig != null && !string.IsNullOrEmpty(saveConfig.firstLevelScene)
+        ? saveConfig.firstLevelScene
+        : "Level1";
+
+    public bool SlotExists(int slot)
+    {
+        return IsValidSlot(slot) && File.Exists(GetPath(slot));
+    }
+
+    public bool HasAutosave => SlotExists(AutoSaveSlot);
+    public bool HasManualSave => SlotExists(ManualSaveSlot);
+
+    public bool IsValidSlot(int slot)
+    {
+        return slot >= 0 && slot < SlotCount;
+    }
+
+    // =========================================================
+    // DIRETÓRIO E MIGRAÇÃO DE SAVES ANTIGOS
+    // =========================================================
+
+    public string GetSaveDirectory()
+    {
+        string defaultPath = Application.persistentDataPath;
+
+        if (useFixedSaveFolder && !string.IsNullOrWhiteSpace(fixedSaveFolderName))
+        {
+            DirectoryInfo parentDir = Directory.GetParent(defaultPath);
+            if (parentDir != null)
+            {
+                string sanitizedFolder = SanitizeFolderName(fixedSaveFolderName);
+                if (!string.IsNullOrEmpty(sanitizedFolder))
+                {
+                    return Path.Combine(parentDir.FullName, sanitizedFolder);
+                }
+            }
+        }
+
+        return defaultPath;
+    }
+
+    public void MigrateLegacySaves()
+    {
+        if (legacyProductNames == null || legacyProductNames.Length == 0)
+        {
+            return;
+        }
+
+        string currentDir = GetSaveDirectory();
+        DirectoryInfo currentDirInfo = new DirectoryInfo(currentDir);
+        DirectoryInfo companyDirInfo = currentDirInfo.Parent;
+
+        if (companyDirInfo == null)
+        {
+            return;
+        }
+
+        DirectoryInfo rootCompanyParentInfo = companyDirInfo.Parent;
+
+        foreach (string rawLegacyProduct in legacyProductNames)
+        {
+            if (string.IsNullOrWhiteSpace(rawLegacyProduct))
+            {
+                continue;
+            }
+
+            string legacyProduct = rawLegacyProduct.Trim();
+
+            if (string.Equals(legacyProduct, currentDirInfo.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            string candidateDir = Path.Combine(companyDirInfo.FullName, legacyProduct);
+
+            if (!Directory.Exists(candidateDir) && !string.IsNullOrWhiteSpace(legacyCompanyName) && rootCompanyParentInfo != null)
+            {
+                candidateDir = Path.Combine(rootCompanyParentInfo.FullName, legacyCompanyName.Trim(), legacyProduct);
+            }
+
+            if (!Directory.Exists(candidateDir))
+            {
+                continue;
+            }
+
+            for (int slot = 0; slot < SlotCount; slot++)
+            {
+                string fileName = GetFileName(slot);
+                string sourceFile = Path.Combine(candidateDir, fileName);
+                string destinationFile = Path.Combine(currentDir, fileName);
+
+                // Não sobrescreve caso já exista um save mais recente na pasta nova
+                if (!File.Exists(sourceFile) || File.Exists(destinationFile))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    // Valida se o arquivo antigo está íntegro e descriptografável antes de copiar
+                    string encrypted = File.ReadAllText(sourceFile);
+                    string json = Decrypt(encrypted, slot);
+                    SaveData testData = JsonUtility.FromJson<SaveData>(json);
+
+                    if (testData != null)
+                    {
+                        Directory.CreateDirectory(currentDir);
+                        File.Copy(sourceFile, destinationFile, false);
+                        Debug.Log($"SaveManager: slot {slot} migrado de '{legacyProduct}' para '{currentDirInfo.Name}'.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"SaveManager: falha ao migrar slot {slot} de '{legacyProduct}'. {ex.Message}");
+                }
+            }
+        }
+    }
+
+    private string GetFileName(int slot)
+    {
+        if (!IsValidSlot(slot))
+        {
+            slot = AutoSaveSlot;
+        }
+
+        string prefix = saveConfig != null && !string.IsNullOrEmpty(saveConfig.filePrefix) ? saveConfig.filePrefix : "save_slot_";
+        string extension = saveConfig != null && !string.IsNullOrEmpty(saveConfig.fileExtension) ? saveConfig.fileExtension : ".sav";
+        return $"{prefix}{slot}{extension}";
+    }
+
+    private static string SanitizeFolderName(string folderName)
+    {
+        char[] invalidChars = Path.GetInvalidFileNameChars();
+        StringBuilder sb = new StringBuilder(folderName.Trim());
+
+        foreach (char c in invalidChars)
+        {
+            sb.Replace(c.ToString(), string.Empty);
+        }
+
+        return sb.ToString().Trim();
+    }
+
+    // =========================================================
+    // CRIAÇÃO E CAPTURA DE ESTADO
+    // =========================================================
+
+    public SaveData BuildDefaultSave()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        SaveData data = new SaveData
+        {
+            sceneName = string.IsNullOrEmpty(currentScene) ? DefaultSceneName : currentScene,
+            checkpointSceneName = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointScene : string.Empty,
+            levelIndex = 0,
+            coins = 0,
+            playerHealth = 100,
+            playerPosition = Vector3.zero,
+            checkpointPosition = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointPosition : Vector3.zero,
+            checkpointReached = CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint,
+            interactedNPCs = new List<string>(),
+            collectedImportantItems = new List<string>(),
+            defeatedBosses = new List<string>()
+        };
+
+        CaptureCurrentWorldState(data);
+        return data;
+    }
+
+    public SaveData BuildCheckpointSave()
+    {
+        SaveData data = BuildDefaultSave();
+        data.checkpointReached = CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint;
+        data.checkpointSceneName = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointScene : string.Empty;
+        data.checkpointPosition = CheckpointManager.Instance != null ? CheckpointManager.Instance.LastCheckpointPosition : Vector3.zero;
+        data.sceneName = SceneManager.GetActiveScene().name;
+        return data;
+    }
+
+    public void CaptureCurrentWorldState(SaveData data)
+    {
+        if (data == null)
+        {
+            return;
+        }
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            data.playerPosition = player.transform.position;
+
+            HealthSystem health = player.GetComponent<HealthSystem>();
+            if (health != null)
+            {
+                data.playerHealth = health.vida;
+            }
+        }
+
+        if (CheckpointManager.Instance != null && CheckpointManager.Instance.HasCheckpoint)
+        {
+            data.checkpointReached = true;
+            data.checkpointSceneName = CheckpointManager.Instance.LastCheckpointScene;
+            data.checkpointPosition = CheckpointManager.Instance.LastCheckpointPosition;
+        }
+        else
+        {
+            data.checkpointReached = false;
+            data.checkpointSceneName = string.Empty;
+            data.checkpointPosition = Vector3.zero;
+        }
+
+        if (data.interactedNPCs == null)
+        {
+            data.interactedNPCs = new List<string>();
+        }
+        else
+        {
+            data.interactedNPCs.Clear();
+        }
+
+        NPCInteractable[] npcs = FindObjectsByType<NPCInteractable>(FindObjectsSortMode.None);
+        foreach (NPCInteractable npc in npcs)
+        {
+            if (npc != null && npc.IsDialogueCompleted)
+            {
+                data.interactedNPCs.Add(npc.SaveId);
+            }
+        }
+
+        if (data.defeatedBosses == null)
+        {
+            data.defeatedBosses = new List<string>();
+        }
+        else
+        {
+            data.defeatedBosses.Clear();
+        }
+
+        BossArena[] bossArenas = FindObjectsByType<BossArena>(FindObjectsSortMode.None);
+        foreach (BossArena bossArena in bossArenas)
+        {
+            if (bossArena != null && bossArena.IsDefeated)
+            {
+                data.defeatedBosses.Add(bossArena.SaveId);
+            }
+        }
+
         data.collectedImportantItems = NormalizeIds(currentCollectedCoins);
     }
 
-   public void SaveCurrentStateToSlot(int slot, SaveData data)
-   {
-       if (!IsValidSlot(slot))
+    // =========================================================
+    // SALVAMENTO E CARREGAMENTO EM DISCO
+    // =========================================================
+
+    public void SaveCurrentStateToSlot(int slot, SaveData data)
+    {
+        if (!IsValidSlot(slot))
         {
-           Debug.LogWarning("SaveManager: slot inválido: " + slot);
-           return;
-       }
+            Debug.LogWarning("SaveManager: slot inválido: " + slot);
+            return;
+        }
 
-       SaveData save = data ?? BuildDefaultSave();
-       if (string.IsNullOrEmpty(save.sceneName))
-       {
-           save.sceneName = SceneManager.GetActiveScene().name;
-       }
+        SaveData save = data ?? BuildDefaultSave();
+        if (string.IsNullOrEmpty(save.sceneName))
+        {
+            save.sceneName = SceneManager.GetActiveScene().name;
+        }
 
-       SaveToSlot(slot, save);
+        SaveToSlot(slot, save);
 
-       if (slot != AutoSaveSlot)
-       {
-           SaveToSlot(AutoSaveSlot, save.Clone());
-       }
+        if (slot != AutoSaveSlot)
+        {
+            SaveToSlot(AutoSaveSlot, save.Clone());
+        }
 
-       SaveEventChannel.RaiseSaveCompleted(slot, save.Clone());
-   }
+        SaveEventChannel.RaiseSaveCompleted(slot, save.Clone());
+    }
 
-   public void SaveToSlot(int slot, SaveData data)
-   {
-       if (!IsValidSlot(slot))
-       {
-           Debug.LogWarning("SaveManager: slot inválido: " + slot);
-           return;
-       }
+    public void SaveToSlot(int slot, SaveData data)
+    {
+        if (!IsValidSlot(slot))
+        {
+            Debug.LogWarning("SaveManager: slot inválido: " + slot);
+            return;
+        }
 
-       if (data == null)
-       {
-           return;
-       }
+        if (data == null)
+        {
+            return;
+        }
 
-       SaveData save = data.Clone();
-       if (string.IsNullOrEmpty(save.sceneName))
-       {
-           save.sceneName = SceneManager.GetActiveScene().name;
-       }
+        SaveData save = data.Clone();
+        if (string.IsNullOrEmpty(save.sceneName))
+        {
+            save.sceneName = SceneManager.GetActiveScene().name;
+        }
 
-       if (save.interactedNPCs == null)
-       {
-           save.interactedNPCs = new List<string>();
-       }
+        if (save.interactedNPCs == null)
+        {
+            save.interactedNPCs = new List<string>();
+        }
 
-       if (save.collectedImportantItems == null)
-       {
-           save.collectedImportantItems = new List<string>();
-       }
+        if (save.collectedImportantItems == null)
+        {
+            save.collectedImportantItems = new List<string>();
+        }
 
-       if (save.defeatedBosses == null)
-       {
-           save.defeatedBosses = new List<string>();
-       }
+        if (save.defeatedBosses == null)
+        {
+            save.defeatedBosses = new List<string>();
+        }
 
-       save.interactedNPCs = NormalizeIds(save.interactedNPCs);
-       save.collectedImportantItems = NormalizeIds(save.collectedImportantItems);
-       save.defeatedBosses = NormalizeIds(save.defeatedBosses);
+        save.interactedNPCs = NormalizeIds(save.interactedNPCs);
+        save.collectedImportantItems = NormalizeIds(save.collectedImportantItems);
+        save.defeatedBosses = NormalizeIds(save.defeatedBosses);
 
-       string path = GetPath(slot);
-       string directory = Path.GetDirectoryName(path);
-       if (!string.IsNullOrEmpty(directory))
-       {
-           Directory.CreateDirectory(directory);
-       }
+        string path = GetPath(slot);
+        string directory = Path.GetDirectoryName(path);
+        if (!string.IsNullOrEmpty(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
 
-       string json = JsonUtility.ToJson(save);
-       string encrypted = Encrypt(json, slot);
-       File.WriteAllText(path, encrypted);
-   }
+        string json = JsonUtility.ToJson(save);
+        string encrypted = Encrypt(json, slot);
+        File.WriteAllText(path, encrypted);
+    }
 
-   public SaveData LoadFromSlot(int slot)
-   {
-       if (!IsValidSlot(slot))
-       {
-           return null;
-       }
+    public SaveData LoadFromSlot(int slot)
+    {
+        if (!IsValidSlot(slot))
+        {
+            return null;
+        }
 
-       string path = GetPath(slot);
-       if (!File.Exists(path))
-       {
-           return null;
-       }
+        string path = GetPath(slot);
+        if (!File.Exists(path))
+        {
+            return null;
+        }
 
-       try
-       {
-           string encryptedJson = File.ReadAllText(path);
-           string json = Decrypt(encryptedJson, slot);
-           SaveData data = JsonUtility.FromJson<SaveData>(json);
-           if (data == null)
-           {
-               return null;
-           }
+        try
+        {
+            string encryptedJson = File.ReadAllText(path);
+            string json = Decrypt(encryptedJson, slot);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            if (data == null)
+            {
+                return null;
+            }
 
-           if (data.interactedNPCs == null)
-           {
-               data.interactedNPCs = new List<string>();
-           }
+            if (data.interactedNPCs == null)
+            {
+                data.interactedNPCs = new List<string>();
+            }
 
-           if (data.collectedImportantItems == null)
-           {
-               data.collectedImportantItems = new List<string>();
-           }
+            if (data.collectedImportantItems == null)
+            {
+                data.collectedImportantItems = new List<string>();
+            }
 
-           if (data.defeatedBosses == null)
-           {
-               data.defeatedBosses = new List<string>();
-           }
+            if (data.defeatedBosses == null)
+            {
+                data.defeatedBosses = new List<string>();
+            }
 
-           SaveEventChannel.RaiseLoadCompleted(slot, data);
-           return data;
-       }
-       catch (Exception ex)
-       {
-           Debug.LogWarning("SaveManager: falha ao carregar slot " + slot + ". " + ex.Message);
-           return null;
-       }
-   }
+            SaveEventChannel.RaiseLoadCompleted(slot, data);
+            return data;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning("SaveManager: falha ao carregar slot " + slot + ". " + ex.Message);
+            return null;
+        }
+    }
 
-   public void CopySlotToAutosave(int slot)
-   {
-       if (slot == AutoSaveSlot || !SlotExists(slot))
-       {
-           return;
-       }
+    public void CopySlotToAutosave(int slot)
+    {
+        if (slot == AutoSaveSlot || !SlotExists(slot))
+        {
+            return;
+        }
 
-       File.Copy(GetPath(slot), GetPath(AutoSaveSlot), true);
-   }
+        string destinationPath = GetPath(AutoSaveSlot);
+        string directory = Path.GetDirectoryName(destinationPath);
+        if (!string.IsNullOrEmpty(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
 
-   public bool TryGetCheckpointSave(out SaveData checkpointSave)
-   {
-       checkpointSave = LoadFromSlot(AutoSaveSlot);
-       if (checkpointSave == null)
-       {
-           return false;
-       }
+        File.Copy(GetPath(slot), destinationPath, true);
+    }
 
-       if (!checkpointSave.checkpointReached || string.IsNullOrEmpty(checkpointSave.checkpointSceneName))
-       {
-           checkpointSave = null;
-           return false;
-       }
+    public bool TryGetCheckpointSave(out SaveData checkpointSave)
+    {
+        checkpointSave = LoadFromSlot(AutoSaveSlot);
+        if (checkpointSave == null)
+        {
+            return false;
+        }
 
-       return true;
-   }
+        if (!checkpointSave.checkpointReached || string.IsNullOrEmpty(checkpointSave.checkpointSceneName))
+        {
+            checkpointSave = null;
+            return false;
+        }
 
-   public bool TryApplyCheckpointSave()
-   {
-       if (!TryGetCheckpointSave(out SaveData checkpointSave))
-       {
-           return false;
-       }
+        return true;
+    }
 
-       if (SaveRestoreManager.Instance != null)
-       {
-           SaveRestoreManager.Instance.ApplySaveData(checkpointSave);
-           return true;
-       }
+    public bool TryApplyCheckpointSave()
+    {
+        if (!TryGetCheckpointSave(out SaveData checkpointSave))
+        {
+            return false;
+        }
 
-       return false;
-   }
+        if (SaveRestoreManager.Instance != null)
+        {
+            SaveRestoreManager.Instance.ApplySaveData(checkpointSave);
+            return true;
+        }
 
-   public void ClearSlot(int slot)
-   {
-       if (!IsValidSlot(slot))
-       {
-           return;
-       }
+        return false;
+    }
 
-       string path = GetPath(slot);
-       if (File.Exists(path))
-       {
-           File.Delete(path);
-       }
-   }
+    public void ClearSlot(int slot)
+    {
+        if (!IsValidSlot(slot))
+        {
+            return;
+        }
 
-   public string GetPath(int slot)
-   {
-       if (!IsValidSlot(slot))
-       {
-           slot = AutoSaveSlot;
-       }
+        string path = GetPath(slot);
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+    }
 
-       string directory = Application.persistentDataPath;
-       string prefix = saveConfig != null && !string.IsNullOrEmpty(saveConfig.filePrefix) ? saveConfig.filePrefix : "save_slot_";
-       string extension = saveConfig != null && !string.IsNullOrEmpty(saveConfig.fileExtension) ? saveConfig.fileExtension : ".sav";
-       string fileName = $"{prefix}{slot}{extension}";
-       return Path.Combine(directory, fileName);
-   }
+    public string GetPath(int slot)
+    {
+        if (!IsValidSlot(slot))
+        {
+            slot = AutoSaveSlot;
+        }
 
-   public void MarkCoinCollected(string coinId)
-   {
-       if (string.IsNullOrWhiteSpace(coinId))
-       {
-           return;
-       }
+        return Path.Combine(GetSaveDirectory(), GetFileName(slot));
+    }
 
-       if (!currentCollectedCoins.Contains(coinId))
-       {
-           currentCollectedCoins.Add(coinId);
-       }
-   }
+    // =========================================================
+    // COLEÇÃO DE ITENS / MOEDAS IMPORTANTES
+    // =========================================================
 
-   public void SetCurrentCollectedCoins(IEnumerable<string> collectedIds)
-   {
-       currentCollectedCoins.Clear();
-       if (collectedIds == null)
-       {
-           return;
-       }
+    public void MarkCoinCollected(string coinId)
+    {
+        if (string.IsNullOrWhiteSpace(coinId))
+        {
+            return;
+        }
 
-       foreach (string id in collectedIds)
-       {
-           if (string.IsNullOrWhiteSpace(id))
-           {
-               continue;
-           }
+        if (!currentCollectedCoins.Contains(coinId))
+        {
+            currentCollectedCoins.Add(coinId);
+        }
+    }
 
-           if (!currentCollectedCoins.Contains(id))
-           {
-               currentCollectedCoins.Add(id);
-           }
-       }
-   }
+    public void SetCurrentCollectedCoins(IEnumerable<string> collectedIds)
+    {
+        currentCollectedCoins.Clear();
+        if (collectedIds == null)
+        {
+            return;
+        }
 
-   public void ClearCollectedCoins()
-   {
-       currentCollectedCoins.Clear();
-   }
+        foreach (string id in collectedIds)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                continue;
+            }
 
-   public bool IsCoinCollected(string coinId)
-   {
-       if (string.IsNullOrWhiteSpace(coinId))
-       {
-           return false;
-       }
+            if (!currentCollectedCoins.Contains(id))
+            {
+                currentCollectedCoins.Add(id);
+            }
+        }
+    }
 
-       return currentCollectedCoins.Contains(coinId);
-   }
+    public void ClearCollectedCoins()
+    {
+        currentCollectedCoins.Clear();
+    }
 
-   private static List<string> NormalizeIds(IEnumerable<string> ids)
-   {
-       List<string> normalized = new List<string>();
-       if (ids == null)
-       {
-           return normalized;
-       }
+    public bool IsCoinCollected(string coinId)
+    {
+        if (string.IsNullOrWhiteSpace(coinId))
+        {
+            return false;
+        }
 
-       foreach (string id in ids)
-       {
-           if (string.IsNullOrWhiteSpace(id))
-           {
-               continue;
-           }
+        return currentCollectedCoins.Contains(coinId);
+    }
 
-           if (!normalized.Contains(id))
-           {
-               normalized.Add(id);
-           }
-       }
+    private static List<string> NormalizeIds(IEnumerable<string> ids)
+    {
+        List<string> normalized = new List<string>();
+        if (ids == null)
+        {
+            return normalized;
+        }
 
-       return normalized;
-   }
+        foreach (string id in ids)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                continue;
+            }
 
-   private void HandleSaveRequested(int slot)
-   {
-       SaveCurrentStateToSlot(slot, BuildDefaultSave());
-   }
+            if (!normalized.Contains(id))
+            {
+                normalized.Add(id);
+            }
+        }
 
-   private void HandleLoadRequested(int slot)
-   {
-       LoadFromSlot(slot);
-   }
+        return normalized;
+    }
 
-   private string Encrypt(string plainText, int slot)
-   {
-       if (string.IsNullOrEmpty(plainText))
-       {
-           return string.Empty;
-       }
+    private void HandleSaveRequested(int slot)
+    {
+        SaveCurrentStateToSlot(slot, BuildDefaultSave());
+    }
 
-       byte[] keyBytes = CreateKeyBytes(slot);
-       byte[] ivBytes = CreateIvBytes(slot);
+    private void HandleLoadRequested(int slot)
+    {
+        LoadFromSlot(slot);
+    }
 
-       using (Aes aes = Aes.Create())
-       {
-           aes.Key = keyBytes;
-           aes.IV = ivBytes;
-           aes.Mode = CipherMode.CBC;
-           aes.Padding = PaddingMode.PKCS7;
+    // =========================================================
+    // CRIPTOGRAFIA AES
+    // =========================================================
 
-           using (ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV))
-           using (var ms = new MemoryStream())
-           {
-               using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
-               using (var sw = new StreamWriter(cs, Encoding.UTF8))
-               {
-                   sw.Write(plainText);
-               }
+    private string Encrypt(string plainText, int slot)
+    {
+        if (string.IsNullOrEmpty(plainText))
+        {
+            return string.Empty;
+        }
 
-               return Convert.ToBase64String(ms.ToArray());
-           }
-       }
-   }
+        byte[] keyBytes = CreateKeyBytes(slot);
+        byte[] ivBytes = CreateIvBytes(slot);
 
-   private string Decrypt(string encryptedText, int slot)
-   {
-       if (string.IsNullOrEmpty(encryptedText))
-       {
-           return string.Empty;
-       }
+        using (Aes aes = Aes.Create())
+        {
+            aes.Key = keyBytes;
+            aes.IV = ivBytes;
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
 
-       byte[] keyBytes = CreateKeyBytes(slot);
-       byte[] ivBytes = CreateIvBytes(slot);
-       byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
+            using (ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV))
+            using (var ms = new MemoryStream())
+            {
+                using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                using (var sw = new StreamWriter(cs, Encoding.UTF8))
+                {
+                    sw.Write(plainText);
+                }
 
-       using (Aes aes = Aes.Create())
-       {
-           aes.Key = keyBytes;
-           aes.IV = ivBytes;
-           aes.Mode = CipherMode.CBC;
-           aes.Padding = PaddingMode.PKCS7;
+                return Convert.ToBase64String(ms.ToArray());
+            }
+        }
+    }
 
-           using (ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
-           using (var ms = new MemoryStream(encryptedBytes))
-           using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
-           using (var sr = new StreamReader(cs, Encoding.UTF8))
-           {
-               return sr.ReadToEnd();
-           }
-       }
-   }
+    private string Decrypt(string encryptedText, int slot)
+    {
+        if (string.IsNullOrEmpty(encryptedText))
+        {
+            return string.Empty;
+        }
 
-   private byte[] CreateKeyBytes(int slot)
-   {
-       string seed = saveConfig != null && !string.IsNullOrEmpty(saveConfig.encryptionKey)
-           ? saveConfig.encryptionKey
-           : "WaldDerElfen_TCC_PJD4M_2024_Save_Key";
+        byte[] keyBytes = CreateKeyBytes(slot);
+        byte[] ivBytes = CreateIvBytes(slot);
+        byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
 
-       string salt = $"{seed}:{slot}";
-       using (SHA256 sha256 = SHA256.Create())
-       {
-           return sha256.ComputeHash(Encoding.UTF8.GetBytes(salt));
-       }
-   }
+        using (Aes aes = Aes.Create())
+        {
+            aes.Key = keyBytes;
+            aes.IV = ivBytes;
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
 
-   private byte[] CreateIvBytes(int slot)
-   {
-       string seed = saveConfig != null && !string.IsNullOrEmpty(saveConfig.encryptionIv)
-           ? saveConfig.encryptionIv
-           : "WaldDerElfenTCC";
+            using (ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
+            using (var ms = new MemoryStream(encryptedBytes))
+            using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+            using (var sr = new StreamReader(cs, Encoding.UTF8))
+            {
+                return sr.ReadToEnd();
+            }
+        }
+    }
 
-       string salt = $"{seed}:{slot}";
-       using (SHA256 sha256 = SHA256.Create())
-       {
-           byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(salt));
-           byte[] iv = new byte[16];
-           Array.Copy(hash, iv, 16);
-           return iv;
-       }
-   }
+    private byte[] CreateKeyBytes(int slot)
+    {
+        string seed = saveConfig != null && !string.IsNullOrEmpty(saveConfig.encryptionKey)
+            ? saveConfig.encryptionKey
+            : "WaldDerElfen_TCC_PJD4M_2024_Save_Key";
+
+        string salt = $"{seed}:{slot}";
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            return sha256.ComputeHash(Encoding.UTF8.GetBytes(salt));
+        }
+    }
+
+    private byte[] CreateIvBytes(int slot)
+    {
+        string seed = saveConfig != null && !string.IsNullOrEmpty(saveConfig.encryptionIv)
+            ? saveConfig.encryptionIv
+            : "WaldDerElfenTCC";
+
+        string salt = $"{seed}:{slot}";
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(salt));
+            byte[] iv = new byte[16];
+            Array.Copy(hash, iv, 16);
+            return iv;
+        }
+    }
 }
