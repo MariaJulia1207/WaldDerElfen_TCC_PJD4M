@@ -101,19 +101,14 @@ public class HealthSystem : MonoBehaviour
 
     public void ResetToFullHealth()
     {
+        Time.timeScale = 1f;
+
         vida = vidaMaxima;
         vidaSalva = vida;
         vidaMaximaSalva = vidaMaxima;
         isDead = false;
 
         EnsurePlayerVisible();
-
-        if (player != null)
-        {
-            player.EnableControls();
-            player.IniciarRespawn();
-            player.FinalizarRespawn();
-        }
 
         if (flashCoroutine != null)
         {
@@ -130,6 +125,13 @@ public class HealthSystem : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
+        }
+
+        if (player != null)
+        {
+            player.enabled = true;
+            player.IniciarRespawn();
+            player.FinalizarRespawn();
         }
     }
 
@@ -232,18 +234,21 @@ public class HealthSystem : MonoBehaviour
 
             if (player != null)
             {
+                player.DisableControls();
                 player.enabled = false;
+
+                if (player.Anim != null)
+                {
+                    player.Anim.ResetTrigger("Respawn");
+                    player.Anim.ResetTrigger("Attack");
+                    player.Anim.SetBool("IsDead", true);
+                }
             }
 
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
-            }
-
-            if (player != null && player.Anim != null)
-            {
-                player.Anim.SetBool("IsDead", true);
             }
         }
     }
@@ -274,24 +279,14 @@ public class HealthSystem : MonoBehaviour
 
     public void RestaurarParaCheckpoint()
     {
+        Time.timeScale = 1f;
+
         vida = vidaMaxima;
         vidaSalva = vida;
         vidaMaximaSalva = vidaMaxima;
         isDead = false;
 
         EnsurePlayerVisible();
-
-        if (player != null)
-        {
-            player.enabled = true;
-            player.IniciarRespawn();
-            player.FinalizarRespawn();
-
-            if (player.Anim != null)
-            {
-                player.Anim.SetBool("IsDead", false);
-            }
-        }
 
         if (flashCoroutine != null)
         {
@@ -308,6 +303,13 @@ public class HealthSystem : MonoBehaviour
         if (sprite != null)
         {
             sprite.color = corOriginal;
+        }
+
+        if (player != null)
+        {
+            player.enabled = true;
+            player.IniciarRespawn();
+            player.FinalizarRespawn();
         }
 
         SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);

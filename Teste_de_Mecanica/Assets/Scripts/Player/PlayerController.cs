@@ -117,55 +117,65 @@ public class PlayerController : MonoBehaviour
     public void DisableControls()
     {
         controlesAtivos = false;
-
         movimento = Vector2.zero;
-
-        // Para imediatamente o Player
-        rb.linearVelocity = Vector2.zero;
-
-        // Impede que a animação de caminhada continue
-        anim.SetBool("IsMoving", false);
-
-        // Garante que nenhuma hitbox fique ativa
-        DesativarTodasHitboxes();
-
-        // Cancela estado de ataque
         atacando = false;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        if (anim != null)
+        {
+            anim.SetBool("IsMoving", false);
+            anim.ResetTrigger("Attack");
+            anim.ResetTrigger("Respawn");
+        }
+
+        DesativarTodasHitboxes();
     }
 
     public void EnableControls()
     {
         controlesAtivos = true;
-
         movimento = Vector2.zero;
+        atacando = false;
 
-        rb.linearVelocity = Vector2.zero;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 
     public void IniciarRespawn()
     {
         controlesAtivos = false;
         movimento = Vector2.zero;
+        atacando = false;
+        DesativarTodasHitboxes();
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
 
         if (anim != null)
         {
             anim.SetBool("IsMoving", false);
             anim.SetBool("IsDead", false);
             anim.ResetTrigger("Attack");
+            anim.ResetTrigger("Respawn");
 
             if (anim.HasState(0, Animator.StringToHash("Awakening")))
             {
-                anim.Play("Awakening");
+                anim.Play("Awakening", 0, 0f);
             }
             else
             {
                 anim.SetTrigger("Respawn");
             }
-        }
 
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
+            anim.Update(0f);
         }
     }
 
@@ -173,17 +183,22 @@ public class PlayerController : MonoBehaviour
     {
         controlesAtivos = true;
         movimento = Vector2.zero;
+        atacando = false;
+        DesativarTodasHitboxes();
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
 
         if (anim != null)
         {
             anim.SetBool("IsMoving", false);
             anim.SetBool("IsDead", false);
-            anim.Play("Idle");
-        }
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
+            anim.ResetTrigger("Attack");
+            anim.ResetTrigger("Respawn");
+            anim.Play("Idle", 0, 0f);
+            anim.Update(0f);
         }
     }
 
