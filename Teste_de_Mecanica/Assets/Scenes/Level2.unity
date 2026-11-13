@@ -80861,6 +80861,77 @@ RectTransform:
   m_AnchoredPosition: {x: -4.4947, y: 8.26647}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &800640870
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 999877443}
+    m_Modifications:
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450996610170395174, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_Name
+      value: "M\xE3e Aveleira"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6450996610170395174, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+--- !u!4 &800640871 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3237391673615451768, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+  m_PrefabInstance: {fileID: 800640870}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &800640872 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6450996610170395174, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+  m_PrefabInstance: {fileID: 800640870}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &800695137
 GameObject:
   m_ObjectHideFlags: 0
@@ -108093,8 +108164,8 @@ MonoBehaviour:
   aberturaSaida: {fileID: 0}
   bossObjeto: {fileID: 2025942770}
   saveId: "Guardi\xE3 Sombria"
-  cristaisObjeto: {fileID: 0}
-  arvoreCuradaNPC: {fileID: 6450996610170395174, guid: b73aebb7002438141903b4ebe0fbb74f, type: 3}
+  cristaisObjeto: {fileID: 800640872}
+  arvoreCuradaNPC: {fileID: 800640872}
   bossMusicName: VoidChord
   bossMusicClip: {fileID: 8300000, guid: 664527837ec227243a6d8d0e87375027, type: 3}
   areaMusicName: Sad
@@ -108122,6 +108193,7 @@ Transform:
   - {fileID: 168122698}
   - {fileID: 2032694423}
   - {fileID: 1352083541}
+  - {fileID: 800640871}
   m_Father: {fileID: 864801486}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &999877444
