@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 public class PrincessCutsceneTransition : MonoBehaviour
 {
     [Header("Navegação")]
-    [Tooltip("Nome exato da cena da Cutscene Final (conforme cadastrado no Build Settings).")]
     [SerializeField] private string nomeCenaCutsceneFinal = "CutsceneFinal";
 
     [Header("Automação via Timeline (Opcional)")]
-    [Tooltip("Se arrastar a PlayableDirector da Princesa aqui, a transição ocorrerá automaticamente no fim da animação sem precisar de Signals.")]
     [SerializeField] private PlayableDirector timelinePrincesa;
+
+    [Header("Interação da Princesa")]
+    [Tooltip("Arraste o Collider2D de interação da Princesa para desativá-lo ao fim do diálogo.")]
+    [SerializeField] private Collider2D colisorInteracaoPrincesa;
 
     private void OnEnable()
     {
@@ -28,23 +30,36 @@ public class PrincessCutsceneTransition : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Chame este método assim que o diálogo com a princesa terminar (ou no início da Timeline).
+    /// </summary>
+    public void EsconderBotaoInteracao()
+    {
+        if (colisorInteracaoPrincesa != null)
+        {
+            colisorInteracaoPrincesa.enabled = false;
+        }
+
+        // Ajuste o nome do método de disparo conforme o seu ObserverManager (ex: Notify, Publish ou Trigger)
+        ObserverManager.Notify("HideInteractButton");
+    }
+
     private void OnTimelineStopped(PlayableDirector director)
     {
+        EsconderBotaoInteracao();
         IrParaCutsceneFinal();
     }
 
-    /// <summary>
-    /// Método público para ser chamado por um Signal Receiver na Timeline ou por um UnityEvent.
-    /// </summary>
     public void IrParaCutsceneFinal()
     {
+        EsconderBotaoInteracao();
+
         if (LevelLoader.Instance != null)
         {
             LevelLoader.Instance.Transition(nomeCenaCutsceneFinal);
         }
         else
         {
-            Debug.LogWarning("PrincessCutsceneTransition: LevelLoader.Instance não encontrado na cena! Usando SceneManager como fallback.", this);
             SceneManager.LoadScene(nomeCenaCutsceneFinal);
         }
     }

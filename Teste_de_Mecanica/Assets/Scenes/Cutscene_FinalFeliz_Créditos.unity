@@ -6712,7 +6712,6 @@ GameObject:
   m_Component:
   - component: {fileID: 195251988}
   - component: {fileID: 195251987}
-  - component: {fileID: 195251984}
   - component: {fileID: 195251986}
   - component: {fileID: 195251985}
   m_Layer: 0
@@ -6721,29 +6720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!95 &195251984
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 195251983}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5b55d614d965bfc479a1186d24956a90, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_IsActive: 1
 --- !u!114 &195251985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6823,7 +6800,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -811772613983366067, guid: 97adac13697eab643aa31cb51ed63f38, type: 3}
+  m_Sprite: {fileID: -3490599893510963614, guid: 791c7ad183a5cce4ab3e9622680399a2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6843,11 +6820,11 @@ Transform:
   m_GameObject: {fileID: 195251983}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7, y: 0, z: 0}
+  m_LocalPosition: {x: -6.44, y: 4.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 908618070}
+  m_Father: {fileID: 1305060045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &200101948
 GameObject:
@@ -6859,7 +6836,6 @@ GameObject:
   m_Component:
   - component: {fileID: 200101953}
   - component: {fileID: 200101952}
-  - component: {fileID: 200101949}
   - component: {fileID: 200101951}
   - component: {fileID: 200101950}
   m_Layer: 0
@@ -6868,29 +6844,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!95 &200101949
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200101948}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5b55d614d965bfc479a1186d24956a90, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_IsActive: 1
 --- !u!114 &200101950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6990,11 +6944,11 @@ Transform:
   m_GameObject: {fileID: 200101948}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 7, z: 0}
+  m_LocalPosition: {x: -4.35, y: -4.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 908618070}
+  m_Father: {fileID: 1305060045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &210541427
 GameObject:
@@ -7679,19 +7633,19 @@ MonoBehaviour:
   texto: {fileID: 350960967}
   molduraCanvasGroup: {fileID: 595089481}
   paragrafos:
-  - texto: "Enfim reunidas, as irm\xC3s se abra\xE7aram at\xC9 seus cora\xE7\xD5es
+  - texto: "Enfim reunidas, as irm\xC3s se abra\xC7aram at\xC9 seus cora\xC7\xD5es
       finalmente esquecerem toda a dor e saudade que haviam sentido ap\xD3s tanto
       tempo separadas."
     temCutsceneDepois: 0
-  - texto: "Mas, por mais que elas quisessem continuar a abra\xE7ar-se, havia muito
+  - texto: "Mas, por mais que elas quisessem continuar a abra\xC7ar-se, havia muito
       a ser feito. Elas vasculharam as masmorras cavernosas e escuras do covil dos
       duendes, procurando pelas outras v\xCDtimas do Rei dos Duendes."
     temCutsceneDepois: 0
-  - texto: "Sem a presen\xE7a de seu mestre, os duendes sumiram e os feiti\xE7os
+  - texto: "Sem a presen\xC7a de seu mestre, os duendes sumiram e os feiti\xC7os
       que antes prendiam milhares de cavaleiros e donzelas foram desfeitos. Um a
       um, os prisioneiros voltaram \xC0s suas formas originais. "
     temCutsceneDepois: 1
-  - texto: "Por mais que a sensa\xE7\xE3o de liberdade enfim tomasse conta de todos,
+  - texto: "Por mais que a sensa\xC7\xE3o de liberdade enfim tomasse conta de todos,
       a vontade de rever aqueles que ficaram para tr\xC1s era imensa. Guiados por
       Rose e Blanche, os j\xC1 n\xE3o mais prisioneiros seguiram caminho para as
       fronteiras da Floresta Negra."
@@ -7700,7 +7654,7 @@ MonoBehaviour:
       povo do vilarejo esperava ansioso pelo retorno dos seus entes queridos. "
     temCutsceneDepois: 1
   - texto: "Irm\xC3os \xC0 muito separados. Amores \xC0 muito perdidos. Amizades
-      \xC0 muito destro\xE7adas. Nunca houveram tantos abra\xE7os, beijos e l\xC1grimas
+      \xC0 muito destro\xC7adas. Nunca houveram tantos abra\xE7os, beijos e l\xC1grimas
       quanto naquele dia."
     temCutsceneDepois: 0
   - texto: "Finalmente reunidos com suas amadas noivas, os pr\xCDncipes Valemon e
@@ -7710,7 +7664,7 @@ MonoBehaviour:
     temCutsceneDepois: 0
   - texto: "\"Viva a princesa Rose e o pr\xCDncipe Valemon!\" gritavam os jovens.
       \"Viva a princesa Blanche e o pr\xCDncipe Frantz!\" gritavam os velhos.\nA
-      celebra\xE7\xC3o se estendeu noite adentro: numa can\xE7\xC3o que come\xE7ava
+      celebra\xC7\xC3o se estendeu noite adentro: numa can\xC7\xC3o que come\xC7ava
       com um \"ol\xC1\" e terminava em um \"adeus\"."
     temCutsceneDepois: 1
   - texto: "Enfim reuinidas, as irm\xC3s Rose e Blanche perceberam que, por maiores
@@ -50703,7 +50657,6 @@ GameObject:
   m_Component:
   - component: {fileID: 615823637}
   - component: {fileID: 615823636}
-  - component: {fileID: 615823633}
   - component: {fileID: 615823635}
   - component: {fileID: 615823634}
   m_Layer: 0
@@ -50712,29 +50665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!95 &615823633
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 615823632}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5b55d614d965bfc479a1186d24956a90, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_IsActive: 1
 --- !u!114 &615823634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50834,11 +50765,11 @@ Transform:
   m_GameObject: {fileID: 615823632}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7, y: 0, z: 0}
+  m_LocalPosition: {x: 7.25, y: 3.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 908618070}
+  m_Father: {fileID: 1305060045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &638810528
 GameObject:
@@ -331905,9 +331836,9 @@ PlayableDirector:
   - key: {fileID: -2556338185109124276, guid: ed2c2bf02ceb0ba46994878e99656169, type: 2}
     value: {fileID: 0}
   - key: {fileID: -2975511347445255654, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
-    value: {fileID: 195251984}
+    value: {fileID: 0}
   - key: {fileID: -5063918628818305861, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
-    value: {fileID: 200101949}
+    value: {fileID: 0}
   - key: {fileID: -5843450334746558498, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
     value: {fileID: 168821848}
   - key: {fileID: 3292577639801071298, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
@@ -331915,11 +331846,11 @@ PlayableDirector:
   - key: {fileID: 5477734097472325358, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
     value: {fileID: 1372201119}
   - key: {fileID: 4227864836786950017, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
-    value: {fileID: 615823633}
+    value: {fileID: 0}
   - key: {fileID: -1185052552687109108, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
     value: {fileID: 1847757867}
   - key: {fileID: 7177474913435197511, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
-    value: {fileID: 1839828351}
+    value: {fileID: 0}
   - key: {fileID: -8949347533510626319, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
     value: {fileID: 784033295}
   - key: {fileID: -5441465342128825977, guid: dcb4d0afa883d5543a867e7876b8afa4, type: 2}
@@ -331940,6 +331871,8 @@ PlayableDirector:
     value: {fileID: 1256846719}
   - key: {fileID: 292560718837338399, guid: dd61926f273109b4c8af2123433afef5, type: 2}
     value: {fileID: 942774749}
+  - key: {fileID: 6622946404045642306, guid: dd61926f273109b4c8af2123433afef5, type: 2}
+    value: {fileID: 1305060044}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &908618070
@@ -331955,13 +331888,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 195251988}
-  - {fileID: 200101953}
   - {fileID: 168821852}
   - {fileID: 1372201123}
-  - {fileID: 1839828355}
   - {fileID: 1881769385}
-  - {fileID: 615823637}
   - {fileID: 1847757871}
   - {fileID: 784033299}
   - {fileID: 729560095}
@@ -331972,6 +331901,7 @@ Transform:
   - {fileID: 1592503400}
   - {fileID: 1671195007}
   - {fileID: 942774751}
+  - {fileID: 1305060045}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &920399899
@@ -345314,6 +345244,64 @@ RectTransform:
   m_AnchoredPosition: {x: 500, y: -567.04}
   m_SizeDelta: {x: 600, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1305060043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1305060045}
+  - component: {fileID: 1305060044}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!95 &1305060044
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305060043}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &1305060045
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305060043}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 195251988}
+  - {fileID: 200101953}
+  - {fileID: 1839828355}
+  - {fileID: 615823637}
+  m_Father: {fileID: 908618070}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1310430574 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3890040842985748481, guid: 8eaf2ddbe103e3b4c8429ac9b967ab75, type: 3}
@@ -694286,7 +694274,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1839828355}
   - component: {fileID: 1839828354}
-  - component: {fileID: 1839828351}
   - component: {fileID: 1839828353}
   - component: {fileID: 1839828352}
   m_Layer: 0
@@ -694295,29 +694282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!95 &1839828351
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1839828350}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5b55d614d965bfc479a1186d24956a90, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_IsActive: 1
 --- !u!114 &1839828352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694417,11 +694382,11 @@ Transform:
   m_GameObject: {fileID: 1839828350}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -7, z: 0}
+  m_LocalPosition: {x: 2.86, y: -4.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 908618070}
+  m_Father: {fileID: 1305060045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1847757866
 GameObject:

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractButtonController : MonoBehaviour
 {
@@ -9,12 +10,14 @@ public class InteractButtonController : MonoBehaviour
     {
         ObserverManager.Subscribe("ShowInteractButton", ShowButton);
         ObserverManager.Subscribe("HideInteractButton", HideButton);
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
         ObserverManager.Unsubscribe("ShowInteractButton", ShowButton);
         ObserverManager.Unsubscribe("HideInteractButton", HideButton);
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void Start()
@@ -29,9 +32,14 @@ public class InteractButtonController : MonoBehaviour
         }
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Garante que o botão nunca fique visível ao trocar de cena (ex: indo para a CutsceneFinal)
+        HideButton();
+    }
+
     private void ShowButton()
     {
-        Debug.Log("[InteractButtonController] Evento ShowInteractButton recebido.");
         if (buttonVisual != null)
         {
             buttonVisual.SetActive(true);
@@ -40,16 +48,22 @@ public class InteractButtonController : MonoBehaviour
 
     private void HideButton()
     {
-        Debug.Log("[InteractButtonController] Evento HideInteractButton recebido.");
         if (buttonVisual != null)
         {
             buttonVisual.SetActive(false);
         }
     }
 
+    /// <summary>
+    /// Método público para ser chamado via UnityEvent no fim de diálogos ou Signal Track na Timeline.
+    /// </summary>
+    public void ForceHideButton()
+    {
+        HideButton();
+    }
+
     public void OnInteractPressed()
     {
-        Debug.Log("[InteractButtonController] Botão de UI pressionado pelo jogador.");
         if (InteractOM.Instance != null)
         {
             InteractOM.Instance.Interact();
