@@ -385881,19 +385881,19 @@ MonoBehaviour:
   estadoAtual: 0
   faseAtual: 0
   faseFacil:
-    tempoEntreAtaques: 3.5
+    tempoEntreAtaques: 2.5
     velocidadeFeitico: 5
     quantidadeFeiticosAgahnim: 4
     intervaloEntreFeiticos: 2
   faseMedia:
-    tempoEntreAtaques: 2.5
-    velocidadeFeitico: 7.5
-    quantidadeFeiticosAgahnim: 6
+    tempoEntreAtaques: 2
+    velocidadeFeitico: 6
+    quantidadeFeiticosAgahnim: 8
     intervaloEntreFeiticos: 1.75
   faseDificil:
     tempoEntreAtaques: 1.5
-    velocidadeFeitico: 10
-    quantidadeFeiticosAgahnim: 8
+    velocidadeFeitico: 7
+    quantidadeFeiticosAgahnim: 10
     intervaloEntreFeiticos: 1.25
   pontosTeleporte:
   - {fileID: 923715306}
