@@ -129,8 +129,10 @@ public class GameOverMenuController : MonoBehaviour
             menuButton.interactable = false;
         }
 
-        // Garante que o player e o HUD saiam do game over com a vida completa
-        // antes da cena ser recarregada.
+        // Restaura a vida estática global e despausa antes de qualquer transição
+        HealthSystem.RestoreSavedHealthToMax();
+        Time.timeScale = 1f;
+
         if (restart)
         {
             StartCoroutine(ForcePlayerVisibleAfterRestart());
@@ -159,7 +161,6 @@ public class GameOverMenuController : MonoBehaviour
             GameManager.Instance.VoltarAoMenu();
         }
 
-        Time.timeScale = 1f;
         isTransitioning = false;
         yield break;
     }
@@ -174,20 +175,6 @@ public class GameOverMenuController : MonoBehaviour
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
             {
-                SpriteRenderer[] renderers = player.GetComponentsInChildren<SpriteRenderer>(true);
-                foreach (SpriteRenderer renderer in renderers)
-                {
-                    if (renderer == null)
-                    {
-                        continue;
-                    }
-
-                    renderer.enabled = true;
-                    Color color = renderer.color;
-                    color.a = 1f;
-                    renderer.color = color;
-                }
-
                 HealthSystem health = player.GetComponent<HealthSystem>();
                 if (health != null)
                 {

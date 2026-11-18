@@ -8,7 +8,7 @@ public class LifeHUD : MonoBehaviour
     [Header("Configurações dos Corações")]
     [SerializeField] private List<Image> coracoes = new List<Image>();
     [SerializeField] private GameObject coracaoPrefab;
-    [SerializeField] private Transform containerCoracoes; // Ex: objeto Pai com Horizontal Layout Group
+    [SerializeField] private Transform containerCoracoes;
 
     [Header("Sprites")]
     [SerializeField] private Sprite cheio;
@@ -28,6 +28,7 @@ public class LifeHUD : MonoBehaviour
 
     private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        healthSystem = null;
         EncontrarPlayer();
     }
 

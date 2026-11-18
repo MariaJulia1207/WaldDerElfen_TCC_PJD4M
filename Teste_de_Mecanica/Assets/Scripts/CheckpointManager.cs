@@ -49,7 +49,8 @@ public class CheckpointManager : MonoBehaviour
             HealthSystem health = player.GetComponent<HealthSystem>();
             if (health != null)
             {
-                data.playerHealth = Mathf.Clamp(health.vida, 0, Mathf.Max(1, health.vidaMaxima));
+                // Salva sempre a vida máxima no checkpoint para evitar retornar morto
+                data.playerHealth = Mathf.Max(1, health.vidaMaxima);
             }
         }
 
@@ -119,6 +120,8 @@ public class CheckpointManager : MonoBehaviour
         LastCheckpointScene = checkpointSave.checkpointSceneName;
         LastCheckpointPosition = checkpointSave.checkpointPosition;
 
+        HealthSystem.RestoreSavedHealthToMax();
+
         if (!string.Equals(SceneManager.GetActiveScene().name, LastCheckpointScene, System.StringComparison.Ordinal))
         {
             SceneManager.LoadScene(LastCheckpointScene);
@@ -133,8 +136,6 @@ public class CheckpointManager : MonoBehaviour
             HealthSystem health = player.GetComponent<HealthSystem>();
             if (health != null)
             {
-                health.vida = Mathf.Clamp(checkpointSave.playerHealth, 0, Mathf.Max(1, health.vidaMaxima));
-                health.isDead = false;
                 health.RestaurarParaCheckpoint();
             }
         }
@@ -164,6 +165,8 @@ public class CheckpointManager : MonoBehaviour
         {
             return;
         }
+
+        HealthSystem.RestoreSavedHealthToMax();
 
         string cenaAtual = SceneManager.GetActiveScene().name;
         if (!string.Equals(cenaAtual, LastCheckpointScene, System.StringComparison.Ordinal))

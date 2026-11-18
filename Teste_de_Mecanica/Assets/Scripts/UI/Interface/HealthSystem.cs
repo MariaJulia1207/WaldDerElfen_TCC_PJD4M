@@ -20,19 +20,29 @@ public class HealthSystem : MonoBehaviour
     private Color corOriginal;
     private Coroutine flashCoroutine;
 
+    private const float CircleAlpha = 75f / 255f;
+
     private void Awake()
     {
-        // Se existir vida salva de uma cena anterior, restaura
-        if (vidaSalva > 0)
+        Time.timeScale = 1f;
+
+        if (vidaMaximaSalva > 0)
         {
-            vida = vidaSalva;
-            vidaMaxima = vidaMaximaSalva > 0 ? vidaMaximaSalva : vidaMaxima;
+            vidaMaxima = vidaMaximaSalva;
         }
         else
         {
-            // Primeira inicialização do jogo
-            vidaSalva = vida;
             vidaMaximaSalva = vidaMaxima;
+        }
+
+        if (vidaSalva > 0)
+        {
+            vida = Mathf.Min(vidaSalva, vidaMaxima);
+        }
+        else
+        {
+            vida = vidaMaxima;
+            vidaSalva = vida;
         }
     }
 
@@ -60,7 +70,20 @@ public class HealthSystem : MonoBehaviour
         vidaMaximaSalva = -1;
     }
 
-    private const float CircleAlpha = 75f / 255f;
+    /// <summary>
+    /// Restaura a vida estática global para o máximo antes de carregar um save ou voltar ao menu.
+    /// </summary>
+    public static void RestoreSavedHealthToMax()
+    {
+        if (vidaMaximaSalva > 0)
+        {
+            vidaSalva = vidaMaximaSalva;
+        }
+        else
+        {
+            vidaSalva = -1;
+        }
+    }
 
     private void EnsurePlayerVisible()
     {
@@ -141,7 +164,7 @@ public class HealthSystem : MonoBehaviour
     }
 
     // =========================================================
-    // RECEBER DANO
+    // RECEBER DANO E CURA
     // =========================================================
 
     public void ReceberDano(int dano)
@@ -156,7 +179,6 @@ public class HealthSystem : MonoBehaviour
             vida = 0;
         }
 
-        // Atualiza a vida salva
         vidaSalva = vida;
 
         SoundEffectManager.Play("Damage");
@@ -179,7 +201,6 @@ public class HealthSystem : MonoBehaviour
             vida = vidaMaxima;
         }
 
-        // Atualiza a vida salva
         vidaSalva = vida;
     }
 
@@ -220,6 +241,10 @@ public class HealthSystem : MonoBehaviour
         if (vida <= 0 && !isDead)
         {
             isDead = true;
+
+            // Garante que a vida salva não fique zerada caso o jogador saia para o menu após morrer
+            vidaSalva = vidaMaxima;
+            vidaMaximaSalva = vidaMaxima;
 
             if (flashCoroutine != null)
             {

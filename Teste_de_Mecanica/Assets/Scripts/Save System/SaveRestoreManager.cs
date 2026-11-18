@@ -55,6 +55,9 @@ public class SaveRestoreManager : MonoBehaviour
         pendingSave = data.Clone();
         pendingSlot = slot;
 
+        // Garante que a vida estática global seja restaurada ao máximo antes de carregar a cena
+        HealthSystem.RestoreSavedHealthToMax();
+
         if (SaveManager.Instance != null)
         {
             SaveManager.Instance.SetCurrentCollectedCoins(data.collectedImportantItems);
@@ -140,8 +143,8 @@ public class SaveRestoreManager : MonoBehaviour
             HealthSystem health = player.GetComponent<HealthSystem>();
             if (health != null)
             {
-                health.vida = Mathf.Clamp(data.playerHealth, 0, Mathf.Max(1, health.vidaMaxima));
-                health.isDead = false;
+                // Sempre retorna ao jogo com a vida completa, ignorando vida zerada ou parcial salva anteriormente
+                health.ResetToFullHealth();
             }
         }
 
@@ -174,6 +177,6 @@ public class SaveRestoreManager : MonoBehaviour
             arena.ApplySaveState(defeated);
         }
 
-        Debug.Log("SaveRestoreManager: save aplicado.");
+        Debug.Log("SaveRestoreManager: save aplicado com vida completa.");
     }
 }
