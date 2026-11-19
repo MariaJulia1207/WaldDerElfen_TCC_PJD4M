@@ -19308,7 +19308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 737068316098292914, guid: 0b6c77f5d4926da48826ca032e592720, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.9
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 737068316098292914, guid: 0b6c77f5d4926da48826ca032e592720, type: 3}
       propertyPath: m_LocalPosition.z
@@ -63154,7 +63154,7 @@ Transform:
   m_GameObject: {fileID: 864538738}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000043986084, y: -0.000000014558155, z: 0.0000000036340937, w: 1}
-  m_LocalPosition: {x: -36.57, y: 124.57, z: -10}
+  m_LocalPosition: {x: -36.57, y: 123.67, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -373244,7 +373244,7 @@ Transform:
   m_GameObject: {fileID: 1405731032}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000043986084, y: -0.000000014558155, z: 6.403562e-16, w: 1}
-  m_LocalPosition: {x: -36.57, y: 124.57, z: -10}
+  m_LocalPosition: {x: -36.57, y: 123.67, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -382247,7 +382247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
   m_ShadowGroup: 0
-  m_Priority: 0
+  m_Priority: 1
   m_ComponentVersion: 6
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
@@ -383401,7 +383401,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 731888949
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -800991195993873624, guid: 1f04c8853b7179b498dd8d652cc8b7ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

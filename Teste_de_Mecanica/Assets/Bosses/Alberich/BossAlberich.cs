@@ -429,14 +429,28 @@ public class BossAlberich : MonoBehaviour, IBoss
         morreu = true;
         estadoAtual = EstadoBoss.Morrendo;
 
-        if (rotinaCombate != null) StopCoroutine(rotinaCombate);
-        if (rotinaEstadoAtual != null) StopCoroutine(rotinaEstadoAtual);
+        if (rotinaCombate != null)
+        {
+            StopCoroutine(rotinaCombate);
+            rotinaCombate = null;
+        }
+
+        if (rotinaEstadoAtual != null)
+        {
+            StopCoroutine(rotinaEstadoAtual);
+            rotinaEstadoAtual = null;
+        }
 
         if (scriptCetroIndependente != null)
             scriptCetroIndependente.gameObject.SetActive(false);
 
+        // Desativa os outros parâmetros de animação.
         ResetarAnimacoes();
+
+        // Força a entrada na animação de morte.
         animator.SetBool("IsDead", true);
+
+        animator.Play("Alberich_Death", 0, 0f);
 
         StartCoroutine(SequenciaMorte());
     }
